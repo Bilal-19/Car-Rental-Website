@@ -29,10 +29,10 @@
         class="w-full bg-[#121212] text-white py-2 flex flex-col md:flex-row justify-between md:items-center border-b-2 border-b-[#EDC549]">
         <div class="flex flex-row justify-between items-center">
             <div>
-                <img src="../Assets/logo.png" alt="logo" class="h-12">
+                <img src="../Assets/logo.png" alt="logo" class="h-12 ml-3">
             </div>
             <div>
-                <button class="block md:hidden border border-2 rounded-md px-3 py-1" id="toggleBtn">
+                <button class="block md:hidden border border-2 border-[#EDC549] rounded-md px-3 py-1 hover:cursor-pointer mr-3" id="toggleBtn">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>

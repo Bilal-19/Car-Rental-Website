@@ -1,4 +1,5 @@
 <?php
+$titleTag = "Elite Auto Motors | Home";
 require_once "../VisitorLayout/header.php";
 ?>
 

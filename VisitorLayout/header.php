@@ -43,8 +43,8 @@
         </div>
         <div class="hidden flex-col md:flex md:flex-row space-y-1 md:space-y-0 md:space-x-8 md:mr-5 text-sm md:text-base font-light px-4"
             id="toggleMenus">
-            <a href="" class="hover:text-[#EDC549] block md:inline">Home</a>
-            <a href="" class="hover:text-[#EDC549] block md:inline">Car Listing</a>
+            <a href="../Visitor/index.php" class="hover:text-[#EDC549] block md:inline">Home</a>
+            <a href="../Visitor/car_listing.php" class="hover:text-[#EDC549] block md:inline">Car Listing</a>
             <a href="" class="hover:text-[#EDC549] block md:inline">About Us</a>
             <a href="" class="hover:text-[#EDC549] block md:inline">Contact Us</a>
             <a href="" class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block">Sign Up</a>

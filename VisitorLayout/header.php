@@ -45,7 +45,7 @@
             id="toggleMenus">
             <a href="../Visitor/index.php" class="hover:text-[#EDC549] block md:inline">Home</a>
             <a href="../Visitor/car_listing.php" class="hover:text-[#EDC549] block md:inline">Car Listing</a>
-            <a href="" class="hover:text-[#EDC549] block md:inline">About Us</a>
+            <a href="../Visitor/about_us.php" class="hover:text-[#EDC549] block md:inline">About Us</a>
             <a href="" class="hover:text-[#EDC549] block md:inline">Contact Us</a>
             <a href="" class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block">Sign Up</a>
         </div>

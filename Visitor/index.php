@@ -133,7 +133,7 @@ require_once "../VisitorLayout/header.php";
     </div>
 </div>
 
-<div class="mt-30 w-full h-52 md:h-100 text-white flex flex-col justify-center text-start p-10"
+<div class="mt-30 w-full h-52 md:h-100 text-white flex flex-col justify-center text-start p-10 bg-cover"
     style="background-image:url('../Assets/home_cta.png')">
     <h3 class="text-xl md:text-4xl mb-3">Ready to Elevate Your Dubai Experience?</h3>
     <button class="bg-[#7B5D01] w-fit px-3 py-3 rounded-xl">Book Your Luxury Car Now</button>

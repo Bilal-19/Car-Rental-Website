@@ -186,7 +186,7 @@ require_once "../VisitorLayout/header.php";
     </div>
 </div>
 
-<div class="mt-30 w-full h-52 md:h-132 text-white flex flex-col justify-center text-start p-10"
+<div class="mt-30 w-full h-52 md:h-132 text-white flex flex-col justify-center text-start p-10 bg-cover"
     style="background-image:url('../Assets/car_listing_cta.png')">
     <h3 class="text-xl md:text-4xl mb-1">Can’t Find What You’re Looking For?</h3>
     <p class="text-base md:text-2xl font-light mb-4">

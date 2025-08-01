@@ -41,7 +41,7 @@
                 </button>
             </div>
         </div>
-        <div class="hidden flex-col md:flex md:flex-row space-y-1 md:space-y-0 md:space-x-8 md:mr-5 text-sm md:text-base font-light px-4"
+        <div class="hidden flex-col md:flex md:flex-row items-center space-y-1 md:space-y-0 md:space-x-8 md:mr-5 text-sm md:text-base font-light px-4"
             id="toggleMenus">
             <a href="../Visitor/index.php" class="hover:text-[#EDC549] block md:inline">Home</a>
             <a href="../Visitor/car_listing.php" class="hover:text-[#EDC549] block md:inline">Car Listing</a>

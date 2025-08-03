@@ -44,42 +44,26 @@ require_once "../VisitorLayout/header.php";
 </div>
 
 
-<!-- Contact Form -->
-<div class="w-full md:h-fit bg-cover flex flex-col justify-center items-center text-white mt-30 py-10 bg-no-repeat bg-scroll"
-    style="background-image:url('../Assets/contact_form_bg.png')">
-    <div class="md:w-4/5 mx-auto text-center md:my-60">
-        <h4 class="text-2xl md:text-[45px] font-semibold mb-2">Contact Us</h4>
-        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" class="space-y-5" method="post">
-            <input type="text"
-                class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-3/5 focus:outline-none"
-                name="full_name" placeholder="Full Name">
-
-            <input type="email"
-                class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-3/5 focus:outline-none"
-                name="email_address" placeholder="Email Address">
-
-            <input type="number"
-                class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-3/5 focus:outline-none" name="phone"
-                placeholder="Phone / Whatsapp">
-
-            <input type="text"
-                class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-3/5 focus:outline-none"
-                name="subject" placeholder="Subject">
-
-            <textarea class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-3/5 focus:outline-none"
-                name="message" rows="5" placeholder="Message"></textarea>
-
-            <button class="bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-3/5">Send Message</button>
-        </form>
-    </div>
-</div>
-
 <?php
 // Store contact us form values on backend
 
+function validateInput($value)
+{
+    // Remove whitespace
+    $trimVal = trim($value);
+    // Remove oblique character
+    $removeSlash = stripslashes($trimVal);
+    // Remove tag
+    $removeMarkup = htmlspecialchars($removeSlash);
+    $result = $removeMarkup;
+    return $result;
+}
 
 // 1. Establish DB Connection
 require_once "../DB/db_connection.php";
+
+// Define error variables and set it value to empty
+$nameErr = $emailErr = $phoneErr = $subjErr = $msgErr = "";
 
 // 2. Get Form Values
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -90,35 +74,70 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $subject = $_POST["subject"];
     $message = $_POST["message"];
 
-    echo "username: $user_name" . "<br>";
-    echo "email: $email_address" . "<br>";
-    echo "phone number: $phone" . "<br>";
-    echo "message subject: $subject" . "<br>";
-    echo "message: $message" . "<br>";
-
     // 3. Error Handling
-    function validateInput($value)
-    {
-        // Remove whitespace
-        $trimVal = trim($value);
-        // Remove oblique character
-        $removeSlash = stripslashes($trimVal);
-        // Remove tag
-        $removeMarkup = htmlspecialchars($removeSlash);
-        $result = $removeMarkup;
-        return $result;
+    if (empty($_POST["full_name"])) {
+        $nameErr = "Please enter your full name";
+    } else {
+        $user_name = validateInput($user_name);
+        // pattern matching
+        $isPatternMatch = preg_match("/^[a-zA-Z-' ]*$/", $user_name);
+        if (!$isPatternMatch) {
+            $nameErr = "Only letters and whiespace allowed";
+        }
     }
+
 }
-
-
-
-
 
 // 4. Insert Query
 
 
 // 5. Show success/error notification
 ?>
+
+<!-- Contact Form -->
+<div class="w-full h-200 md:h-fit bg-cover flex flex-col justify-center items-center text-white mt-30 py-10 bg-no-repeat bg-scroll"
+    style="background-image:url('../Assets/contact_form_bg.png')">
+    <h4 class="text-2xl md:text-[45px] font-semibold mb-2 text-center">Contact Us</h4>
+    <div class="w-80 md:w-full mx-auto md:my-10">
+        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="post"
+            class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="">
+                <input type="text"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    name="full_name" placeholder="Full Name">
+                <br>
+                <span class="text-sm font-medium"><?php echo $nameErr; ?></span>
+            </div>
+
+            <div>
+                <input type="email"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    name="email_address" placeholder="Email Address">
+            </div>
+
+            <div>
+                <input type="number"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    name="phone" placeholder="Phone / Whatsapp">
+            </div>
+
+            <div>
+                <input type="text"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    name="subject" placeholder="Subject">
+            </div>
+
+            <div class="md:col-span-2">
+                <textarea class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    name="message" rows="5" placeholder="Message"></textarea>
+            </div>
+
+            <button class="bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3">Send Message</button>
+        </form>
+    </div>
+</div>
+
+
 
 <!-- Footer -->
 <?php

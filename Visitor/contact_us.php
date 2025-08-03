@@ -98,10 +98,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="w-full h-200 md:h-fit bg-cover flex flex-col justify-center items-center text-white mt-30 py-10 bg-no-repeat bg-scroll"
     style="background-image:url('../Assets/contact_form_bg.png')">
     <h4 class="text-2xl md:text-[45px] font-semibold mb-2 text-center">Contact Us</h4>
-    <div class="w-80 md:w-full mx-auto md:my-10">
+    <div class="w-80 md:w-4/5 mx-auto md:my-10">
         <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="post"
             class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div class="">
+            <div>
                 <input type="text"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
                     name="full_name" placeholder="Full Name">
@@ -127,12 +127,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     name="subject" placeholder="Subject">
             </div>
 
-            <div class="md:col-span-2">
-                <textarea class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+            <div class="col-span-1 md:col-span-2">
+                <textarea class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-full focus:outline-none"
                     name="message" rows="5" placeholder="Message"></textarea>
             </div>
 
-            <button class="bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3">Send Message</button>
+            <div class="w-full">
+                <button class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3">Send Message</button>
+            </div>
         </form>
     </div>
 </div>

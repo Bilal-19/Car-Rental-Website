@@ -60,7 +60,7 @@ function validateInput($value)
 }
 
 // 1. Establish DB Connection
-include "../DB/db_connection.php";
+require_once "../DB/db_connection.php";
 
 // Define error variables and set it value to empty
 $nameErr = $emailErr = $phoneErr = $subjErr = $msgErr = "";
@@ -110,9 +110,21 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $message = validateInput($message);
     }
 
+    if ($nameErr == "" && $emailErr == "" && $phoneErr == "" && $subjErr == "" && $msgErr == "") {
+        // 4. Insert Query
+        $insertQuery = "INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) VALUES('$user_name', '$email_address', '$phone','$subject','$message')";
+        $result = mysqli_query($isConnect, $insertQuery);
+        if (!$result) {
+            echo "Failed to execute query";
+        } else {
+            echo "Enquiry submitted";
+        }
+    }
+
 }
 
-// 4. Insert Query
+
+
 
 
 // 5. Show success/error notification

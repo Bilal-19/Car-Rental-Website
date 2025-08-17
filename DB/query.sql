@@ -10,3 +10,6 @@ created_at DATETIME DEFAULT NOW()
 
 -- To remove table
 DROP TABLE general_enquiry
+
+-- Insert Query
+INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) VALUES('Test User', 'test@gmail.com', '0300-0078987','test subject','test message');

@@ -60,13 +60,13 @@ function validateInput($value)
 }
 
 // 1. Establish DB Connection
-require_once "../DB/db_connection.php";
+include "../DB/db_connection.php";
 
 // Define error variables and set it value to empty
 $nameErr = $emailErr = $phoneErr = $subjErr = $msgErr = "";
 
 // 2. Get Form Values
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
     // echo "User click on form submit button";
     $user_name = $_POST["full_name"];
     $email_address = $_POST["email_address"];
@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $message = $_POST["message"];
 
     // 3. Error Handling
-    if (empty($_POST["full_name"])) {
+    if (empty($user_name)) {
         $nameErr = "Please enter your full name";
     } else {
         $user_name = validateInput($user_name);
@@ -84,6 +84,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!$isPatternMatch) {
             $nameErr = "Only letters and whiespace allowed";
         }
+    }
+
+    if (empty($email_address)) {
+        $emailErr = "Please enter email address";
+    } else {
+        $email_address = validateInput($email_address);
+    }
+
+    if (empty($phone)) {
+        $phoneErr = "Please enter contact number";
+    } else {
+        $phone = validateInput($phone);
+    }
+
+    if (empty($subject)) {
+        $subjErr = "Please enter subject of your message";
+    } else {
+        $subject = validateInput($subject);
+    }
+
+    if (empty($message)) {
+        $msgErr = "Please enter your message";
+    } else {
+        $message = validateInput($message);
     }
 
 }
@@ -98,42 +122,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="w-full h-200 md:h-fit bg-cover flex flex-col justify-center items-center text-white mt-30 py-10 bg-no-repeat bg-scroll"
     style="background-image:url('../Assets/contact_form_bg.png')">
     <h4 class="text-2xl md:text-[45px] font-semibold mb-2 text-center">Contact Us</h4>
-    <div class="w-80 md:w-4/5 mx-auto md:my-10">
-        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="post"
-            class="grid grid-cols-1 md:grid-cols-2 gap-5">
+    <div class="w-80 md:w-4/5 mx-auto md:mb-5">
+        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="post" class="space-y-5">
             <div>
                 <input type="text"
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="full_name" placeholder="Full Name">
-                <br>
-                <span class="text-sm font-medium"><?php echo $nameErr; ?></span>
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $nameErr; ?></span>
             </div>
 
             <div>
                 <input type="email"
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="email_address" placeholder="Email Address">
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $emailErr; ?></span>
             </div>
 
             <div>
                 <input type="number"
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="phone" placeholder="Phone / Whatsapp">
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $phoneErr; ?></span>
             </div>
 
             <div>
                 <input type="text"
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-4/5 focus:outline-none"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="subject" placeholder="Subject">
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $subjErr; ?></span>
             </div>
 
-            <div class="col-span-1 md:col-span-2">
-                <textarea class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl w-80 md:w-full focus:outline-none"
+            <div>
+                <textarea
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="message" rows="5" placeholder="Message"></textarea>
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $msgErr; ?></span>
             </div>
 
-            <div class="w-full">
-                <button class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3">Send Message</button>
+            <div>
+                <button
+                    class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">Send
+                    Message</button>
             </div>
         </form>
     </div>

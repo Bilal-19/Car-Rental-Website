@@ -62,12 +62,9 @@ function validateInput($value)
 // 1. Establish DB Connection
 require_once "../DB/db_connection.php";
 
-// Define error variables and set it value to empty
-$nameErr = $emailErr = $phoneErr = $subjErr = $msgErr = "";
 
 // 2. Get Form Values
 if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
-    // echo "User click on form submit button";
     $user_name = $_POST["full_name"];
     $email_address = $_POST["email_address"];
     $phone = $_POST["phone"];
@@ -75,42 +72,43 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
     $message = $_POST["message"];
 
     // 3. Error Handling
+    // Create an array named 'error' to store all the error message
     if (empty($user_name)) {
-        $nameErr = "Please enter your full name";
+        $error['nameErr'] = "Please enter your full name";
     } else {
         $user_name = validateInput($user_name);
         // pattern matching
         $isPatternMatch = preg_match("/^[a-zA-Z-' ]*$/", $user_name);
         if (!$isPatternMatch) {
-            $nameErr = "Only letters and whiespace allowed";
+            $error['nameErr'] = "Only letters and whiespace allowed";
         }
     }
 
     if (empty($email_address)) {
-        $emailErr = "Please enter email address";
+        $error['emailErr'] = "Please enter email address";
     } else {
         $email_address = validateInput($email_address);
     }
 
     if (empty($phone)) {
-        $phoneErr = "Please enter contact number";
+        $error['phoneErr'] = "Please enter contact number";
     } else {
         $phone = validateInput($phone);
     }
 
     if (empty($subject)) {
-        $subjErr = "Please enter subject of your message";
+        $error['subjErr'] = "Please enter subject of your message";
     } else {
         $subject = validateInput($subject);
     }
 
     if (empty($message)) {
-        $msgErr = "Please enter your message";
+        $error['msgErr'] = "Please enter your message";
     } else {
         $message = validateInput($message);
     }
 
-    if ($nameErr == "" && $emailErr == "" && $phoneErr == "" && $subjErr == "" && $msgErr == "") {
+    if (empty($error)) {
         // 4. Insert Query
         $insertQuery = "INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) VALUES('$user_name', '$email_address', '$phone','$subject','$message')";
         $result = mysqli_query($isConnect, $insertQuery);
@@ -119,6 +117,8 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             echo "Enquiry submitted";
         }
+    } else {
+        print_r($error);
     }
 
 }
@@ -140,35 +140,55 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="text"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="full_name" placeholder="Full Name">
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $nameErr; ?></span>
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                    <?php if (!empty($error["nameErr"])) {
+                        echo $error["nameErr"];
+                    } ?>
+                </span>
             </div>
 
             <div>
                 <input type="email"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="email_address" placeholder="Email Address">
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $emailErr; ?></span>
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                    <?php if (!empty($error["emailErr"])) {
+                        echo $error["emailErr"];
+                    } ?>
+                </span>
             </div>
 
             <div>
                 <input type="number"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="phone" placeholder="Phone / Whatsapp">
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $phoneErr; ?></span>
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                    <?php if (!empty($error["phoneErr"])) {
+                        echo $error["phoneErr"];
+                    } ?>
+                </span>
             </div>
 
             <div>
                 <input type="text"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="subject" placeholder="Subject">
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $subjErr; ?></span>
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                    <?php if (!empty($error["subjErr"])) {
+                        echo $error["subjErr"];
+                    } ?>
+                </span>
             </div>
 
             <div>
                 <textarea
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="message" rows="5" placeholder="Message"></textarea>
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block"><?php echo $msgErr; ?></span>
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                     <?php if (!empty($error["msgErr"])) {
+                        echo $error["msgErr"];
+                    } ?>
+                </span>
             </div>
 
             <div>

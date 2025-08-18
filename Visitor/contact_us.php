@@ -59,6 +59,19 @@ function validateInput($value)
     return $result;
 }
 
+function showNotification($type, $msg)
+{
+    if ($type == "success") {
+        return "<p class='text-green-500 bg-white px-3 py-5 rounded-md text-md w-80 md:w-4/5 mx-auto block'>
+        <i class='fa-solid fa-circle-check'></i>
+        $msg</p>";
+    } else {
+        return "<p class='text-red-500 bg-white px-3 py-5 rounded-md text-md w-80 md:w-4/5 mx-auto block'>
+        <i class='fa-solid fa-circle-exclamation'></i>
+        $msg</p>";
+    }
+}
+
 // 1. Establish DB Connection
 require_once "../DB/db_connection.php";
 
@@ -112,22 +125,14 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
         // 4. Insert Query
         $insertQuery = "INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) VALUES('$user_name', '$email_address', '$phone','$subject','$message')";
         $result = mysqli_query($isConnect, $insertQuery);
-        if (!$result) {
-            echo "Failed to execute query";
-        } else {
-            echo "Enquiry submitted";
+        if ($result) {
+            $notifyVisitor = showNotification("success", "Enquiry submitted.");
         }
     } else {
-        print_r($error);
+        $notifyVisitor = showNotification("error", "Please fill all the requried fields");
     }
-
 }
 
-
-
-
-
-// 5. Show success/error notification
 ?>
 
 <!-- Contact Form -->
@@ -185,7 +190,7 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="message" rows="5" placeholder="Message"></textarea>
                 <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
-                     <?php if (!empty($error["msgErr"])) {
+                    <?php if (!empty($error["msgErr"])) {
                         echo $error["msgErr"];
                     } ?>
                 </span>
@@ -193,8 +198,17 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div>
                 <button
-                    class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">Send
-                    Message</button>
+                    class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
+                    Send Message
+                </button>
+            </div>
+
+            <div>
+                <?php
+                if (isset($notifyVisitor)) {
+                    echo $notifyVisitor;
+                }
+                ?>
             </div>
         </form>
     </div>

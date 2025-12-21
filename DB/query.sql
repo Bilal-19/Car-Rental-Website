@@ -13,3 +13,13 @@ DROP TABLE general_enquiry
 
 -- Insert Query
 INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) VALUES('Test User', 'test@gmail.com', '0300-0078987','test subject','test message');
+
+-- Create Users table
+CREATE TABLE users(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+full_name VARCHAR(50),
+email_address VARCHAR(100),
+phone VARCHAR(100),
+user_pswd VARCHAR(100),
+created_at DATETIME DEFAULT NOW()
+)

@@ -47,6 +47,6 @@
             <a href="../Visitor/car_listing.php" class="hover:text-[#EDC549] block md:inline">Car Listing</a>
             <a href="../Visitor/about_us.php" class="hover:text-[#EDC549] block md:inline">About Us</a>
             <a href="../Visitor/contact_us.php" class="hover:text-[#EDC549] block md:inline">Contact Us</a>
-            <a href="" class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block">Sign Up</a>
+            <a href="../Visitor/login.php" class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block">Sign Up</a>
         </div>
     </div>

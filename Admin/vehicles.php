@@ -9,9 +9,10 @@ include("../AdminLayout/sidebar.php");
         <div class="flex justify-between">
             <p>30 records found</p>
             <button class="bg-blue-500 text-white text-sm px-3 py-1 rounded-md">
-                <a href="">Add New Vehicle</a>
+                <a href="./add_vehicle.php">Add New Vehicle</a>
             </button>
         </div>
+        
     </div>
 </main>
 </div>

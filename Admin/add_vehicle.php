@@ -16,6 +16,12 @@ include("../AdminLayout/sidebar.php");
         <form action="" class="text-gray-600">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="flex flex-col">
+                    <label for="">Vehicle Name:</label>
+                    <input type="text" name="car_name" id="car_name" placeholder="Ex. Toyota Corolla"
+                        class="px-3 md:px-6 py-3 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
+                </div>
+
+                <div class="flex flex-col">
                     <label for="">Model:</label>
                     <input type="text" name="car_model" id="car_model" placeholder="Ex. Lamborghini Huracán EVO"
                         class="px-3 md:px-6 py-3 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
@@ -27,7 +33,19 @@ include("../AdminLayout/sidebar.php");
                         class="px-3 md:px-6 py-3 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
-                <div class="flex flex-col col-span-2">
+                <div class="flex flex-col">
+                    <label for="">Category:</label>
+                    <select name="car_category" id="car_category"
+                        class="p-3 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
+                        <option value="">Select Category</option>
+                        <option value="Sedan">Sedan</option>
+                        <option value="SUV">SUV</option>
+                        <option value="Hatchback">Hatchback</option>
+                        <option value="Luxury">Luxury</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
                     <label for="">Transmission:</label>
                     <select name="car_transmission" id="car_transmission"
                         class="p-3 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">

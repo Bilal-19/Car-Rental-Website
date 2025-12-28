@@ -14,7 +14,7 @@
                     <i class="fa-solid fa-users"></i>
                     <span class="inline">Registered Users</span>
                 </a>
-                <a href="#"
+                <a href="../Admin/vehicles.php"
                     class="flex items-center space-x-2 px-4 py-2 border-b bg-white text-black rounded hover:bg-gray-200">
                     <i class="fa-solid fa-car"></i>
                     <span class="inline">All Vehicles</span>

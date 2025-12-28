@@ -41,14 +41,8 @@ include("../AdminLayout/sidebar.php");
                     <i class="fa-solid fa-question text-red-700"></i> 50
                 </p>
             </div>
-
-
         </div>
 
-        <div class="w-full flex flex-col md:flex-row md:justify-between my-3">
-            <div id="nationality-pie-chart" class="w-76 md:w-1/2"></div>
-            <div id="gender-bar-chart" class="w-76 md:w-1/2"></div>
-        </div>
     </div>
 </main>
 </div>

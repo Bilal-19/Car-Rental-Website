@@ -1,5 +1,7 @@
 <style>
-    label, input, select {
+    label,
+    input,
+    select {
         font-size: 14px;
     }
 </style>
@@ -7,13 +9,16 @@
 <?php
 include("../AdminLayout/header.php");
 include("../AdminLayout/sidebar.php");
+
 ?>
+
 
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="w-full mt-5 bg-white rounded p-6">
         <h2 class="text-xl font-semibold mb-5">Add New Vehicle</h2>
 
-        <form action="" class="text-gray-600">
+        <form action="" class="text-gray-600" id="add_vehicle" name="add_vehicle" method="post">
+            <input type="hidden" name="add_new_vehicle" value="Yes">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="flex flex-col">
                     <label for="" class="font-medium">Make:</label>
@@ -112,7 +117,8 @@ include("../AdminLayout/sidebar.php");
 
                 <div class="flex flex-col">
                     <button type="submit" name="submit" id="submit" placeholder="Silver"
-                        class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-[#7b5d01] text-white"><i class="fa fa-paper-plane"> </i> Submit</button>
+                        class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-[#7b5d01] text-white"><i
+                            class="fa fa-paper-plane"> </i> Submit</button>
                 </div>
             </div>
         </form>
@@ -147,3 +153,11 @@ include("../AdminLayout/sidebar.php");
     })
 
 </script>
+
+<?php 
+if ((isset($_POST['add_new_vehicle'])) && $_POST['add_new_vehicle'] == 'Yes') {
+    // Get all the values here and store it into db
+
+    print_r($_POST);
+}
+?>

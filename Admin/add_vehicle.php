@@ -133,14 +133,14 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
 
-                <div class="flex flex-col col-span-2">
+                <div class="flex flex-col md:col-span-2">
                     <label for="">Thumbnail Image:</label>
                     <input type="file" name="preview_img" id="preview_img" placeholder="Silver"
                         class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
 
-                <div class="flex flex-col col-span-4">
+                <div class="flex flex-col col-span-1 md:col-span-4">
                     <button type="submit" name="submit" id="submit"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-[#7b5d01] text-white"><i
                             class="fa fa-paper-plane"> </i> Submit</button>

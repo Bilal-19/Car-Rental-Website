@@ -116,7 +116,32 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
                 <div class="flex flex-col">
-                    <button type="submit" name="submit" id="submit" placeholder="Silver"
+                    <label for="">Drive Type:</label>
+                    <select name="car_drive_type" id="car_drive_type"
+                        class="p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
+                        <option value="">Select Fuel Type</option>
+                        <option value="AWD">AWD</option>
+                        <option value="RWD">RWD</option>
+                        <option value="FWD">FWD</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="">Seating Capacity:</label>
+                    <input type="text" name="seating_capacity" id="seating_capacity" placeholder="2"
+                        class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
+                </div>
+
+
+                <div class="flex flex-col col-span-2">
+                    <label for="">Thumbnail Image:</label>
+                    <input type="file" name="preview_img" id="preview_img" placeholder="Silver"
+                        class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
+                </div>
+
+
+                <div class="flex flex-col col-span-4">
+                    <button type="submit" name="submit" id="submit"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-[#7b5d01] text-white"><i
                             class="fa fa-paper-plane"> </i> Submit</button>
                 </div>
@@ -154,7 +179,7 @@ include("../AdminLayout/sidebar.php");
 
 </script>
 
-<?php 
+<?php
 if ((isset($_POST['add_new_vehicle'])) && $_POST['add_new_vehicle'] == 'Yes') {
     // Get all the values here and store it into db
 

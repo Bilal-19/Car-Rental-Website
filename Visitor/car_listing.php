@@ -1,6 +1,13 @@
 <?php
 $titleTag = "Elite Auto Motors | Car Listing";
 require_once "../VisitorLayout/header.php";
+require_once "../DB/db_connection.php";
+
+// Fetch vehicles listing
+$allVehiclesQry = "SELECT * FROM vehicles";
+$allVehiclesRes = mysqli_query($isConnect, $allVehiclesQry);
+$countRows = mysqli_num_rows($allVehiclesRes);
+
 ?>
 
 <div class="w-full h-80 md:h-180 bg-cover flex flex-col justify-center items-center text-white mb-20 md:mb-0"
@@ -50,145 +57,24 @@ require_once "../VisitorLayout/header.php";
 </div>
 
 <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-5 space-y-5 md:space-y-0 mb-20 md:mb-100">
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
-
-    <div class="relative">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <p class="font-medium text-sm ml-12 md:ml-6">Lamborghini Huracán EVO</p>
-        <p class="font-light text-sm ml-12 md:ml-6">From <b class="font-medium">AED 2,500 / day</b></p>
-        <button
-            class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15">View
-            Detail</button>
-    </div>
+    <?php
+    while ($row = mysqli_fetch_assoc($allVehiclesRes)) { ?>
+        <div class="relative">
+            <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
+            <p class="font-medium text-sm ml-12 md:ml-6"><?php echo $row['make'] . " . " . $row['model']; ?></p>
+            <p class="font-light text-sm ml-12 md:ml-6">From <b
+                    class="font-medium"><?php echo "AED " . $row['per_day_cost'] . "/ day"; ?></b></p>
+            <a class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15"
+                target="_blank"
+                href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_details.php?id=' . $row['id']; ?>">
+                View Detail</a>
+        </div>
+    <?php } ?>
 </div>
 
 <div class="mt-30 w-full h-52 md:h-132 text-white flex flex-col justify-center text-start p-10 bg-cover"
     style="background-image:url('../Assets/car_listing_cta.png')">
-    <h3 class="text-xl md:text-4xl mb-1">Can’t Find What You’re Looking For?</h3>
+    <h3 class="text-xl md:text-4xl mb-1">Can't Find What You're Looking For?</h3>
     <p class="text-base md:text-2xl font-light mb-4">
         Get in touch with our team for exclusive models and custom bookings.
     </p>

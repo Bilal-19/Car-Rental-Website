@@ -5,9 +5,42 @@ require_once "../DB/db_connection.php";
 
 // Fetch vehicles listing
 $allVehiclesQry = "SELECT * FROM vehicles";
+
+
+// Filter form
+$conditionFilters = [];
+if (isset($_GET['isSubmbitted']) && ($_GET['isSubmbitted'] == 'Yes')) {
+    // echo "do something"; die();
+    $vehicleBrand = $_GET['brand_model'] ?? null;
+    $vehicleRent = $_GET['price_range'] ?? null;
+    $vehicleType = $_GET['car_type'] ?? null;
+
+    // echo $vehicleBrand . "<br>" . $vehicleRent . "<br>" . $vehicleType;
+    // die();
+    if (!empty($vehicleBrand)) {
+        $conditionFilters[] = "make = '$vehicleBrand'";
+    }
+
+    if (!empty($vehicleType)) {
+        $conditionFilters[] = "category = '$vehicleType'";
+    }
+
+    if (!empty($conditionFilters)) {
+        $allVehiclesQry .= " WHERE " . implode(" OR ", $conditionFilters);
+    }
+    if (!empty($vehicleRent)) {
+        if ($vehicleRent == "asc_order") {
+            $allVehiclesQry .= " ORDER BY per_day_cost ASC";
+        } else {
+            $allVehiclesQry .= " ORDER BY per_day_cost DESC";
+        }
+    }
+}
+
+// echo $allVehiclesQry;
+
 $allVehiclesRes = mysqli_query($isConnect, $allVehiclesQry);
 $countRows = mysqli_num_rows($allVehiclesRes);
-
 ?>
 
 <div class="w-full h-80 md:h-180 bg-cover flex flex-col justify-center items-center text-white mb-20 md:mb-0"
@@ -23,19 +56,22 @@ $countRows = mysqli_num_rows($allVehiclesRes);
 </div>
 
 <div class="w-full">
-    <form action="" class="w-80 md:w-4/5 mx-auto flex flex-col md:flex-row justify-around items-center">
+    <form action="" class="w-80 md:w-4/5 mx-auto flex flex-col md:flex-row justify-around items-center"
+        name="filterForm" method="Get">
+        <input type="hidden" name="isSubmbitted" value="Yes">
         <div
-            class="w-80 md:w-4/5 mx-auto bg-white px-5 py-2 rounded-xl my-10 md:space-x-5 font-extralight flex flex-col md:flex-row justify-around">
-            <input type="text" placeholder="Search by brand/model" class="focus:outline-none focus:border-b-1">
-            <input type="text" onfocus="this.type='date'" placeholder="Availability"
-                class="focus:outline-none focus:border-b-1">
-            <select name="" id="" class="focus:outline-none">
+            class="w-80 md:w-4/5 mx-auto bg-white px-2 py-2 rounded-xl my-10 md:space-x-3 font-extralight flex flex-col md:flex-row justify-around">
+            <input type="text" placeholder="Search by brand/model" class="focus:outline-none focus:border-b-1"
+                name="brand_model" value="<?php if (!empty($vehicleBrand))
+                    echo $vehicleBrand; ?>">
+            <span class="hidden md:visible">|</span>
+            <select name="price_range" id="" class="focus:outline-none">
                 <option value="" selected>Price Range</option>
-                <option value="">AED 500 - AED 1000</option>
-                <option value="">AED 1000 - AED 2000</option>
-                <option value="">AED 2000 - AED 3000</option>
+                <option value="asc_order">Low to High</option>
+                <option value="desc_order">High to Low</option>
             </select>
-            <select name="" id="" class="focus:outline-none">
+            <span class="hidden md:visible">|</span>
+            <select name="car_type" id="" class="focus:outline-none">
                 <option value="">Car Type</option>
                 <option value="Luxury">Luxury</option>
                 <option value="SUV">SUV</option>

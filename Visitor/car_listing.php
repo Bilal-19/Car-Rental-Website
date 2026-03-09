@@ -56,19 +56,19 @@ $countRows = mysqli_num_rows($allVehiclesRes);
 </div>
 
 <div class="w-full">
-    <form action="" class="w-80 md:w-4/5 mx-auto flex flex-col md:flex-row justify-around items-center"
+    <form action="" class="w-80 md:w-4/5 mx-auto flex flex-col md:flex-row justify-around items-center space-x-3"
         name="filterForm" method="Get">
         <input type="hidden" name="isSubmbitted" value="Yes">
         <div
-            class="w-80 md:w-4/5 mx-auto bg-white px-2 py-2 rounded-xl my-10 md:space-x-3 font-extralight flex flex-col md:flex-row justify-around">
+            class="w-80 md:w-4/5 mx-auto bg-white px-2 py-2 rounded-xl my-10 md:space-x-3 font-extralight flex flex-col md:flex-row justify-around md:mr-5">
             <input type="text" placeholder="Search by brand/model" class="focus:outline-none focus:border-b-1"
                 name="brand_model" value="<?php if (!empty($vehicleBrand))
                     echo $vehicleBrand; ?>">
             <span class="hidden md:visible">|</span>
             <select name="price_range" id="" class="focus:outline-none">
                 <option value="" selected>Price Range</option>
-                <option value="asc_order">Low to High</option>
-                <option value="desc_order">High to Low</option>
+                <option value="asc_order" <?php echo (isset($_GET['price_range']) && $_GET['price_range'] == 'asc_order' ) ? 'selected' : '' ?>>Low to High</option>
+                <option value="desc_order" <?php echo (isset($_GET['price_range']) && $_GET['price_range'] == 'desc_order') ? 'selected' : '' ?> >High to Low</option>
             </select>
             <span class="hidden md:visible">|</span>
             <select name="car_type" id="" class="focus:outline-none">
@@ -81,9 +81,11 @@ $countRows = mysqli_num_rows($allVehiclesRes);
             </select>
         </div>
 
-        <div>
-            <button class="bg-[#7B5D01] text-white px-10 py-2 rounded-xl">Search</button>
+        <div class="flex flex-row space-x-5">
+            <button class="bg-[#7B5D01] text-white px-10 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-search"></i>Search</button>
+            <a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_listing.php'; ?>" class="bg-[#01377b] text-white px-5 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-times"></i> Reset</a>
         </div>
+
     </form>
 </div>
 

@@ -1,6 +1,6 @@
 <?php
 $titleTag = "Elite Auto Motors | Home";
-require_once "../VisitorLayout/header.php";
+require_once "VisitorLayout/header.php";
 ?>
 
 <!-- Banner -->
@@ -139,5 +139,5 @@ require_once "../VisitorLayout/header.php";
     <button class="bg-[#7B5D01] w-fit px-3 py-3 rounded-xl">Book Your Luxury Car Now</button>
 </div>
 <?php
-require_once "../VisitorLayout/footer.php";
+require_once "VisitorLayout/footer.php";
 ?>

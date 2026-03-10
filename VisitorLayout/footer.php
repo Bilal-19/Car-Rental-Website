@@ -6,17 +6,21 @@
     })
 </script>
 
-<div class="w-full bg-[#1E1E1E] text-white flex flex-col md:flex-row justify-between items-start md:text-xl p-5 md:p-15 space-y-10 md:space-y-0">
+<?php $path = "http://" . $_SERVER['HTTP_HOST']; ?>
+
+
+<div
+    class="w-full bg-[#1E1E1E] text-white flex flex-col md:flex-row justify-between items-start md:text-xl p-5 md:p-15 space-y-10 md:space-y-0">
     <div>
         <img src="../Assets/logo.png" alt="logo" class="h-12">
     </div>
     <div>
         <h5 class="font-medium">Quick Links</h5>
         <div class="font-extralight flex flex-col">
-            <a href="">Home</a>
-            <a href="">Car Listing</a>
-            <a href="">About Us</a>
-            <a href="">Contact Us</a>
+            <a href="<?php echo $path . "/index.php"; ?>">Home</a>
+            <a href="<?php echo $path . "/Visitor/car_listing.php"; ?>">Car Listing</a>
+            <a href="<?php echo $path . "/Visitor/about_us.php"; ?>">About Us</a>
+            <a href="<?php echo $path . "/Visitor/contact_us.php"; ?>">Contact Us</a>
         </div>
     </div>
     <div>

@@ -27,6 +27,7 @@
 </head>
 
 <body>
+    <?php $path = "http://" . $_SERVER['HTTP_HOST']; ?>
 
     <!-- Header -->
     <div
@@ -43,10 +44,10 @@
         </div>
         <div class="hidden flex-col md:flex md:flex-row items-center space-y-1 md:space-y-0 md:space-x-8 md:mr-5 text-sm md:text-base font-light px-4"
             id="toggleMenus">
-            <a href="../Visitor/index.php" class="hover:text-[#EDC549] block md:inline">Home</a>
-            <a href="../Visitor/car_listing.php" class="hover:text-[#EDC549] block md:inline">Car Listing</a>
-            <a href="../Visitor/about_us.php" class="hover:text-[#EDC549] block md:inline">About Us</a>
-            <a href="../Visitor/contact_us.php" class="hover:text-[#EDC549] block md:inline">Contact Us</a>
-            <a href="../Visitor/login.php" class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block">Sign Up</a>
+            <a href="<?php echo $path . '/index.php' ?>" class="hover:text-[#EDC549] block md:inline">Home</a>
+            <a href="<?php echo $path . '/Visitor/car_listing.php' ?>" class="hover:text-[#EDC549] block md:inline">Car Listing</a>
+            <a href="<?php echo $path . '/Visitor/about_us.php' ?>" class="hover:text-[#EDC549] block md:inline">About Us</a>
+            <a href="<?php echo $path . '/Visitor/contact_us.php' ?>" class="hover:text-[#EDC549] block md:inline">Contact Us</a>
+            <a href="<?php echo $path . '/Visitor/login.php' ?>" class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block">Sign Up</a>
         </div>
     </div>

@@ -13,6 +13,8 @@ $vehicleResArr = mysqli_fetch_assoc($vehicleRes);
 
 $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
 
+
+
 ?>
 
 <div class="w-full my-20">
@@ -103,12 +105,12 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
 
 <div class="w-full h-200 md:h-fit bg-cover flex flex-col justify-center items-center text-white mt-30 py-10 bg-no-repeat bg-scroll"
     style="background-image:url('../Assets/contact_form_bg.png')">
-    <h4 class="text-2xl md:text-[45px] font-semibold mb-2 text-center">Book This Car Now</h4>
+    <h4 class="text-2xl md:text-[45px] font-semibold mb-2 text-center my-20">Book This Car Now</h4>
     <div class="w-80 md:w-4/5 mx-auto md:mb-5">
-        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) . '?id=' . $vehicleID; ?>" name="bookVehicle" id="bookVehicle" method="post" class="space-y-5">
-        <input type="hidden" name="vehicle_id" value="<?php echo $vehicleID; ?>">    
-        <div>
-                <input type="text"
+        <form name="bookVehicle" id="bookVehicle" method="post" class="space-y-5">
+            <input type="hidden" name="vehicle_id" id="vehicle_id" value="<?php echo $vehicleID; ?>">
+            <div>
+                <input type="text" id="pickup_date"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="pickup_date" placeholder="Select Pickup Date" onfocus="(this.type)='date'">
                 <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
@@ -119,7 +121,7 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
             </div>
 
             <div>
-                <input type="text"
+                <input type="text" id="return_date"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="return_date" placeholder="Select Return Date" onfocus="(this.type)='date'">
                 <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
@@ -132,7 +134,7 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
             <div>
                 <select
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto appearance-none"
-                    name="pickup_location">
+                    name="pickup_location" id="pickup_location">
                     <option value="">Select Pickup Location</option>
                     <?php
                     foreach ($availableLoc as $val) { ?>
@@ -150,7 +152,7 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
             <div>
                 <select
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto appearance-none"
-                    name="is_driver_needed">
+                    name="is_driver_needed" id="is_driver_needed">
                     <option value="">Need a Driver?</option>
                     <option value="Yes">Yes</option>
                     <option value="No">No</option>
@@ -163,7 +165,7 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
             </div>
 
             <div>
-                <textarea
+                <textarea id="additional_notes"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
                     name="additional_notes" rows="5" placeholder="Additional Notes"></textarea>
                 <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
@@ -174,18 +176,13 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
             </div>
 
             <div>
-                <button
+                <button id="confirm_booking"
                     class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
                     Confirm Booking
                 </button>
             </div>
 
-            <div>
-                <?php
-                if (isset($notifyVisitor)) {
-                    echo $notifyVisitor;
-                }
-                ?>
+            <div id="set_message">
             </div>
         </form>
     </div>
@@ -194,3 +191,53 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
 <?php
 require_once "../VisitorLayout/footer.php";
 ?>
+
+<script>
+    // Submit booking information through AJAX
+
+    $(document).ready(() => {
+
+        $("#confirm_booking").on("click", function (e) {
+            e.preventDefault()
+
+            // Get form values
+            var pickup_date = $("#pickup_date").val();
+            var return_date = $("#return_date").val();
+            var pickup_location = $("#pickup_location").val();
+            var is_driver_needed = $("#is_driver_needed").val();
+            var additional_notes = $("#additional_notes").val();
+            var vehicle_id = $("#vehicle_id").val();
+
+            // form validation
+            if (pickup_date == "" || return_date == "" || pickup_location == "" || is_driver_needed == "") {
+                $("#set_message").html("<p class='w-80 md:w-4/5 mx-auto bg-red-500 p-2 rounded-md'>All fields are required</p>").slideDown()
+            } else {
+                $.ajax({
+                    url: "process_ajax.php",
+                    type: "POST",
+                    dataType: "json", //response type
+                    data: {
+                        pickup_date: pickup_date,
+                        return_date: return_date,
+                        pickup_location: pickup_location,
+                        is_driver_needed: is_driver_needed,
+                        additional_notes: additional_notes,
+                        vehicle_id: vehicle_id,
+                        submit_mode: "confirm_booking"
+                    },
+                    success: function (res) {
+                        if (res.query_result == 1) {
+                            $("#set_message").html("<p class='w-80 md:w-4/5 mx-auto bg-green-500 p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> Booking Confirmed</p>").slideDown()
+
+                            // reset form fields
+                            $("#bookVehicle").trigger("reset")
+                        } else {
+                            $("#set_message").html("<p class='w-80 md:w-4/5 mx-auto bg-yellow-500 p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> Something went wrong. Please try again later.</p>").slideDown()
+                        }
+                    }
+                })
+            }
+
+        })
+    })
+</script>

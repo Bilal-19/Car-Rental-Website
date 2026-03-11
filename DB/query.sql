@@ -62,6 +62,21 @@ CREATE TABLE vehicle_images(
     vehicle_id INT NOT NULL,
     FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE
 )
+
+CREATE TABLE vehicle_booking(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pickup_date DATE NOT NULL,
+    return_date DATE NOT NULL,
+    pickup_location VARCHAR(100),
+    need_driver ENUM('Yes','No'),
+    additional_notes VARCHAR(200) NULL,
+    user_id INT NOT NULL,
+    vehicle_id INT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (vehicle_id) REFERENCES vehicles(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+
 -- Insert Query
 INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) VALUES('Test User', 'test@gmail.com', '0300-0078987','test subject','test message');
 

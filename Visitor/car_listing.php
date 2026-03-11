@@ -62,13 +62,13 @@ $countRows = mysqli_num_rows($allVehiclesRes);
         <div
             class="w-80 md:w-4/5 mx-auto bg-white px-2 py-2 rounded-xl my-10 md:space-x-3 font-extralight flex flex-col md:flex-row justify-around md:mr-5">
             <input type="text" placeholder="Search by brand/model" class="focus:outline-none focus:border-b-1"
-                name="brand_model" value="<?php if (!empty($vehicleBrand))
+                name="brand_model" id="brand_model" value="<?php if (!empty($vehicleBrand))
                     echo $vehicleBrand; ?>">
             <span class="hidden md:visible">|</span>
             <select name="price_range" id="" class="focus:outline-none">
                 <option value="" selected>Price Range</option>
-                <option value="asc_order" <?php echo (isset($_GET['price_range']) && $_GET['price_range'] == 'asc_order' ) ? 'selected' : '' ?>>Low to High</option>
-                <option value="desc_order" <?php echo (isset($_GET['price_range']) && $_GET['price_range'] == 'desc_order') ? 'selected' : '' ?> >High to Low</option>
+                <option value="asc_order" <?php echo (isset($_GET['price_range']) && $_GET['price_range'] == 'asc_order') ? 'selected' : '' ?>>Low to High</option>
+                <option value="desc_order" <?php echo (isset($_GET['price_range']) && $_GET['price_range'] == 'desc_order') ? 'selected' : '' ?>>High to Low</option>
             </select>
             <span class="hidden md:visible">|</span>
             <select name="car_type" id="" class="focus:outline-none">
@@ -82,8 +82,11 @@ $countRows = mysqli_num_rows($allVehiclesRes);
         </div>
 
         <div class="flex flex-row space-x-5">
-            <button class="bg-[#7B5D01] text-white px-10 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-search"></i>Search</button>
-            <a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_listing.php'; ?>" class="bg-[#01377b] text-white px-5 py-2 rounded-xl flex items-center gap-2"><i class="fas fa-times"></i> Reset</a>
+            <button class="bg-[#7B5D01] text-white px-10 py-2 rounded-xl flex items-center gap-2"><i
+                    class="fas fa-search"></i>Search</button>
+            <a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_listing.php'; ?>"
+                class="bg-[#01377b] text-white px-5 py-2 rounded-xl flex items-center gap-2"><i
+                    class="fas fa-times"></i> Reset</a>
         </div>
 
     </form>
@@ -94,7 +97,7 @@ $countRows = mysqli_num_rows($allVehiclesRes);
     <p class="text-md md:text-2xl font-light">Featured Luxury Cars</p>
 </div>
 
-<div class="w-full grid grid-cols-1 md:grid-cols-3 gap-5 space-y-5 md:space-y-0 mb-20 md:mb-100">
+<div class="w-full grid grid-cols-1 md:grid-cols-3 gap-5 space-y-5 md:space-y-0 mb-20 md:mb-100" id="fetchVehicle">
     <?php
     while ($row = mysqli_fetch_assoc($allVehiclesRes)) { ?>
         <div class="relative">
@@ -123,3 +126,25 @@ $countRows = mysqli_num_rows($allVehiclesRes);
 <?php
 require_once "../VisitorLayout/footer.php";
 ?>
+
+<script>
+    // live searching using brand / model
+    $(document).ready(function () {
+
+        $("#brand_model").on("keyup", function () {
+            var search_term = $(this).val()
+
+            $.ajax({
+                url: "process_ajax.php",
+                type: "GET",
+                data: {
+                    search_term: search_term,
+                    submit_mode: "live_search"
+                },
+                success: function (res) {
+                    $("#fetchVehicle").html(res)
+                }
+            })
+        })
+    })
+</script>

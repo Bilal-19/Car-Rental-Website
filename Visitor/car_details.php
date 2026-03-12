@@ -228,12 +228,11 @@ require_once "../VisitorLayout/footer.php";
                     success: function (res) {
                         if (res.query_result == 1) {
                             $("#set_message").html("<p class='w-80 md:w-4/5 mx-auto bg-green-500 p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> Booking Confirmed</p>").slideDown()
-
-                            // reset form fields
-                            $("#bookVehicle").trigger("reset")
                         } else {
-                            $("#set_message").html("<p class='w-80 md:w-4/5 mx-auto bg-yellow-500 p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> Something went wrong. Please try again later.</p>").slideDown()
+                            $("#set_message").html("<p class='w-80 md:w-4/5 mx-auto bg-yellow-500 p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> " + res.query_msg + "</p>").slideDown()
                         }
+                        // reset form fields
+                        $("#bookVehicle").trigger("reset")
                     }
                 })
             }

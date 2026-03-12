@@ -18,14 +18,34 @@ if ($submit_mode == "confirm_booking") {
 
     $instBookQry = "INSERT INTO vehicle_booking (pickup_date, return_date, pickup_location,  need_driver, additional_notes, user_id, vehicle_id)
                     VALUES ( '$pickup_date', '$return_date', '$pickup_location', '$is_driver_needed', '$additional_notes', 1, $vehicle_id)";
+    // echo $instBookQry;
 
-    $instBookRes = mysqli_query($isConnect, $instBookQry);
+    // Check for duplicate booking.
+    // Criteria: Pickup date, return date, & vehicle id
 
-    if ($instBookRes == 1) {
-        $arr['query_result'] = 1;
+    $dupQry = "SELECT COUNT(*) as 'total' FROM vehicle_booking 
+               WHERE 
+               vehicle_id = $vehicle_id AND
+               pickup_date <= '$pickup_date' AND return_date <= '$return_date'";
+    
+    // echo $dupQry; die();
+    $dupRes = mysqli_query($isConnect, $dupQry);
+    $dupResArr = mysqli_fetch_assoc($dupRes);
+
+    if ($dupResArr['total'] == 0) {
+        $instBookRes = mysqli_query($isConnect, $instBookQry);
+        if ($instBookRes == 1) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'Booking Confirmed';
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'Something went wrong.';
+        }
     } else {
         $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Vehicle already booked for the selected dates.';
     }
+
     echo json_encode($arr);
 }
 

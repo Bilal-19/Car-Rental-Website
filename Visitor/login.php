@@ -36,6 +36,8 @@ require_once "../DB/db_connection.php";
 
 
 // 2. Get Form Values
+
+/*
 if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
     $user_name = $_POST["full_name"];
     $email_address = $_POST["email_address"];
@@ -86,15 +88,16 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $notifyVisitor = showNotification("error", "Please fill all the requried fields");
     }
 }
-
+*/
 ?>
 
 <!-- Contact Form -->
 <div class="w-full h-200 md:h-152 bg-cover flex flex-col justify-center items-center text-white py-100 bg-no-repeat bg-scroll"
     style="background-image:url('../Assets/auth_bg.png')">
-    <h4 class="text-2xl md:text-[40px] mb-2 text-center font-light">Create Your Luxury Drive Account With <span class="font-semibold">Us</span></h4>
+    <h4 class="text-2xl md:text-[40px] mb-2 text-center font-light">Create Your Luxury Drive Account With <span
+            class="font-semibold">Us</span></h4>
     <div class="w-80 md:w-4/5 mx-auto md:mb-5">
-        <form action="<?php echo htmlentities($_SERVER['PHP_SELF']) ?>" method="post" class="space-y-5">
+        <form class="space-y-5" id="signup_form">
             <div>
                 <input type="text"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
@@ -140,18 +143,13 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
             </div>
 
             <div>
-                <button
+                <button id="create_account"
                     class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
                     Create Account
                 </button>
             </div>
 
-            <div>
-                <?php
-                if (isset($notifyVisitor)) {
-                    echo $notifyVisitor;
-                }
-                ?>
+            <div id="create_account_msg">
             </div>
         </form>
     </div>
@@ -190,3 +188,34 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php
 require_once "../VisitorLayout/footer.php";
 ?>
+
+<script>
+    $(document).ready(function () {
+        $("#signup_form").submit(function (e) {
+            e.preventDefault() //prevent page reload
+
+            // Get form input Values
+            var formData = $("#signup_form").serialize() + "&submit_mode=create_account"; //passing all the data at once
+
+            $.ajax({
+                url: "process_ajax.php",
+                type: "POST",
+                dataType: "json", //response type
+                data: formData,
+
+                success: function (res) {
+                    console.log(res)
+
+                    if (res.query_result == 1) {
+                        $("#create_account_msg").html("<p class='w-80 md:w-4/5 mx-auto bg-green-500 p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> " + res.query_msg + "</p>").slideDown()
+                        $("#signup_form").trigger("reset") // reset form fields
+                    } else {
+                        $("#create_account_msg").html("<p class='w-80 md:w-4/5 mx-auto bg-yellow-500 p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> " + res.query_msg + "</p>").slideDown()
+                    }
+                    
+                }
+            })
+        })
+    })
+
+</script>

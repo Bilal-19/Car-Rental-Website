@@ -27,7 +27,7 @@ if ($submit_mode == "confirm_booking") {
                WHERE 
                vehicle_id = $vehicle_id AND
                pickup_date <= '$pickup_date' AND return_date <= '$return_date'";
-    
+
     // echo $dupQry; die();
     $dupRes = mysqli_query($isConnect, $dupQry);
     $dupResArr = mysqli_fetch_assoc($dupRes);
@@ -83,6 +83,50 @@ if ($submit_mode == "live_search") {
 
         echo $output;
     }
+}
+
+
+
+
+if ($submit_mode == "create_account") {
+    $arr = array();
+
+    // Create user account here
+
+    $full_name = $_REQUEST['full_name'];
+    $email_address = $_REQUEST['email_address'];
+    $phone = $_REQUEST['phone'];
+    $password = md5($_REQUEST['password']); //encrypt user password
+
+    if ($full_name == "" || $email_address == "" || $phone == "" || $_REQUEST['password'] == "") {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Please fill all the required fields.';
+    } else {
+        // Check for email with this user already exist or not
+        $dupEmailQry = "SELECT COUNT(*) as total FROM users WHERE email_address = '{$email_address}'";
+        $dupEmailRes = mysqli_query($isConnect, $dupEmailQry);
+        $dupEmailResArr = mysqli_fetch_assoc($dupEmailRes);
+
+        $createUserQry = "INSERT INTO users (full_name, email_address, phone, user_pswd) VALUES ('$full_name', '$email_address', '$phone', '$password')";
+
+        if ($dupEmailResArr['total'] == 0) {
+            // Create user
+            $createUserRes = mysqli_query($isConnect, $createUserQry);
+
+            if ($createUserRes == 1) {
+                $arr['query_result'] = 1;
+                $arr['query_msg'] = 'Account Created Successfully';
+            } else {
+                $arr['query_result'] = 0;
+                $arr['query_msg'] = 'Something went wrong. Please try again later.';
+            }
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'User with this email already exist.';
+        }
+    }
+
+    echo json_encode($arr);
 }
 
 ?>

@@ -16,7 +16,7 @@
     <title>
         <?php
         echo isset($titleTag) ? $titleTag : "Default Title"
-        ?>
+            ?>
     </title>
     <style>
         body {
@@ -26,11 +26,27 @@
     </style>
 
     <!-- jQuery reference -->
-     <script src="https://code.jquery.com/jquery-4.0.0.min.js" integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <?php $path = "http://" . $_SERVER['HTTP_HOST']; ?>
+    <?php
+    $path = "http://" . $_SERVER['HTTP_HOST'];
+
+    // Dynamic login / signup button based on session
+
+    session_start();
+
+    if (isset($_SESSION['username'])) {
+        $text = "Log Out";
+        $auth_path = $path . "/index.php";
+    
+    } else {
+        $auth_path = $path . "/Visitor/signup.php";
+        $text = "Sign Up";
+    }
+    ?>
 
     <!-- Header -->
     <div
@@ -40,7 +56,9 @@
                 <img src="../Assets/logo.png" alt="logo" class="h-12 ml-3">
             </div>
             <div>
-                <button class="block md:hidden border border-2 border-[#EDC549] rounded-md px-3 py-1 hover:cursor-pointer mr-3" id="toggleBtn">
+                <button
+                    class="block md:hidden border border-2 border-[#EDC549] rounded-md px-3 py-1 hover:cursor-pointer mr-3"
+                    id="toggleBtn">
                     <i class="fa-solid fa-bars"></i>
                 </button>
             </div>
@@ -48,9 +66,13 @@
         <div class="hidden flex-col md:flex md:flex-row items-center space-y-1 md:space-y-0 md:space-x-8 md:mr-5 text-sm md:text-base font-light px-4"
             id="toggleMenus">
             <a href="<?php echo $path . '/index.php' ?>" class="hover:text-[#EDC549] block md:inline">Home</a>
-            <a href="<?php echo $path . '/Visitor/car_listing.php' ?>" class="hover:text-[#EDC549] block md:inline">Car Listing</a>
-            <a href="<?php echo $path . '/Visitor/about_us.php' ?>" class="hover:text-[#EDC549] block md:inline">About Us</a>
-            <a href="<?php echo $path . '/Visitor/contact_us.php' ?>" class="hover:text-[#EDC549] block md:inline">Contact Us</a>
-            <a href="<?php echo $path . '/Visitor/login.php' ?>" class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block">Sign Up</a>
+            <a href="<?php echo $path . '/Visitor/car_listing.php' ?>" class="hover:text-[#EDC549] block md:inline">Car
+                Listing</a>
+            <a href="<?php echo $path . '/Visitor/about_us.php' ?>" class="hover:text-[#EDC549] block md:inline">About
+                Us</a>
+            <a href="<?php echo $path . '/Visitor/contact_us.php' ?>"
+                class="hover:text-[#EDC549] block md:inline">Contact Us</a>
+            <a href="<?php echo $auth_path; ?>"
+                class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block"><?php echo $text; ?></a>
         </div>
     </div>

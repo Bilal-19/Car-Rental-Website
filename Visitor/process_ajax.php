@@ -139,4 +139,40 @@ if ($submit_mode == "create_account") {
     echo json_encode($arr);
 }
 
+
+if ($submit_mode == "login") {
+    $arr = array();
+
+    // To prevent sql injection, use mysqli_real_escape_string
+    $email_address = mysqli_real_escape_string($isConnect, $_POST['email_address']);
+    $password = mysqli_real_escape_string($isConnect, $_POST['password']);
+
+    // hashed_password
+    // hashed_pswd = password_hash($password, PASSWORD_DEFAULT);
+
+    // Find stored password from DB
+    $storePswdQry = "SELECT * FROM users WHERE email_address = '{$email_address}'";
+    $storePswdRes = mysqli_query($isConnect, $storePswdQry);
+    $storePswdResArr = mysqli_fetch_assoc($storePswdRes);
+
+    $stored_password = $storePswdResArr['user_pswd'];
+
+    // echo $hashed_pswd . "<br>" . $stored_password; die();
+
+    if (password_verify($password, $stored_password)) {
+        session_start();
+
+        $_SESSION['username'] = $storePswdResArr['full_name'];
+        $_SESSION['useremail'] = $storePswdResArr['email_address'];
+
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'Logged In Successfully';
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Incorrect Email or Password';
+    }
+
+    echo json_encode($arr);
+}
+
 ?>

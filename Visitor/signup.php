@@ -94,10 +94,21 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
 <!-- Contact Form -->
 <div class="w-full h-200 md:h-152 bg-cover flex flex-col justify-center items-center text-white py-100 bg-no-repeat bg-scroll"
     style="background-image:url('../Assets/auth_bg.png')">
-    <h4 class="text-2xl md:text-[40px] mb-5 text-center font-semibold">Welcome Back</h4>
+    <h4 class="text-2xl md:text-[40px] mb-2 text-center font-light">Create Your Luxury Drive Account With <span
+            class="font-semibold">Us</span></h4>
     <div class="w-80 md:w-4/5 mx-auto md:mb-5">
-        <form class="space-y-5" id="login_form">
-            
+        <form class="space-y-5" id="signup_form">
+            <div>
+                <input type="text"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
+                    name="full_name" placeholder="Full Name">
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                    <?php if (!empty($error["nameErr"])) {
+                        echo $error["nameErr"];
+                    } ?>
+                </span>
+            </div>
+
             <div>
                 <input type="email"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
@@ -109,7 +120,17 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
                 </span>
             </div>
 
-            
+            <div>
+                <input type="number"
+                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
+                    name="phone" placeholder="Phone / Whatsapp">
+                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                    <?php if (!empty($error["phoneErr"])) {
+                        echo $error["phoneErr"];
+                    } ?>
+                </span>
+            </div>
+
             <div>
                 <input type="password"
                     class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
@@ -124,7 +145,7 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
             <div>
                 <button id="create_account"
                     class="bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
-                    Login
+                    Create Account
                 </button>
             </div>
 
@@ -133,8 +154,8 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
             <div>
-                <p class="w-80 md:w-4/5 mx-auto block my-5">
-                    Don't have an account? <a href="<?php echo "http://" . $_SERVER['HTTP_HOST'] . '/Visitor/signup.php'; ?>" class="text-[#EDC549] underline">Sign Up</a>
+                <p class="py-3 w-80 md:w-4/5 mx-auto block my-5">
+                    Have an account? <a href="<?php echo "http://" . $_SERVER['HTTP_HOST'] . '/Visitor/login.php'; ?>" class="text-[#EDC549] underline">Sign In</a>
                 </p>
             </div>
         </form>
@@ -177,11 +198,11 @@ require_once "../VisitorLayout/footer.php";
 
 <script>
     $(document).ready(function () {
-        $("#login_form").submit(function (e) {
+        $("#signup_form").submit(function (e) {
             e.preventDefault() //prevent page reload
 
             // Get form input Values
-            var formData = $("#login_form").serialize() + "&submit_mode=login"; //passing all the data at once
+            var formData = $("#signup_form").serialize() + "&submit_mode=create_account"; //passing all the data at once
 
             $.ajax({
                 url: "process_ajax.php",
@@ -190,17 +211,14 @@ require_once "../VisitorLayout/footer.php";
                 data: formData,
 
                 success: function (res) {
-                    
                     console.log(res)
 
                     if (res.query_result == 1) {
                         $("#create_account_msg").html("<p class='w-80 md:w-4/5 mx-auto bg-green-500 p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> " + res.query_msg + "</p>").slideDown()
-                        window.location.href = '../index.php';
-                        // $("#login_form").trigger("reset") // reset form fields
+                        $("#signup_form").trigger("reset") // reset form fields
                     } else {
                         $("#create_account_msg").html("<p class='w-80 md:w-4/5 mx-auto bg-yellow-500 p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> " + res.query_msg + "</p>").slideDown()
                     }
-                    
 
                 }
             })

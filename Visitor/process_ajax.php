@@ -173,6 +173,36 @@ if ($submit_mode == "login") {
     }
 
     echo json_encode($arr);
+
+
+} else if ($submit_mode == "submit_enquiry") {
+
+    $arr = array();
+
+    // Fetch form values
+    $full_name = mysqli_real_escape_string($isConnect, $_POST['full_name']);
+    $email_address = mysqli_real_escape_string($isConnect, $_POST['email_address']);
+    $phone = mysqli_real_escape_string($isConnect, $_POST['phone']);
+    $subject = mysqli_real_escape_string($isConnect, $_POST['subject']);
+    $message = mysqli_real_escape_string($isConnect, $_POST['message']);
+
+    if (empty($full_name) || empty($email_address) || empty($phone) || empty($subject) || empty($message)) {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Please fill all the fields.';
+    } else {
+        $enquiryQry = "INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) 
+                        VALUES('$full_name', '$email_address', '$phone','$subject','$message')";
+        $enquiryRes = mysqli_query($isConnect, $enquiryQry);
+
+        if ($enquiryRes) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'Enquiry submitted.';
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'Something went wrong. Please try again later.';
+        }
+    }
+    echo json_encode($arr); //Convert object / array into JSON format
 }
 
 ?>

@@ -34,7 +34,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-100 min-h-dvh flex flex-col">
     <!-- Topbar -->
     <header class="bg-[#7B5D01] text-white py-4 px-6 flex justify-between items-center">
         <h1 class="text-lg md:text-2xl font-semibold">Car Rental CRM</h1>

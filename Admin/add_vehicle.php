@@ -21,7 +21,7 @@ include("../AdminLayout/sidebar.php");
             <input type="hidden" name="add_new_vehicle" value="Yes">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="flex flex-col">
-                    <label for="" class="font-medium">Make:</label>
+                    <label for="car_maker" class="font-medium">Make:</label>
                     <select name="car_maker" id="car_maker"
                         class="p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Maker</option>
@@ -32,7 +32,7 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Model:</label>
+                    <label for="car_model">Model:</label>
                     <select name="car_model" id="car_model"
                         class="p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
 
@@ -40,13 +40,13 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Engine Capacity:</label>
+                    <label for="car_engine">Engine Capacity:</label>
                     <input type="text" name="car_engine" id="car_engine" placeholder="4000+ cc"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Category:</label>
+                    <label for="car_category">Category:</label>
                     <select name="car_category" id="car_category"
                         class="p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Category</option>
@@ -58,7 +58,7 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Transmission:</label>
+                    <label for="car_transmission">Transmission:</label>
                     <select name="car_transmission" id="car_transmission"
                         class="p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Transmission</option>
@@ -71,25 +71,25 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Trim:</label>
+                    <label for="car_trim">Trim:</label>
                     <input type="text" name="car_trim" id="car_trim" placeholder="G 63 AMG"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Horsepower:</label>
+                    <label for="car_hp">Horsepower:</label>
                     <input type="text" name="car_hp" id="car_hp" placeholder="500 - 599 HP"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Doors:</label>
+                    <label for="car_doors">Doors:</label>
                     <input type="text" name="car_doors" id="car_doors" placeholder="4 door"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Fuel Type:</label>
+                    <label for="car_fuel_type">Fuel Type:</label>
                     <select name="car_fuel_type" id="car_fuel_type"
                         class="p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Fuel Type</option>
@@ -98,25 +98,25 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">No of Cylinders:</label>
+                    <label for="car_cylinders">No of Cylinders:</label>
                     <input type="text" name="car_cylinders" id="car_cylinders" placeholder="8"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Interior Color:</label>
+                    <label for="interior_color">Interior Color:</label>
                     <input type="text" name="interior_color" id="interior_color" placeholder="Red"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Exterior Color:</label>
+                    <label for="exterior_color">Exterior Color:</label>
                     <input type="text" name="exterior_color" id="exterior_color" placeholder="Silver"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Drive Type:</label>
+                    <label for="car_drive_type">Drive Type:</label>
                     <select name="car_drive_type" id="car_drive_type"
                         class="p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Fuel Type</option>
@@ -127,16 +127,43 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="">Seating Capacity:</label>
+                    <label for="seating_capacity">Seating Capacity:</label>
                     <input type="text" name="seating_capacity" id="seating_capacity" placeholder="2"
+                        class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="per_day_cost">Per Day Cost:</label>
+                    <input type="text" name="per_day_cost" id="per_day_cost" placeholder="250 AED"
+                        class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
+                </div>
+
+                <div class="flex flex-col">
+                    <label for="registration_number">Registration Number:</label>
+                    <input type="text" name="registration_number" id="registration_number" placeholder="PK-753"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
 
                 <div class="flex flex-col md:col-span-2">
-                    <label for="">Thumbnail Image:</label>
-                    <input type="file" name="preview_img" id="preview_img" placeholder="Silver"
-                        class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
+                    <label for="preview_img">Thumbnail Image:</label>
+                    <input type="file" name="preview_img" id="preview_img" placeholder="Silver" class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
+                        file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
+                        hover:file:cursor-pointer hover:file:bg-blue-50
+                        hover:file:text-blue-700">
+                </div>
+
+                <div class="flex flex-col md:col-span-2">
+
+                    <label for="multiple_files">Upload multiple
+                        files</label>
+                    <input
+                        class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
+                        file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
+                        hover:file:cursor-pointer hover:file:bg-blue-50
+                        hover:file:text-blue-700"
+                        id="multiple_files" type="file" multiple>
+
                 </div>
 
 

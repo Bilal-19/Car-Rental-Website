@@ -17,8 +17,8 @@ include("../AdminLayout/sidebar.php");
     <div class="w-full mt-5 bg-white rounded p-6">
         <h2 class="text-xl font-semibold mb-5">Add New Vehicle</h2>
 
-        <form action="" class="text-gray-600" id="add_vehicle" name="add_vehicle" method="post">
-            <input type="hidden" name="add_new_vehicle" value="Yes">
+        <form class="text-gray-600" id="add_vehicle" name="add_vehicle">
+            <!-- <input type="hidden" name="add_new_vehicle" value="Yes"> -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="flex flex-col">
                     <label for="car_maker" class="font-medium">Make:</label>
@@ -157,12 +157,10 @@ include("../AdminLayout/sidebar.php");
 
                     <label for="multiple_files">Upload multiple
                         files</label>
-                    <input
-                        class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
+                    <input class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
                         file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
                         hover:file:cursor-pointer hover:file:bg-blue-50
-                        hover:file:text-blue-700"
-                        id="multiple_files" type="file" multiple>
+                        hover:file:text-blue-700" id="multiple_files" type="file" multiple>
 
                 </div>
 
@@ -181,7 +179,6 @@ include("../AdminLayout/sidebar.php");
 
 <?php include("../AdminLayout/footer.php"); ?>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
         $("#car_maker").on("change", function () {
@@ -200,16 +197,24 @@ include("../AdminLayout/sidebar.php");
             } else if (carManufacturer === "BMW") {
                 bmwModels.forEach((val, index) => { carModel.append(`<option>${val}</option>`); })
             }
+        });
 
+        // Add vehicle form submission
+        $("#add_vehicle").submit(function (e) {
+            //prevent default form submission behavior    
+            e.preventDefault()
+
+            var form_data = $("#add_vehicle").serialize() + "&submit_mode=add_vehicle"
+
+            alert(form_data)
+
+            $.ajax({
+                url: "admin_process_ajax.php",
+                data: form_data,
+                type: "POST",
+                dataType: "json"
+            })
         })
     })
 
 </script>
-
-<?php
-if ((isset($_POST['add_new_vehicle'])) && $_POST['add_new_vehicle'] == 'Yes') {
-    // Get all the values here and store it into db
-
-    print_r($_POST);
-}
-?>

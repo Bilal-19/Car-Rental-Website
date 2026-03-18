@@ -17,7 +17,7 @@ include("../AdminLayout/sidebar.php");
     <div class="w-full mt-5 bg-white rounded p-6">
         <h2 class="text-xl font-semibold mb-5">Add New Vehicle</h2>
 
-        <form class="text-gray-600" id="add_vehicle" name="add_vehicle">
+        <form class="text-gray-600" id="add_vehicle" name="add_vehicle" enctype="multipart/form-data">
             <!-- <input type="hidden" name="add_new_vehicle" value="Yes"> -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div class="flex flex-col">
@@ -147,7 +147,7 @@ include("../AdminLayout/sidebar.php");
 
                 <div class="flex flex-col md:col-span-2">
                     <label for="preview_img">Thumbnail Image:</label>
-                    <input type="file" name="preview_img" id="preview_img" placeholder="Silver" class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
+                    <input type="file" name="preview_img" id="preview_img" class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
                         file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
                         hover:file:cursor-pointer hover:file:bg-blue-50
                         hover:file:text-blue-700">
@@ -160,7 +160,7 @@ include("../AdminLayout/sidebar.php");
                     <input class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
                         file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
                         hover:file:cursor-pointer hover:file:bg-blue-50
-                        hover:file:text-blue-700" id="multiple_files" type="file" multiple>
+                        hover:file:text-blue-700" name="vehicle_imgs" id="vehicle_imgs" id="multiple_files" type="file" multiple>
 
                 </div>
 
@@ -191,28 +191,31 @@ include("../AdminLayout/sidebar.php");
 
             carModel.html('<option>Select Model</option>')
             if (carManufacturer === "Toyota") {
-                toyotaModels.forEach((val, index) => { carModel.append(`<option>${val}</option>`); })
+                toyotaModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
             } else if (carManufacturer === "Mercedes-Benz") {
-                mercedesModels.forEach((val, index) => { carModel.append(`<option>${val}</option>`); })
+                mercedesModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
             } else if (carManufacturer === "BMW") {
-                bmwModels.forEach((val, index) => { carModel.append(`<option>${val}</option>`); })
+                bmwModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
             }
         });
 
         // Add vehicle form submission
+        // serialize() does not include file inputs
+        // processData: false (send data as it is, do not convert it into query string)
+        // contentType: false (Let the browser automatically set the correct Content-Type (multipart/form-data with boundary))
         $("#add_vehicle").submit(function (e) {
             //prevent default form submission behavior    
             e.preventDefault()
-
-            var form_data = $("#add_vehicle").serialize() + "&submit_mode=add_vehicle"
-
-            alert(form_data)
-
+            var form_data = new FormData(document.getElementById("add_vehicle"))
+            form_data.append("submit_mode", "add_vehicle")
+            
             $.ajax({
                 url: "admin_process_ajax.php",
                 data: form_data,
                 type: "POST",
-                dataType: "json"
+                dataType: "json",
+                contentType: false,
+                processData: false
             })
         })
     })

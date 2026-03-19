@@ -160,7 +160,7 @@ include("../AdminLayout/sidebar.php");
                     <input class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
                         file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
                         hover:file:cursor-pointer hover:file:bg-blue-50
-                        hover:file:text-blue-700" name="vehicle_imgs" id="vehicle_imgs" id="multiple_files" type="file" multiple>
+                        hover:file:text-blue-700" name="vehicle_imgs[]" id="vehicle_imgs" id="multiple_files" type="file" multiple>
 
                 </div>
 

@@ -7,17 +7,7 @@ $submit_mode = $_REQUEST['submit_mode'];
 
 
 if ($submit_mode == "add_vehicle") {
-
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-
-
-    echo "<pre>";
-    print_r($_FILES);
-    echo "</pre>";
-
-
+    $arr = array();
 
     // Get Values and Implement SQL Injection
 
@@ -37,38 +27,51 @@ if ($submit_mode == "add_vehicle") {
     $seating_capacity = mysqli_real_escape_string($isConnect, $_POST['seating_capacity']);
     $per_day_cost = mysqli_real_escape_string($isConnect, $_POST['per_day_cost']);
     $registration_number = mysqli_real_escape_string($isConnect, $_POST['registration_number']);
-
-
-
-
-    $filename = uploadImage('preview_img');
-    // $filename = uploadImage('vehicle_imgs[]');
-    /*
-    foreach ($_FILES['vehicle_imgs'] as $key => $val) {
-        $filename = uploadImage($val);
-    }
-    */
-
-
-
-    // Prepare Insert Query
+    $thumbnail_timestamp = uploadImage('preview_img');
 
     $instVehicleQry = "INSERT INTO vehicles 
                        (
                        make, model, engine_capacity, category, transmission, TRIM, horsepower, doors, fuel_type, no_of_cylinders,
-                       interior_color, exterior_color, per_day_cost, drive_type, seating_capacity, registration_number
+                       interior_color, exterior_color, per_day_cost, drive_type, seating_capacity, registration_number,thumbnail_image
                        )
                        VALUES
                        (
                        '$car_maker', '$car_model', '$car_engine', '$car_category', '$car_transmission', '$car_trim', '$car_hp', '$car_doors',
                        '$car_fuel_type', '$car_cylinders', '$interior_color', '$exterior_color', '$per_day_cost', '$car_drive_type',
-                       '$seating_capacity', '$registration_number'
+                       '$seating_capacity', '$registration_number', '$thumbnail_timestamp'
                        )
                        ";
-    echo $instVehicleQry;
-    die();
+    if (mysqli_query($isConnect, $instVehicleQry)) {
+        $arr['query_result'] = 1;
 
-    // Insert records only when all fields are filled
+        $vehicle_foreign_key = mysqli_insert_id($isConnect);
+
+        foreach ($_FILES['vehicle_imgs']['name'] as $key => $val) {
+            // Key: Index(0,1)
+            // Value: cnic_back.jpg
+
+            $file = [
+                'name' => $_FILES['vehicle_imgs']['name'][$key],
+                'type' => $_FILES['vehicle_imgs']['type'][$key],
+                'tmp_name' => $_FILES['vehicle_imgs']['tmp_name'][$key],
+                'error' => $_FILES['vehicle_imgs']['error'][$key],
+                'size' => $_FILES['vehicle_imgs']['size'][$key]
+            ];
+
+            $filename = uploadImage($file);
+
+            if (mysqli_query($isConnect, "INSERT INTO vehicle_images (image_path, vehicle_id) VALUES ('$filename', '$vehicle_foreign_key')")) {
+                $arr['query_result'] = 1;
+            } else {
+                $arr['query_result'] = 0;
+            }
+        }
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
+    }
+
+    echo json_encode($arr);
 }
 
 ?>

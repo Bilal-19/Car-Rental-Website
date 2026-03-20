@@ -97,15 +97,15 @@ $countRows = mysqli_num_rows($allVehiclesRes);
     <p class="text-md md:text-2xl font-light">Featured Luxury Cars</p>
 </div>
 
-<div class="w-full grid grid-cols-1 md:grid-cols-3 gap-5 space-y-5 md:space-y-0 mb-20 md:mb-100" id="fetchVehicle">
+<div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-15 space-y-5 md:space-y-0 mb-20 md:mb-100" id="fetchVehicle">
     <?php
     while ($row = mysqli_fetch_assoc($allVehiclesRes)) { ?>
-        <div class="relative">
-            <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-            <p class="font-medium text-sm ml-12 md:ml-6"><?php echo $row['make'] . " . " . $row['model']; ?></p>
-            <p class="font-light text-sm ml-12 md:ml-6">From <b
+        <div class="relative w-80 mx-auto md:w-full">
+            <img src="<?php echo "../Assets/uploads/" . $row['thumbnail_image']; ?>" alt="Lamborghini" class="mx-auto mb-3 rounded-md w-full h-[300px] object-cover">
+            <p class="font-medium text-sm"><?php echo $row['make'] . " . " . $row['model']; ?></p>
+            <p class="font-light text-sm">From <b
                     class="font-medium"><?php echo "AED " . $row['per_day_cost'] . "/ day"; ?></b></p>
-            <a class="bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15"
+            <a class="text-[#000000] bg-[#7B5D01] hover:bg-[#3b3112] text-white rounded-md text-sm py-1.5 px-4 absolute right-3 md:right-5 bottom-15"
                 target="_blank"
                 href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_details.php?id=' . $row['id']; ?>">
                 View Detail</a>

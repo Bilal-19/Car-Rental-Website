@@ -27,23 +27,47 @@ if ($submit_mode == "add_vehicle") {
     $seating_capacity = mysqli_real_escape_string($isConnect, $_POST['seating_capacity']);
     $per_day_cost = mysqli_real_escape_string($isConnect, $_POST['per_day_cost']);
     $registration_number = mysqli_real_escape_string($isConnect, $_POST['registration_number']);
-    $thumbnail_timestamp = uploadImage('preview_img');
 
-    $instVehicleQry = "INSERT INTO vehicles 
-                       (
-                       make, model, engine_capacity, category, transmission, TRIM, horsepower, doors, fuel_type, no_of_cylinders,
-                       interior_color, exterior_color, per_day_cost, drive_type, seating_capacity, registration_number,thumbnail_image
-                       )
-                       VALUES
-                       (
-                       '$car_maker', '$car_model', '$car_engine', '$car_category', '$car_transmission', '$car_trim', '$car_hp', '$car_doors',
-                       '$car_fuel_type', '$car_cylinders', '$interior_color', '$exterior_color', '$per_day_cost', '$car_drive_type',
-                       '$seating_capacity', '$registration_number', '$thumbnail_timestamp'
-                       )
-                       ";
-    if (mysqli_query($isConnect, $instVehicleQry)) {
-        $arr['query_result'] = 1;
 
+    if ($_FILES['preview_img']['size'] > 0) {
+        $uploaded_image_arr = uploadImage('preview_img');
+
+        if ($uploaded_image_arr['status'] == 1) {
+            $thumbnail_timestamp = $uploaded_image_arr['new_filename'];
+            $isFileUploaded = 1;
+
+            $instVehicleQry = "INSERT INTO vehicles 
+                               (
+                               make, model, engine_capacity, category, transmission, TRIM, horsepower, doors, fuel_type, no_of_cylinders,
+                               interior_color, exterior_color, per_day_cost, drive_type, seating_capacity, registration_number,thumbnail_image
+                               )
+                               VALUES
+                               (
+                               '$car_maker', '$car_model', '$car_engine', '$car_category', '$car_transmission', '$car_trim', '$car_hp', '$car_doors',
+                               '$car_fuel_type', '$car_cylinders', '$interior_color', '$exterior_color', '$per_day_cost', '$car_drive_type',
+                               '$seating_capacity', '$registration_number', '$thumbnail_timestamp'
+                               )
+                               ";
+            // Check if vehicle with same registration number already exist or not
+            if (mysqli_query($isConnect, $instVehicleQry)) {
+                $arr['query_result'] = 1;
+                $arr['query_msg'] = 'New Vehicle Added Successfully.';
+
+            } else {
+                $arr['query_result'] = 0;
+                $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
+            }
+        } else {
+            $isFileUploaded = 0;
+        }
+    }
+    echo json_encode($arr);
+}
+
+
+if ($submit_mode == "upload_vehicle_images") {
+    // Code this part later for uploading multiple images of vehicle
+    /*
         $vehicle_foreign_key = mysqli_insert_id($isConnect);
 
         foreach ($_FILES['vehicle_imgs']['name'] as $key => $val) {
@@ -58,20 +82,24 @@ if ($submit_mode == "add_vehicle") {
                 'size' => $_FILES['vehicle_imgs']['size'][$key]
             ];
 
-            $filename = uploadImage($file);
-
-            if (mysqli_query($isConnect, "INSERT INTO vehicle_images (image_path, vehicle_id) VALUES ('$filename', '$vehicle_foreign_key')")) {
-                $arr['query_result'] = 1;
+            if ($file['size'] > 0) {
+                $filename = uploadImage($file);
+                if (mysqli_query($isConnect, "INSERT INTO vehicle_images (image_path, vehicle_id) VALUES ('$filename', '$vehicle_foreign_key')")) {
+                    $isFileUploaded = 1;
+                } else {
+                }
             } else {
-                $arr['query_result'] = 0;
+                $isFileUploaded = 0;
             }
         }
-    } else {
-        $arr['query_result'] = 0;
-        $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
-    }
 
-    echo json_encode($arr);
+        if ($isFileUploaded == 1) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'New Vehicle Added Successfully.';
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'Failed to Add New Vehicle.';
+        }
+        */
 }
-
 ?>

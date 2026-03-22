@@ -2,6 +2,7 @@
 function uploadImage($file_input)
 {
 
+    $upload_res = array();
     // Check if uploaded file is single / multiple
     if (is_string($file_input)) {
         $file = $_FILES[$file_input];
@@ -17,16 +18,13 @@ function uploadImage($file_input)
 
     $img_size = getimagesize($file['tmp_name']);
     if ($img_size !== false) {
-        echo "Uploaded file is an image" . $img_size['mime'];
         $isUploaded = 1;
     } else {
-        echo "Uploaded file is not an image";
         $isUploaded = 0;
     }
 
     // Check if file already exist
     if (file_exists($target_dir . basename($file['name']))) {
-        echo "Uploaded file already exist";
         $isUploaded = 0;
     } else {
         $isUploaded = 1;
@@ -56,12 +54,16 @@ function uploadImage($file_input)
 
     if ($isUploaded == 1) {
         if (move_uploaded_file($file['tmp_name'], $target_file)) {
-            echo "File Uploaded Successfully";
+            $upload_res['status'] = 1;
+            $upload_res['msg'] = "File Uploaded Successfully";
+            $upload_res['new_filename'] = $new_filename;
         }
     } else {
-        echo "File Not Uploaded Successfully";
+        $upload_res['status'] = 0;
+        $upload_res['msg'] = "File Not Uploaded Successfully";
+        $upload_res['new_filename'] = "";
     }
 
-    return $new_filename;
+    return $upload_res;
 }
 ?>

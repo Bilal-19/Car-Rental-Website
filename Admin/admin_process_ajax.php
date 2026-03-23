@@ -49,13 +49,23 @@ if ($submit_mode == "add_vehicle") {
                                )
                                ";
             // Check if vehicle with same registration number already exist or not
-            if (mysqli_query($isConnect, $instVehicleQry)) {
-                $arr['query_result'] = 1;
-                $arr['query_msg'] = 'New Vehicle Added Successfully.';
+            $regDupQry = "SELECT count(*) as total FROM vehicles WHERE registration_number = '{$registration_number}'";
+            $regDupRes = mysqli_query($isConnect, $regDupQry);
+            $regDupArr = mysqli_fetch_assoc($regDupRes);
+            $count = $regDupArr['total'];
 
-            } else {
+            if ($count > 0) {
                 $arr['query_result'] = 0;
-                $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
+                $arr['query_msg'] = 'Vehicle with this Registration Number Already Exist.';
+            } else {
+                if (mysqli_query($isConnect, $instVehicleQry)) {
+                    $arr['query_result'] = 1;
+                    $arr['query_msg'] = 'New Vehicle Added Successfully.';
+
+                } else {
+                    $arr['query_result'] = 0;
+                    $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
+                }
             }
         } else {
             $isFileUploaded = 0;

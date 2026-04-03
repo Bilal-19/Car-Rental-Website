@@ -20,9 +20,9 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
         </div>
 
         <!-- Table responsive won't work if you remove 'whitespace-nowrap' class -->
-        <div class="overflow-x-auto relative">
+        <div class="overflow-x-auto relative my-3">
             <table class="w-full">
-                <thead class="text-xs md:text-sm text-left whitespace-nowrap">
+                <thead class="text-xs md:text-sm text-left whitespace-nowrap bg-gray-300">
                     <tr class="border-b-2 border-gray-900">
                         <th class="p-3">ID</th>
                         <th class="p-3">Make</th>
@@ -49,7 +49,7 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
                             <td class="p-2 border-x"><?php echo $row['engine_capacity'] . " CC"; ?></td>
                             <td class="p-2 border-x"><?php echo floor($row['per_day_cost']) . " AED / day"; ?></td>
                             <td class="p-2 border-x text-center">
-                                <a href="<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square text-blue-600"></i></a>
+                                <a target="_blank" href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/edit_vehicles.php?id=' . $row['id']; ?>"><i class="fa-regular fa-pen-to-square text-blue-600"></i></a>
                                 &nbsp;&nbsp;
                                 <a href="<?php echo $row['id']; ?>"><i class="fa-solid fa-trash-arrow-up text-red-600"></i></a>
                             </td>

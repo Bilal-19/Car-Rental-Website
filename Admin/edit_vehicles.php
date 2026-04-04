@@ -30,7 +30,16 @@ if (isset($vehicle_id)) {
 
         <form class="text-gray-600" id="update_vehicle" name="update_vehicle" enctype="multipart/form-data">
             <!-- <input type="hidden" name="add_new_vehicle" value="Yes"> -->
+            <input type="hidden" name="vehicle_id" value="<?php echo $fetchVehicleArr['id']; ?>">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+
+                <div class="flex flex-col">
+                    <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $fetchVehicleArr['thumbnail_image'] ?>"
+                        alt="img" class="rounded-md h-52 object-cover">
+                    <label for="preview_img">Thumbnail Image Preview</label>
+                </div>
+
+                <div class="flex flex-col md:col-span-3"></div>
                 <div class="flex flex-col">
                     <label for="car_maker" class="font-medium">Make:</label>
                     <select name="car_maker" id="car_maker"
@@ -51,7 +60,8 @@ if (isset($vehicle_id)) {
                         class="required p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Model</option>
                         <option value="<?php echo ($fetchVehicleArr['model']) ?>" selected>
-                            <?php echo ($fetchVehicleArr['model']) ?></option>
+                            <?php echo ($fetchVehicleArr['model']) ?>
+                        </option>
                     </select>
                 </div>
 
@@ -95,20 +105,22 @@ if (isset($vehicle_id)) {
 
                 <div class="flex flex-col">
                     <label for="car_trim">Trim:</label>
-                    <input type="text" name="car_trim" id="car_trim"
-                        value="<?php echo ($fetchVehicleArr['TRIM']); ?>" placeholder="G 63 AMG"
+                    <input type="text" name="car_trim" id="car_trim" value="<?php echo ($fetchVehicleArr['TRIM']); ?>"
+                        placeholder="G 63 AMG"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
                     <label for="car_hp">Horsepower:</label>
-                    <input type="text" name="car_hp" value="<?php echo ($fetchVehicleArr['horsepower']); ?>"  id="car_hp" placeholder="500 - 599 HP"
+                    <input type="text" name="car_hp" value="<?php echo ($fetchVehicleArr['horsepower']); ?>" id="car_hp"
+                        placeholder="500 - 599 HP"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
                     <label for="car_doors">Doors:</label>
-                    <input type="text" name="car_doors" value="<?php echo ($fetchVehicleArr['doors']); ?>"  id="car_doors" placeholder="4 door"
+                    <input type="text" name="car_doors" value="<?php echo ($fetchVehicleArr['doors']); ?>"
+                        id="car_doors" placeholder="4 door"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
@@ -117,25 +129,29 @@ if (isset($vehicle_id)) {
                     <select name="car_fuel_type" id="car_fuel_type"
                         class="required p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Fuel Type</option>
-                        <option <?php echo ($fetchVehicleArr['fuel_type'] == 'Petrol' ? 'selected' : '') ?> value="Petrol">Petrol</option>
+                        <option <?php echo ($fetchVehicleArr['fuel_type'] == 'Petrol' ? 'selected' : '') ?>
+                            value="Petrol">Petrol</option>
                     </select>
                 </div>
 
                 <div class="flex flex-col">
                     <label for="car_cylinders">No of Cylinders:</label>
-                    <input type="text" name="car_cylinders" value="<?php echo ($fetchVehicleArr['no_of_cylinders']); ?>"  id="car_cylinders" placeholder="8"
+                    <input type="text" name="car_cylinders" value="<?php echo ($fetchVehicleArr['no_of_cylinders']); ?>"
+                        id="car_cylinders" placeholder="8"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
                     <label for="interior_color">Interior Color:</label>
-                    <input type="text" name="interior_color" value="<?php echo ($fetchVehicleArr['interior_color']); ?>"  id="interior_color" placeholder="Red"
+                    <input type="text" name="interior_color" value="<?php echo ($fetchVehicleArr['interior_color']); ?>"
+                        id="interior_color" placeholder="Red"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
                     <label for="exterior_color">Exterior Color:</label>
-                    <input type="text" name="exterior_color" value="<?php echo ($fetchVehicleArr['exterior_color']); ?>"  id="exterior_color" placeholder="Silver"
+                    <input type="text" name="exterior_color" value="<?php echo ($fetchVehicleArr['exterior_color']); ?>"
+                        id="exterior_color" placeholder="Silver"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
@@ -144,34 +160,41 @@ if (isset($vehicle_id)) {
                     <select name="car_drive_type" id="car_drive_type"
                         class="required p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Drive Type</option>
-                        <option <?php echo ($fetchVehicleArr['drive_type'] == 'AWD' ? 'selected' : '') ?> value="AWD">AWD</option>
-                        <option <?php echo ($fetchVehicleArr['drive_type'] == 'RWD' ? 'selected' : '') ?> value="RWD">RWD</option>
-                        <option <?php echo ($fetchVehicleArr['drive_type'] == 'FWD' ? 'selected' : '') ?> value="FWD">FWD</option>
+                        <option <?php echo ($fetchVehicleArr['drive_type'] == 'AWD' ? 'selected' : '') ?> value="AWD">AWD
+                        </option>
+                        <option <?php echo ($fetchVehicleArr['drive_type'] == 'RWD' ? 'selected' : '') ?> value="RWD">RWD
+                        </option>
+                        <option <?php echo ($fetchVehicleArr['drive_type'] == 'FWD' ? 'selected' : '') ?> value="FWD">FWD
+                        </option>
                     </select>
                 </div>
 
                 <div class="flex flex-col">
                     <label for="seating_capacity">Seating Capacity:</label>
-                    <input type="text" name="seating_capacity" value="<?php echo ($fetchVehicleArr['seating_capacity']); ?>"  id="seating_capacity" placeholder="2"
+                    <input type="text" name="seating_capacity"
+                        value="<?php echo ($fetchVehicleArr['seating_capacity']); ?>" id="seating_capacity"
+                        placeholder="2"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
                     <label for="per_day_cost">Per Day Cost:</label>
-                    <input type="text" name="per_day_cost" value="<?php echo ($fetchVehicleArr['per_day_cost']); ?>"  id="per_day_cost" placeholder="250 AED"
+                    <input type="text" name="per_day_cost" value="<?php echo floor($fetchVehicleArr['per_day_cost']); ?>"
+                        id="per_day_cost" placeholder="250 AED"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
                 <div class="flex flex-col">
                     <label for="registration_number">Registration Number:</label>
-                    <input type="text" name="registration_number" value="<?php echo ($fetchVehicleArr['registration_number']); ?>"  id="registration_number" placeholder="PK-753"
+                    <input type="text" name="registration_number"
+                        value="<?php echo ($fetchVehicleArr['registration_number']); ?>" id="registration_number"
+                        placeholder="PK-753"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
-
                 <div class="flex flex-col md:col-span-4">
-                    <label for="preview_img">Thumbnail Image:</label>
-                    <input type="file" name="preview_img" id="preview_img" class="required p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
+                    <label for="preview_img">Thumbnail Image (optional):</label>
+                    <input type="file" name="preview_img" id="preview_img" class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
                         file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
                         hover:file:cursor-pointer hover:file:bg-blue-50
                         hover:file:text-blue-700">
@@ -209,7 +232,8 @@ if (isset($vehicle_id)) {
 </div>
 
 <?php include("../AdminLayout/footer.php");
-print_r($fetchVehicleArr); ?>
+// print_r($fetchVehicleArr); 
+?>
 
 <script>
     $(document).ready(function () {
@@ -276,7 +300,9 @@ print_r($fetchVehicleArr); ?>
                         console.log("AJAX Response : ", res.query_result);
                         if (res.query_result == 1) {
                             $("#form_msg").html("<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> " + res.query_msg + "</p>").slideDown()
-                            $("#update_vehicle").trigger("reset") // reset form fields
+                            setTimeout(function () {
+                                location.reload()
+                            }, 2000)
                         } else {
                             $("#form_msg").html("<p class='w-80 md:w-full mx-auto bg-yellow-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> " + res.query_msg + "</p>").slideDown()
                         }

@@ -72,6 +72,78 @@ if ($submit_mode == "add_vehicle") {
         }
     }
     echo json_encode($arr);
+} elseif ($submit_mode == "update_vehicle") {
+    $arr = array();
+
+    // Get Values and Implement SQL Injection
+
+    $id = mysqli_real_escape_string($isConnect, $_POST['vehicle_id']);
+    $maker = mysqli_real_escape_string($isConnect, $_POST['car_maker']);
+    $model = mysqli_real_escape_string($isConnect, $_POST['car_model']);
+    $engine = mysqli_real_escape_string($isConnect, $_POST['car_engine']);
+    $category = mysqli_real_escape_string($isConnect, $_POST['car_category']);
+    $transmission = mysqli_real_escape_string($isConnect, $_POST['car_transmission']);
+    $trim = mysqli_real_escape_string($isConnect, $_POST['car_trim']);
+    $hp = mysqli_real_escape_string($isConnect, $_POST['car_hp']);
+    $doors = mysqli_real_escape_string($isConnect, $_POST['car_doors']);
+    $fuel_type = mysqli_real_escape_string($isConnect, $_POST['car_fuel_type']);
+    $cylinders = mysqli_real_escape_string($isConnect, $_POST['car_cylinders']);
+    $interior_color = mysqli_real_escape_string($isConnect, $_POST['interior_color']);
+    $exterior_color = mysqli_real_escape_string($isConnect, $_POST['exterior_color']);
+    $drive_type = mysqli_real_escape_string($isConnect, $_POST['car_drive_type']);
+    $seating_capacity = mysqli_real_escape_string($isConnect, $_POST['seating_capacity']);
+    $per_day_cost = mysqli_real_escape_string($isConnect, $_POST['per_day_cost']);
+    $registration_number = mysqli_real_escape_string($isConnect, $_POST['registration_number']);
+
+    // Check if user uploads the image
+    if ($_FILES['preview_img']['size'] > 0) {
+        // echo 'Yes uploaded';
+        $uploaded_image_arr = uploadImage('preview_img');
+        if ($uploaded_image_arr['status'] == 1) {
+            $thumbnail_timestamp = $uploaded_image_arr['new_filename'];
+            $isFileUploaded = 1;
+        } else {
+            $isFileUploaded = 0;
+        }
+    } else {
+        // Find timestamp of previous uploaded thumbnail image
+        $imgQry = mysqli_query($isConnect, "SELECT thumbnail_image FROM vehicles WHERE id = $id");
+        $imgRes = mysqli_fetch_assoc($imgQry);
+        $thumbnail_timestamp = $imgRes['thumbnail_image'];
+    }
+
+    // Prepare update query
+
+    $updVehicleQry = "UPDATE vehicles
+            SET
+            make                = '$maker', 
+            model               = '$model', 
+            engine_capacity     = '$engine', 
+            category            = '$category', 
+            transmission        = '$transmission', 
+            TRIM                = '$trim', 
+            horsepower          = '$trim', 
+            doors               = '$doors',
+            fuel_type           = '$fuel_type', 
+            no_of_cylinders     = '$cylinders',
+            interior_color      = '$interior_color', 
+            exterior_color      = '$exterior_color',
+            per_day_cost        = '$per_day_cost', 
+            drive_type          = '$drive_type', 
+            seating_capacity    = '$seating_capacity', 
+            registration_number = '$registration_number',
+            thumbnail_image     = '$thumbnail_timestamp'
+    WHERE id = $id";
+
+    if (mysqli_query($isConnect, $updVehicleQry)) {
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'Vehicle Information Updated Successfully.';
+
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
+    }
+    echo json_encode($arr);
 }
 
 

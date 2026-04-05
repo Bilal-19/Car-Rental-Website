@@ -66,4 +66,8 @@ function uploadImage($file_input)
 
     return $upload_res;
 }
+
+function displayDate($rec_date){
+    return date("d-m-Y", strtotime($rec_date));
+}
 ?>

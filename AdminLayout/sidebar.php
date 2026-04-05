@@ -19,7 +19,7 @@
                     <i class="fa-solid fa-car"></i>
                     <span class="inline">All Vehicles</span>
                 </a>
-                <a href="#"
+                <a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/booked_vehicles.php'; ?>"
                     class="flex items-center space-x-2 px-4 py-2 border-b bg-white text-black rounded hover:bg-gray-200">
                     <i class="fas fa-car-side"></i>
                     <span class="inline">Booked Vehicles</span>

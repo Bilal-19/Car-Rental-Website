@@ -25,7 +25,7 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
             <table class="w-full">
                 <thead class="text-xs md:text-sm text-left whitespace-nowrap bg-gray-300">
                     <tr class="border-b-2 border-gray-900">
-                        <th class="p-3">ID</th>
+                        <th class="p-3">#</th>
                         <th class="p-3">Make</th>
                         <th class="p-3">Model</th>
                         <th class="p-3">Category</th>
@@ -38,11 +38,12 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
 
                 <tbody class="text-xs whitespace-nowrap">
                     <?php
+                    $i = 1;
                     while ($row = mysqli_fetch_assoc($listVehiclesRes)) { ?>
                         <!-- echo "<pre>"; -->
                         <!-- print_r($row); -->
                         <tr class="border-b border-gray-600 hover:bg-gray-300">
-                            <td class="p-2 border-x"><?php echo $row['id'] ?></td>
+                            <td class="p-2 border-x"><?php echo $i++; ?></td>
                             <td class="p-2 border-x"><?php echo $row['make']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['model']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['category']; ?></td>
@@ -82,11 +83,12 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
                 data: { 'vehicle_id': id, 'submit_mode': 'delete_vehicle' },
                 success: function (data) {
                     console.log("AJAX Response: " + data.query_result)
-                    if (data.query_result == 1){
+                    if (data.query_result == 1) {
+                        $("#notification").slideDown('slow')
                         $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> ` + data.query_msg + '</p>')
-                        setTimeout(() => {
+                        $("#notification").delay(2000).slideUp('slow', function () {
                             location.reload()
-                        }, 1500);
+                        })
                     } else {
                         $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-yellow-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> ` + data.query_msg + '</p>')
                     }

@@ -24,7 +24,7 @@
                     <i class="fas fa-car-side"></i>
                     <span class="inline">Booked Vehicles</span>
                 </a>
-                <a href="#"
+                <a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/user_enquiries.php'; ?>"
                     class="flex items-center space-x-2 px-4 py-2 border-b bg-white text-black rounded hover:bg-gray-200">
                     <i class="fa-solid fa-question"></i>
                     <span class="inline">Customer Enquiries</span>

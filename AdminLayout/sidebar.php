@@ -4,17 +4,17 @@
         <aside id="sidebar"
             class="bg-[#7B5D01] text-black w-64 space-y-4 py-6 px-4 absolute md:relative z-10 top-16 left-0 md:top-0 md:flex md:flex-col transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out h-min-screen">
             <nav class="space-y-14 text-sm">
-                <a href="../Admin/dashboard.php"
+                <a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/dashboard.php'; ?>"
                     class="flex items-center space-x-2 px-4 py-2 border-b bg-white text-black rounded hover:bg-gray-200">
                     <i class="fa-solid fa-house"></i>
                     <span class="inline">Dashboard</span>
                 </a>
-                <a href="#"
+                <a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/registered_user.php'; ?>"
                     class="flex items-center space-x-2 px-4 py-2 border-b bg-white text-black rounded hover:bg-gray-200">
                     <i class="fa-solid fa-users"></i>
                     <span class="inline">Registered Users</span>
                 </a>
-                <a href="../Admin/vehicles.php"
+                <a href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/vehicles.php'; ?>"
                     class="flex items-center space-x-2 px-4 py-2 border-b bg-white text-black rounded hover:bg-gray-200">
                     <i class="fa-solid fa-car"></i>
                     <span class="inline">All Vehicles</span>

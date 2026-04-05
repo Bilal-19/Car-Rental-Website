@@ -91,30 +91,3 @@ $bookVehiclesRes = mysqli_query($isConnect, $bookVehiclesQry);
 </div>
 
 <?php include("../AdminLayout/footer.php"); ?>
-
-<script>
-    $(document).ready(function () {
-        $('.del_vehicle').on('click', function () {
-            var id = $(this).val();
-            // alert(id);
-
-            $.ajax({
-                url: 'admin_process_ajax.php',
-                dataType: "json",
-                data: { 'vehicle_id': id, 'submit_mode': 'delete_vehicle' },
-                success: function (data) {
-                    console.log("AJAX Response: " + data.query_result)
-                    if (data.query_result == 1) {
-                        $("#notification").slideDown('slow')
-                        $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> ` + data.query_msg + '</p>')
-                        $("#notification").delay(2000).slideUp('slow', function () {
-                            location.reload()
-                        })
-                    } else {
-                        $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-yellow-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> ` + data.query_msg + '</p>')
-                    }
-                }
-            })
-        })
-    })
-</script>

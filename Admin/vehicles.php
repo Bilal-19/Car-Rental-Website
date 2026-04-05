@@ -12,10 +12,10 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
     <div class="w-full mt-5 bg-white rounded p-6">
         <h2 class="text-xl font-semibold mb-5">All Vehicles</h2>
 
-        <div class="flex flex-col md:flex-row justify-between">
-            <p><?php echo $listVehiclesRes->num_rows; ?> records found</p>
-            <button class="bg-blue-500 text-white text-xs md:text-sm px-3 py-1 rounded-md inline-block">
-                <a href="./add_vehicle.php">Add New Vehicle</a>
+        <div class="flex flex-row justify-between items-center">
+            <p class="text-xs md:text-sm"><?php echo $listVehiclesRes->num_rows; ?> records found</p>
+            <button class="bg-blue-500 text-white text-xs md:text-sm px-3 py-1 rounded-md md:inline-block">
+                <a href="./add_vehicle.php">Add Vehicle</a>
             </button>
         </div>
 

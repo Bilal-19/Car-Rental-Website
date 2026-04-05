@@ -144,6 +144,22 @@ if ($submit_mode == "add_vehicle") {
         $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
     }
     echo json_encode($arr);
+    
+} else if ($submit_mode == "delete_vehicle") {
+    $arr = array();
+
+    $id = mysqli_escape_string($isConnect, $_GET['vehicle_id']);
+
+    $delQry = "UPDATE vehicles SET enabled = 0 WHERE id = $id";
+
+    if (mysqli_query($isConnect, $delQry)) {
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'Record move to trash successfully.';
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something went wrong. Please try again later.';
+    }
+    echo json_encode($arr);
 }
 
 

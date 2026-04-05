@@ -55,6 +55,10 @@ CREATE TABLE vehicles(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 
+-- new columns (for soft delete)
+ALTER TABLE
+    vehicles ADD COLUMN enabled INT DEFAULT 1
+
 CREATE TABLE vehicle_images(
     id INT AUTO_INCREMENT PRIMARY KEY,
     image_path VARCHAR(100) NOT NULL,

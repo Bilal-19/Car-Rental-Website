@@ -4,7 +4,7 @@ include("../AdminLayout/sidebar.php");
 
 require_once "../DB/db_connection.php";
 
-$listVehiclesQry = "SELECT * FROM vehicles LIMIT 10";
+$listVehiclesQry = "SELECT * FROM vehicles WHERE enabled = 1 LIMIT 10";
 $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
 
 ?>
@@ -19,6 +19,7 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
             </button>
         </div>
 
+        <div id="notification" class="text-sm my-3"></div>
         <!-- Table responsive won't work if you remove 'whitespace-nowrap' class -->
         <div class="overflow-x-auto relative my-3">
             <table class="w-full">
@@ -49,9 +50,13 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
                             <td class="p-2 border-x"><?php echo $row['engine_capacity'] . " CC"; ?></td>
                             <td class="p-2 border-x"><?php echo floor($row['per_day_cost']) . " AED / day"; ?></td>
                             <td class="p-2 border-x text-center">
-                                <a target="_blank" href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/edit_vehicles.php?id=' . $row['id']; ?>"><i class="fa-regular fa-pen-to-square text-blue-600"></i></a>
+                                <a target="_blank"
+                                    href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/edit_vehicles.php?id=' . $row['id']; ?>"><i
+                                        class="fa-regular fa-pen-to-square text-blue-600"></i></a>
                                 &nbsp;&nbsp;
-                                <a href="<?php echo $row['id']; ?>"><i class="fa-solid fa-trash-arrow-up text-red-600"></i></a>
+                                <button class="del_vehicle" value="<?php echo $row['id']; ?>">
+                                    <i class="fa-solid fa-trash-arrow-up text-red-600"></i>
+                                    </buton>
                             </td>
                         </tr>
                     <?php } ?>
@@ -64,3 +69,29 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
 </div>
 
 <?php include("../AdminLayout/footer.php"); ?>
+
+<script>
+    $(document).ready(function () {
+        $('.del_vehicle').on('click', function () {
+            var id = $(this).val();
+            // alert(id);
+
+            $.ajax({
+                url: 'admin_process_ajax.php',
+                dataType: "json",
+                data: { 'vehicle_id': id, 'submit_mode': 'delete_vehicle' },
+                success: function (data) {
+                    console.log("AJAX Response: " + data.query_result)
+                    if (data.query_result == 1){
+                        $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> ` + data.query_msg + '</p>')
+                        setTimeout(() => {
+                            location.reload()
+                        }, 1500);
+                    } else {
+                        $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-yellow-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> ` + data.query_msg + '</p>')
+                    }
+                }
+            })
+        })
+    })
+</script>

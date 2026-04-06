@@ -144,7 +144,7 @@ if ($submit_mode == "add_vehicle") {
         $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
     }
     echo json_encode($arr);
-    
+
 } else if ($submit_mode == "delete_vehicle") {
     $arr = array();
 
@@ -159,6 +159,24 @@ if ($submit_mode == "add_vehicle") {
         $arr['query_result'] = 0;
         $arr['query_msg'] = 'Something went wrong. Please try again later.';
     }
+    echo json_encode($arr);
+} else if ($submit_mode == "reset_password") {
+    $arr = array();
+
+    $user_id = mysqli_escape_string($isConnect, $_GET['user_id']);
+
+    $hash_pswd = password_hash(12345678, PASSWORD_DEFAULT);
+
+    $updPswdQry = "UPDATE users SET user_pswd = '$hash_pswd' WHERE id = $user_id";
+
+    if (mysqli_query($isConnect, $updPswdQry)) {
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'User password reset successfully.';
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something went wrong while resetting user password.';
+    }
+
     echo json_encode($arr);
 }
 

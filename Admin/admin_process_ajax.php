@@ -178,6 +178,35 @@ if ($submit_mode == "add_vehicle") {
     }
 
     echo json_encode($arr);
+} else if ($submit_mode == "upd_account_status") {
+    $arr = array();
+
+    $acc_id = mysqli_escape_string($isConnect, $_GET['account_id']);
+
+    // Find current status
+    $AccStatusQry = mysqli_query($isConnect, "SELECT is_account_activated FROM users WHERE id = $acc_id");
+    $AccStatusRes = mysqli_fetch_assoc($AccStatusQry);
+
+    if ($AccStatusRes['is_account_activated'] == 0) {
+        $updAccStatus = "UPDATE users SET is_account_activated = 1 WHERE id = $acc_id";
+        if (mysqli_query($isConnect, $updAccStatus)) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'Account Activated Successfully';
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'Something went wrong. Please try again later';
+        }
+    } else {
+        $updAccStatus = "UPDATE users SET is_account_activated = 0 WHERE id = $acc_id";
+        if (mysqli_query($isConnect, $updAccStatus)) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'Account De-activated Successfully';
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'Something went wrong. Please try again later';
+        }
+    }
+    echo json_encode($arr);
 }
 
 

@@ -1,6 +1,13 @@
 <?php
 $titleTag = "Elite Auto Motors | Home";
 require_once "VisitorLayout/header.php";
+
+// List features cars
+
+require_once "./DB/db_connection.php";
+
+$featuredCarRes = mysqli_query($isConnect, "SELECT * FROM vehicles LIMIT 3");
+
 ?>
 
 <!-- Banner -->
@@ -51,30 +58,23 @@ require_once "VisitorLayout/header.php";
     <p class="text-md md:text-2xl font-light">Featured Luxury Cars</p>
 </div>
 
-<div class="w-full flex flex-col md:flex-row justify-around items-center space-y-15 md:space-y-0">
-    <div class="w-80 md:w-1/4">
-        <img src="../Assets/Lamborghini.png" alt="Lamborghini" class="mx-auto mb-3">
-        <div class="flex flex-row justify-between items-center">
-            <p class="font-light text-sm">From <b class="font-medium">AED 2,500 / day</b></p>
-            <button class="bg-[#7B5D01] text-white rounded-full text-sm py-1.5 px-4">View Detail</button>
+<div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-15 space-y-5 md:space-y-0">
+    <?php
+    while ($row = mysqli_fetch_assoc($featuredCarRes)) { ?>
+        <div class="w-80 mx-auto md:w-full">
+            <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $row['thumbnail_image']; ?>"
+                alt="Lamborghini" class="object-cover h-72 w-full rounded-md mb-2">
+            <div class="flex flex-row justify-between items-center">
+                <div>
+                    <p class="font-light text-sm"><?php echo $row['make'] . " | " . $row['model']; ?></p>
+                    <p class="font-light text-sm">From <b class="font-medium">AED <?php echo floor($row['per_day_cost']) . ' / day'; ?></b></p>
+                </div>
+                <div>
+                    <a target="_blank" href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_details.php?id=' . $row['id']; ?>" class="bg-[#7B5D01] hover:bg-[#3b3112] text-white rounded-full text-sm py-1.5 px-4">View Detail</a>
+                </div>
+            </div>
         </div>
-    </div>
-
-    <div class="w-80 md:w-1/4">
-        <img src="../Assets/Rolls_Royce.png" alt="Rolls_Royce" class="mx-auto mb-3">
-        <div class="flex flex-row justify-between items-center">
-            <p class="font-light text-sm">From <b class="font-medium">AED 2,500 / day</b></p>
-            <button class="bg-[#7B5D01] text-white rounded-full text-sm py-1.5 px-4">View Detail</button>
-        </div>
-    </div>
-
-    <div class="w-80 md:w-1/4">
-        <img src="../Assets/Ferrari.png" alt="Ferrari" class="mx-auto mb-3">
-        <div class="flex flex-row justify-between items-center">
-            <p class="font-light text-sm">From <b class="font-medium">AED 2,500 / day</b></p>
-            <button class="bg-[#7B5D01] text-white rounded-full text-sm py-1.5 px-4">View Detail</button>
-        </div>
-    </div>
+    <?php } ?>
 </div>
 
 <div class="container-fluid text-center mt-20 mb-10">

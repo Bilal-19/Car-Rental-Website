@@ -1,0 +1,17 @@
+DELIMITER $$
+USE `car_rental`$$
+DROP TRIGGER /*!50032 IF EXISTS */ `trg_audit_users_upd`$$
+
+CREATE
+    /*!50017 DEFINER = 'remote'@'%' */
+    TRIGGER `trg_audit_users_upd` BEFORE UPDATE ON `users` 
+    FOR EACH ROW BEGIN
+    
+    IF new.form_category <=> old.form_category THEN        
+		INSERT INTO audit_table_vehicle_rental (audit_date_time, user_name, user_ip, table_name, change_rec_id, field_name, old_value, new_value) 
+				 VALUES (NOW(),   new.update_by, new.update_ip, 'std_synopsis', old.id, 'form_category', old.form_category, new.form_category);
+	   END IF;
+    END;
+$$
+
+DELIMITER ;

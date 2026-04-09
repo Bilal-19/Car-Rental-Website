@@ -5,6 +5,8 @@ require_once "../utilities.php";
 
 $submit_mode = $_REQUEST['submit_mode'];
 
+// session_start();
+
 
 if ($submit_mode == "add_vehicle") {
     $arr = array();
@@ -207,6 +209,30 @@ if ($submit_mode == "add_vehicle") {
         }
     }
     echo json_encode($arr);
+} else if ($submit_mode == "add_edit_brands") {
+    // print_r($_POST);
+
+    $arr = array();
+
+    $car_brand = mysqli_real_escape_string($isConnect, $_POST['brand_name']);
+    $add_by = 'bilal';
+    $add_ip = $_SERVER['REMOTE_ADDR'];
+
+    $insertBrandQry = "INSERT INTO vehicle_brands 
+                       (brand_name, add_by, add_ip)
+                       VALUES
+                       ('$car_brand','$add_by', '$add_ip')
+                       ";
+    if (mysqli_query($isConnect, $insertBrandQry)) {
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'Vehicle Brand Added Successfully';
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something went wrong. Please try again later';
+    }
+
+    echo json_encode($arr);
+    // die();
 }
 
 

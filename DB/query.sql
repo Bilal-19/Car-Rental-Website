@@ -84,6 +84,16 @@ CREATE TABLE vehicle_booking(
 -- Insert Query
 INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) VALUES('Test User', 'test@gmail.com', '0300-0078987','test subject','test message');
 
+CREATE TABLE vehicle_brands(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    brand_name VARCHAR(100) UNIQUE,
+    add_by VARCHAR(100),
+    add_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    add_ip VARCHAR(100),
+    update_by VARCHAR(100),
+    update_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_ip VARCHAR(100)
+)
 
 -- Insert 50 vehicles
 

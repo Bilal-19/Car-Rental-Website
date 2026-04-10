@@ -223,13 +223,23 @@ if ($submit_mode == "add_vehicle") {
                        VALUES
                        ('$car_brand','$add_by', '$add_ip')
                        ";
-    if (mysqli_query($isConnect, $insertBrandQry)) {
-        $arr['query_result'] = 1;
-        $arr['query_msg'] = 'Vehicle Brand Added Successfully';
+    // Check if record already exist.
+    $dupBrandQry = "SELECT id FROM vehicle_brands WHERE brand_name = '{$car_brand}'";
+    $dupBrandRes = mysqli_query($isConnect, $dupBrandQry);
+
+    if (mysqli_num_rows($dupBrandRes) == 0) {
+        if (mysqli_query($isConnect, $insertBrandQry)) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'Vehicle Brand Added Successfully';
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'Something went wrong. Please try again later.';
+        }
     } else {
         $arr['query_result'] = 0;
-        $arr['query_msg'] = 'Something went wrong. Please try again later';
+        $arr['query_msg'] = 'This brand already exist.';
     }
+
 
     echo json_encode($arr);
     // die();

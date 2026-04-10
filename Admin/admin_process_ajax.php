@@ -243,6 +243,24 @@ if ($submit_mode == "add_vehicle") {
 
     echo json_encode($arr);
     // die();
+} else if ($submit_mode == "edit_brand_form") {
+
+    // Return brand name value inside a form
+    $arr = array();
+    // Find vehicle information
+    $rec_id = mysqli_real_escape_string($isConnect, $_GET['rec_id']);
+
+    $vehicleBrandRes = mysqli_query($isConnect, "SELECT brand_name FROM vehicle_brands WHERE id = $rec_id");
+    $vehicleBrandResArr = mysqli_fetch_assoc($vehicleBrandRes);
+
+    if (mysqli_num_rows($vehicleBrandRes) > 0) {
+        $arr['query_result'] = 1;
+        $arr['brand_name'] = $vehicleBrandResArr['brand_name'];
+    } else {
+        $arr['query_result'] = 0;
+    }
+
+    echo json_encode($arr);
 }
 
 

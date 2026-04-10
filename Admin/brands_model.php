@@ -47,10 +47,11 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                                 <td class="p-2" align="left"><?php echo $row['brand_name']; ?></td>
                                 <td class="p-2"><?php echo 5; ?></td>
                                 <td class="p-2">
-                                    <button class="edit_brand" value="<?php echo $row['id']; ?>"><i class="fa-regular fa-pen-to-square text-blue-700"></i></button
-                                </td>
+                                    <button class="edit_brand" value="<?php echo $row['id']; ?>"><i
+                                            class="fa-regular fa-pen-to-square text-blue-700"></i></button </td>
                                 <td class="p-2">
-                                    <button class="del_brand" value="<?php echo $row['id']; ?>"><i class="fa-solid fa-trash-arrow-up text-red-700"></i></button>
+                                    <button class="del_brand" value="<?php echo $row['id']; ?>"><i
+                                            class="fa-solid fa-trash-arrow-up text-red-700"></i></button>
                                 </td>
                             </tr>
 
@@ -94,6 +95,20 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
             })
         })
 
-        
+        $(".edit_brand").on("click", function () {
+            var rec_id = $(this).val()
+
+            $.ajax({
+                url: 'admin_process_ajax.php',
+                data: { 'submit_mode': 'edit_brand_form', 'rec_id': rec_id },
+                dataType: 'json',
+                success: function (res) {
+                    if (res.query_result == 1) {
+                        $("#brand_name").val(res.brand_name)
+                        $("#add_brands").text("Update")
+                    }
+                }
+            })
+        })
     })
 </script>

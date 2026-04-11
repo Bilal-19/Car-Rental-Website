@@ -215,30 +215,54 @@ if ($submit_mode == "add_vehicle") {
     $arr = array();
 
     $car_brand = mysqli_real_escape_string($isConnect, $_POST['brand_name']);
-    $add_by = 'bilal';
-    $add_ip = $_SERVER['REMOTE_ADDR'];
+    $action = mysqli_real_escape_string($isConnect, $_POST['action']);
 
-    $insertBrandQry = "INSERT INTO vehicle_brands 
+
+    if ($action == "Submit") {
+        $add_by = 'bilal';
+        $add_ip = $_SERVER['REMOTE_ADDR'];
+
+        $insertBrandQry = "INSERT INTO vehicle_brands 
                        (brand_name, add_by, add_ip)
                        VALUES
                        ('$car_brand','$add_by', '$add_ip')
                        ";
-    // Check if record already exist.
-    $dupBrandQry = "SELECT id FROM vehicle_brands WHERE brand_name = '{$car_brand}'";
-    $dupBrandRes = mysqli_query($isConnect, $dupBrandQry);
+        // Check if record already exist.
+        $dupBrandQry = "SELECT id FROM vehicle_brands WHERE brand_name = '{$car_brand}'";
+        $dupBrandRes = mysqli_query($isConnect, $dupBrandQry);
 
-    if (mysqli_num_rows($dupBrandRes) == 0) {
-        if (mysqli_query($isConnect, $insertBrandQry)) {
+        if (mysqli_num_rows($dupBrandRes) == 0) {
+            if (mysqli_query($isConnect, $insertBrandQry)) {
+                $arr['query_result'] = 1;
+                $arr['query_msg'] = 'Vehicle Brand Added Successfully';
+            } else {
+                $arr['query_result'] = 0;
+                $arr['query_msg'] = 'Something went wrong. Please try again later.';
+            }
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'This brand already exist.';
+        }
+    } else if ($action == "Update") {
+        $rec_id = mysqli_real_escape_string($isConnect, $_POST['rec_id']);
+        $updBrandQry = "UPDATE  vehicle_brands 
+                        SET 
+                        brand_name = '{$car_brand}',
+                        update_by = 'admin',
+                        update_ip = '{$_SERVER['REMOTE_ADDR']}',
+                        update_date = NOW()
+                        WHERE id = $rec_id";
+
+        if (mysqli_query($isConnect, $updBrandQry)) {
             $arr['query_result'] = 1;
-            $arr['query_msg'] = 'Vehicle Brand Added Successfully';
+            $arr['query_msg'] = 'Vehicle Brand Updated Successfully';
         } else {
             $arr['query_result'] = 0;
             $arr['query_msg'] = 'Something went wrong. Please try again later.';
         }
-    } else {
-        $arr['query_result'] = 0;
-        $arr['query_msg'] = 'This brand already exist.';
+
     }
+
 
 
     echo json_encode($arr);
@@ -250,12 +274,13 @@ if ($submit_mode == "add_vehicle") {
     // Find vehicle information
     $rec_id = mysqli_real_escape_string($isConnect, $_GET['rec_id']);
 
-    $vehicleBrandRes = mysqli_query($isConnect, "SELECT brand_name FROM vehicle_brands WHERE id = $rec_id");
+    $vehicleBrandRes = mysqli_query($isConnect, "SELECT id, brand_name FROM vehicle_brands WHERE id = $rec_id");
     $vehicleBrandResArr = mysqli_fetch_assoc($vehicleBrandRes);
 
     if (mysqli_num_rows($vehicleBrandRes) > 0) {
         $arr['query_result'] = 1;
         $arr['brand_name'] = $vehicleBrandResArr['brand_name'];
+        $arr['id'] = $vehicleBrandResArr['id'];
     } else {
         $arr['query_result'] = 0;
     }

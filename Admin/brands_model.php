@@ -15,12 +15,14 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
         <h2 class="text-xl font-semibold mb-5">Vehicle Brands</h2>
 
         <form class="bg-gray-300 p-5 md:p-8" id="add_edit_vehicle_brands">
+            <input type="hidden" name="rec_id" id="rec_id">
             <h2 class="text-md md:text-lg font-semibold mb-5">Add / Edit Vehicle Brands</h2>
 
             <div class="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0">
                 <input id="brand_name" name="brand_name" type="text" placeholder="Ex. Hyundai"
-                    class="text-xs border p-2 rounded-md md:w-3/4">
-                <button class="bg-blue-500 p-2 rounded-md md:w-1/4 text-white" id="add_brands">Submit</button>
+                    class="text-xs border p-2 rounded-md md:w-3/4 focus:outline-none">
+                <button class="bg-blue-500 hover:bg-blue-700 p-2 rounded-md md:w-1/4 text-white"
+                    id="add_brands">Submit</button>
             </div>
         </form>
 
@@ -41,9 +43,11 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                 <tbody class="text-xs whitespace-nowrap text-center">
                     <?php
                     if (mysqli_num_rows($vehicleBrandsRes) > 0) {
+                        $i = 1;
                         while ($row = mysqli_fetch_assoc($vehicleBrandsRes)) { ?>
-                            <tr class="border-b border-gray-600 hover:bg-gray-200">
-                                <td class="p-2"><?php echo $row['id']; ?></td>
+                            <tr
+                                class="border-b border-gray-600 hover:bg-gray-200 <?php echo ($i % 2 == 0) ? 'bg-gray-100' : '' ?>">
+                                <td class="p-2"><?php echo $i; ?></td>
                                 <td class="p-2" align="left"><?php echo $row['brand_name']; ?></td>
                                 <td class="p-2"><?php echo 5; ?></td>
                                 <td class="p-2">
@@ -54,8 +58,9 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                                             class="fa-solid fa-trash-arrow-up text-red-700"></i></button>
                                 </td>
                             </tr>
-
-                        <?php }
+                            <?php
+                            $i++;
+                        }
                     }
                     ?>
                 </tbody>
@@ -72,12 +77,16 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
 <script>
     $(document).ready(function () {
 
+        // Create a single ajax to add / edit vehicle brands
         $("#add_edit_vehicle_brands").submit(function (e) {
             e.preventDefault();
 
+            var action = $("#add_brands").text(); //Submit or Update
+            var dispatchData = $("#add_edit_vehicle_brands").serialize() + "&submit_mode=add_edit_brands&action=" + action;
+
             $.ajax({
                 url: 'admin_process_ajax.php',
-                data: $("#add_edit_vehicle_brands").serialize() + "&submit_mode=add_edit_brands",
+                data: dispatchData,
                 type: "POST",
                 dataType: "json",
                 success: function (data) {
@@ -105,6 +114,7 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                 success: function (res) {
                     if (res.query_result == 1) {
                         $("#brand_name").val(res.brand_name)
+                        $("#rec_id").val(res.id)
                         $("#add_brands").text("Update")
                     }
                 }

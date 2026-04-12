@@ -90,7 +90,6 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                 type: "POST",
                 dataType: "json",
                 success: function (data) {
-                    console.log("AJAX res: " + data.query_result + "--" + data.query_msg)
                     if (data.query_result == 1) {
                         $("#notification").slideDown('slow')
                         $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> ` + data.query_msg + '</p>')
@@ -116,6 +115,27 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                         $("#brand_name").val(res.brand_name)
                         $("#rec_id").val(res.id)
                         $("#add_brands").text("Update")
+                    }
+                }
+            })
+        })
+
+        $(".del_brand").on("click", function () {
+            var rec_id = $(this).val()
+
+            $.ajax({
+                url: 'admin_process_ajax.php',
+                data: { 'submit_mode': 'delete_brand', 'rec_id': rec_id },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.query_result == 1) {
+                        $("#notification").slideDown('slow')
+                        $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> ` + data.query_msg + '</p>')
+                        $("#notification").delay(2000).slideUp('slow', function () {
+                            location.reload()
+                        })
+                    } else {
+                        $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-yellow-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> ` + data.query_msg + '</p>')
                     }
                 }
             })

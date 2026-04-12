@@ -286,6 +286,18 @@ if ($submit_mode == "add_vehicle") {
     }
 
     echo json_encode($arr);
+} else if ($submit_mode == "delete_brand") {
+    $arr = array();
+    $rec_id = mysqli_real_escape_string($isConnect, $_GET['rec_id']);
+
+    if (mysqli_query($isConnect, "DELETE FROM vehicle_brands WHERE id = $rec_id")) {
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'Selected Vehicle Brand Deleted Successfully.';
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something went wrong. Please try again later.';
+    }
+    echo json_encode($arr);
 }
 
 

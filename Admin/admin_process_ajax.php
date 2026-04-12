@@ -231,7 +231,7 @@ if ($submit_mode == "add_vehicle") {
         $dupBrandQry = "SELECT id FROM vehicle_brands WHERE brand_name = '{$car_brand}'";
         $dupBrandRes = mysqli_query($isConnect, $dupBrandQry);
 
-        if (mysqli_num_rows($dupBrandRes) == 0) {
+        if (mysqli_num_rows($dupBrandRes) == 0 && !empty($car_brand)) {
             if (mysqli_query($isConnect, $insertBrandQry)) {
                 $arr['query_result'] = 1;
                 $arr['query_msg'] = 'Vehicle Brand Added Successfully';
@@ -241,7 +241,7 @@ if ($submit_mode == "add_vehicle") {
             }
         } else {
             $arr['query_result'] = 0;
-            $arr['query_msg'] = 'This brand already exist.';
+            $arr['query_msg'] = 'Brand Name Cannot be Empty';
         }
     } else if ($action == "Update") {
         $rec_id = mysqli_real_escape_string($isConnect, $_POST['rec_id']);

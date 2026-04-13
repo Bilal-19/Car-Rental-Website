@@ -9,6 +9,16 @@ require_once "../utilities.php";
 $vehicleBrandsQry = "SELECT * FROM vehicle_brands LIMIT 10";
 $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
 
+
+$vehicleModelQry = "SELECT
+                    a.id,
+                    b.brand_name,
+                    a.model_name
+                    FROM
+                        vehicle_models a
+                    INNER JOIN vehicle_brands b ON
+                        a.brand_id = b.id";
+$vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);        
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="flex flex-col md:flex-row md:space-x-10 bg-white rounded p-6">
@@ -115,19 +125,19 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
 
                     <tbody class="text-xs whitespace-nowrap text-center">
                         <?php
-                        if (mysqli_num_rows($vehicleBrandsRes) > 0) {
+                        if (mysqli_num_rows($vehicleModelRes) > 0) {
                             $i = 1;
-                            while ($row = mysqli_fetch_assoc($vehicleBrandsRes)) { ?>
+                            while ($row = mysqli_fetch_assoc($vehicleModelRes)) { ?>
                                 <tr
                                     class="border-b border-gray-600 hover:bg-gray-200 <?php echo ($i % 2 == 0) ? 'bg-gray-100' : '' ?>">
                                     <td class="p-2"><?php echo $i; ?></td>
                                     <td class="p-2" align="left"><?php echo $row['brand_name']; ?></td>
-                                    <td class="p-2" align="left"><?php echo $row['model']; ?></td>
+                                    <td class="p-2" align="left"><?php echo $row['model_name']; ?></td>
                                     <td class="p-2">
-                                        <button class="edit_brand" value="<?php echo $row['id']; ?>"><i
+                                        <button class="edit_model" value="<?php echo $row['id']; ?>"><i
                                                 class="fa-regular fa-pen-to-square text-blue-700"></i></button </td>
                                     <td class="p-2">
-                                        <button class="del_brand" value="<?php echo $row['id']; ?>"><i
+                                        <button class="del_model" value="<?php echo $row['id']; ?>"><i
                                                 class="fa-solid fa-trash-arrow-up text-red-700"></i></button>
                                     </td>
                                 </tr>

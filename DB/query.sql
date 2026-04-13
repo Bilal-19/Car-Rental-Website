@@ -95,6 +95,20 @@ CREATE TABLE vehicle_brands(
     update_ip VARCHAR(100)
 )
 
+-- SQL to create vehicle models table
+CREATE TABLE vehicle_models(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    model_name VARCHAR(100) UNIQUE,
+    add_by VARCHAR(100),
+    add_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    add_ip VARCHAR(100),
+    update_by VARCHAR(100),
+    update_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    update_ip VARCHAR(100),
+    brand_id INT NOT NULL,
+    FOREIGN KEY (brand_id) REFERENCES vehicle_brands(id) ON DELETE CASCADE
+)
+
 -- Insert 50 vehicles
 
 INSERT INTO vehicles(

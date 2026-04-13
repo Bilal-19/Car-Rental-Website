@@ -298,6 +298,64 @@ if ($submit_mode == "add_vehicle") {
         $arr['query_msg'] = 'Something went wrong. Please try again later.';
     }
     echo json_encode($arr);
+} else if ($submit_mode == "add_edit_model") {
+    // print_r($_POST);
+
+    
+
+    $arr = array();
+
+    $brand_id = mysqli_real_escape_string($isConnect, $_POST['brand_id']);
+    $model_name = mysqli_real_escape_string($isConnect, $_POST['model_name']);
+    $action = mysqli_real_escape_string($isConnect, $_POST['action']);
+
+
+    if ($action == "Submit") {
+        $add_by = 'bilal';
+        $add_ip = $_SERVER['REMOTE_ADDR'];
+
+        $insModelQry = "INSERT INTO vehicle_models (model_name, brand_id, add_by, add_ip) VALUES ('$model_name', '$brand_id' ,'$add_by', '$add_ip')";
+        // echo $insModelQry; die();
+        // Check if record already exist.
+        $dupModelQry = "SELECT id FROM vehicle_models WHERE model_name = '{$model_name}'";
+        $dupModelRes = mysqli_query($isConnect, $dupModelQry);
+
+        if (mysqli_num_rows($dupModelRes) == 0 && !empty($model_name)) {
+            if (mysqli_query($isConnect, $insModelQry)) {
+                $arr['query_result'] = 1;
+                $arr['query_msg'] = 'New Model Added Successfully';
+            } else {
+                $arr['query_result'] = 0;
+                $arr['query_msg'] = 'Something went wrong. Please try again later.';
+            }
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'Model Name Cannot be Empty';
+        }
+    } 
+    
+    /*else if ($action == "Update") {
+        $rec_id = mysqli_real_escape_string($isConnect, $_POST['rec_id']);
+        $updBrandQry = "UPDATE  vehicle_brands 
+                        SET 
+                        brand_name = '{$car_brand}',
+                        update_by = 'admin',
+                        update_ip = '{$_SERVER['REMOTE_ADDR']}',
+                        update_date = NOW()
+                        WHERE id = $rec_id";
+
+        if (mysqli_query($isConnect, $updBrandQry)) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'Vehicle Brand Updated Successfully';
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'Something went wrong. Please try again later.';
+        }
+
+    }
+    */
+    echo json_encode($arr);
+    // die();
 }
 
 

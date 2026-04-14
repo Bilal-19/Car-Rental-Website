@@ -84,7 +84,7 @@ $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
     <div class="flex flex-col md:flex-row md:space-x-10 bg-white rounded p-6 my-5">
         <div class="md:w-1/2">
             <form class="bg-gray-300 p-5 md:p-8 my-3" id="add_edit_vehicle_model">
-                <input type="hidden" name="rec_id" id="rec_id">
+                <input type="hidden" name="model_id" id="model_id">
                 <h2 class="text-md md:text-lg font-semibold mb-5">Add / Edit Vehicle Models</h2>
 
                 <div class="flex flex-col md:flex-row md:space-x-5 space-y-5 md:space-y-0">
@@ -228,7 +228,7 @@ $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
         // Add / Edit Model using AJAX
         $("#add_edit_vehicle_model").submit(function (e) {
             e.preventDefault();
-
+            
             var action = $("#add_models").text(); //Submit or Update
             var dispatchData = $("#add_edit_vehicle_model").serialize() + "&submit_mode=add_edit_model&action=" + action;
 
@@ -272,6 +272,7 @@ $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
                     if (data.query_result == 1){
                         $('#model_name').val(data.model_name)
                         $('#brand_id').val(data.brand_id)
+                        $('#model_id').val(data.id) //set value of input hidden field
                         $('#add_models').text("Update")
                     }
                 }

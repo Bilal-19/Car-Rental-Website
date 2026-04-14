@@ -332,28 +332,27 @@ if ($submit_mode == "add_vehicle") {
             $arr['query_result'] = 0;
             $arr['query_msg'] = 'Model Name Cannot be Empty';
         }
-    }
-
-    /*else if ($action == "Update") {
-        $rec_id = mysqli_real_escape_string($isConnect, $_POST['rec_id']);
-        $updBrandQry = "UPDATE  vehicle_brands 
+    } else if ($action == "Update") {
+        $rec_id = mysqli_real_escape_string($isConnect, $_POST['model_id']);
+        $updModelQry = "UPDATE  vehicle_models 
                         SET 
-                        brand_name = '{$car_brand}',
+                        model_name = '{$model_name}',
+                        brand_id = '{$brand_id}',
                         update_by = 'admin',
                         update_ip = '{$_SERVER['REMOTE_ADDR']}',
                         update_date = NOW()
                         WHERE id = $rec_id";
 
-        if (mysqli_query($isConnect, $updBrandQry)) {
+        if (mysqli_query($isConnect, $updModelQry)) {
             $arr['query_result'] = 1;
-            $arr['query_msg'] = 'Vehicle Brand Updated Successfully';
+            $arr['query_msg'] = 'Vehicle Model Updated Successfully';
         } else {
             $arr['query_result'] = 0;
             $arr['query_msg'] = 'Something went wrong. Please try again later.';
         }
 
     }
-    */
+
     echo json_encode($arr);
     // die();
 } else if ($submit_mode == 'editable_model_form') {
@@ -362,11 +361,12 @@ if ($submit_mode == "add_vehicle") {
     // Find vehicle information
     $rec_id = mysqli_real_escape_string($isConnect, $_GET['record_id']);
 
-    $vehicleModelRes = mysqli_query($isConnect, "SELECT model_name, brand_id FROM vehicle_models WHERE id = $rec_id");
+    $vehicleModelRes = mysqli_query($isConnect, "SELECT id,model_name, brand_id FROM vehicle_models WHERE id = $rec_id");
     $vehicleModelResArr = mysqli_fetch_assoc($vehicleModelRes);
 
     if (mysqli_num_rows($vehicleModelRes) > 0) {
         $arr['query_result'] = 1;
+        $arr['id'] = $vehicleModelResArr['id'];
         $arr['model_name'] = $vehicleModelResArr['model_name'];
         $arr['brand_id'] = $vehicleModelResArr['brand_id'];
     } else {

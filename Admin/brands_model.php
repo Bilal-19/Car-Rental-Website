@@ -18,7 +18,7 @@ $vehicleModelQry = "SELECT
                         vehicle_models a
                     INNER JOIN vehicle_brands b ON
                         a.brand_id = b.id";
-$vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);        
+$vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="flex flex-col md:flex-row md:space-x-10 bg-white rounded p-6">
@@ -103,7 +103,7 @@ $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
                     <input id="model_name" name="model_name" type="text" placeholder="Sonata N-Line"
                         class="text-xs border p-2 rounded-md md:w-1/2 focus:outline-none">
                     <button class="bg-blue-500 hover:bg-blue-700 p-2 rounded-md md:w-1/4 text-white"
-                        id="add_brands">Submit</button>
+                        id="add_models">Submit</button>
                 </div>
             </form>
             <div id="notification_model" class="text-sm my-3"></div>
@@ -229,7 +229,7 @@ $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
         $("#add_edit_vehicle_model").submit(function (e) {
             e.preventDefault();
 
-            var action = $("#add_brands").text(); //Submit or Update
+            var action = $("#add_models").text(); //Submit or Update
             var dispatchData = $("#add_edit_vehicle_model").serialize() + "&submit_mode=add_edit_model&action=" + action;
 
             // Send AJAX req only when both values are filled
@@ -255,6 +255,27 @@ $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
                 $("#notification_model").slideDown('slow')
                 $("#notification_model").html(`<p class='w-80 md:w-full mx-auto bg-red-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> Please filled all the required fields.</p>`);
             };
+        })
+
+        // Show editable model form
+        $(".edit_model").on("click", function () {
+            // Get selected record id
+            var rec_id = $(this).val();
+
+            var dispatchData = { 'submit_mode': 'editable_model_form', 'record_id': rec_id }
+
+            $.ajax({
+                url: 'admin_process_ajax.php',
+                data: dispatchData,
+                dataType: 'json',
+                success: function (data) {
+                    if (data.query_result == 1){
+                        $('#model_name').val(data.model_name)
+                        $('#brand_id').val(data.brand_id)
+                        $('#add_models').text("Update")
+                    }
+                }
+            })
         })
     })
 </script>

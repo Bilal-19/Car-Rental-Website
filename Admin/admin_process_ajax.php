@@ -301,7 +301,7 @@ if ($submit_mode == "add_vehicle") {
 } else if ($submit_mode == "add_edit_model") {
     // print_r($_POST);
 
-    
+
 
     $arr = array();
 
@@ -332,8 +332,8 @@ if ($submit_mode == "add_vehicle") {
             $arr['query_result'] = 0;
             $arr['query_msg'] = 'Model Name Cannot be Empty';
         }
-    } 
-    
+    }
+
     /*else if ($action == "Update") {
         $rec_id = mysqli_real_escape_string($isConnect, $_POST['rec_id']);
         $updBrandQry = "UPDATE  vehicle_brands 
@@ -356,8 +356,25 @@ if ($submit_mode == "add_vehicle") {
     */
     echo json_encode($arr);
     // die();
-}
+} else if ($submit_mode == 'editable_model_form') {
+    // Return brand name value inside a form
+    $arr = array();
+    // Find vehicle information
+    $rec_id = mysqli_real_escape_string($isConnect, $_GET['record_id']);
 
+    $vehicleModelRes = mysqli_query($isConnect, "SELECT model_name, brand_id FROM vehicle_models WHERE id = $rec_id");
+    $vehicleModelResArr = mysqli_fetch_assoc($vehicleModelRes);
+
+    if (mysqli_num_rows($vehicleModelRes) > 0) {
+        $arr['query_result'] = 1;
+        $arr['model_name'] = $vehicleModelResArr['model_name'];
+        $arr['brand_id'] = $vehicleModelResArr['brand_id'];
+    } else {
+        $arr['query_result'] = 0;
+    }
+
+    echo json_encode($arr);
+}
 
 if ($submit_mode == "upload_vehicle_images") {
     // Code this part later for uploading multiple images of vehicle

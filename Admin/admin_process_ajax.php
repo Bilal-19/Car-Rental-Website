@@ -374,6 +374,18 @@ if ($submit_mode == "add_vehicle") {
     }
 
     echo json_encode($arr);
+} else if ($submit_mode == "delete_model") {
+    $arr = array();
+    $rec_id = mysqli_real_escape_string($isConnect, $_GET['rec_id']);
+
+    if (mysqli_query($isConnect, "DELETE FROM vehicle_models WHERE id = $rec_id")) {
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'Selected Vehicle Model Deleted Successfully.';
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something went wrong. Please try again later.';
+    }
+    echo json_encode($arr);
 }
 
 if ($submit_mode == "upload_vehicle_images") {

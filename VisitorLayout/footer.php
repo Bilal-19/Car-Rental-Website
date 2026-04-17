@@ -4,6 +4,12 @@
     toggleBtn.addEventListener("click", () => {
         menus.classList.toggle("hidden")
     })
+
+    $(document).ready(function () {
+        $("#log-in-out").on("click", function () {
+            window.location.href = "<?php echo $redirectTo; ?>"
+        })
+    })
 </script>
 
 <?php $path = "http://" . $_SERVER['HTTP_HOST']; ?>

@@ -35,16 +35,14 @@
     $path = "http://" . $_SERVER['HTTP_HOST'];
 
     // Dynamic login / signup button based on session
-
+    
     session_start();
 
-    if (isset($_SESSION['username'])) {
-        $text = "Log Out";
-        $auth_path = $path . "/index.php";
-    
+    if (empty($_SESSION['username'])) {
+        $redirectTo = "http://" . $_SERVER['HTTP_HOST'] . "/Visitor/login.php";
     } else {
-        $auth_path = $path . "/Visitor/signup.php";
-        $text = "Sign Up";
+        $redirectTo = "http://" . $_SERVER['HTTP_HOST'];
+        session_destroy();
     }
     ?>
 
@@ -72,7 +70,7 @@
                 Us</a>
             <a href="<?php echo $path . '/Visitor/contact_us.php' ?>"
                 class="hover:text-[#EDC549] block md:inline">Contact Us</a>
-            <a href="<?php echo $auth_path; ?>"
-                class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block"><?php echo $text; ?></a>
+            <a class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block cursor-pointer" id="log-in-out">User
+                Account</a>
         </div>
     </div>

@@ -63,18 +63,29 @@ if ($submit_mode == "live_search") {
 
     if ($countRows > 0) {
         while ($row = mysqli_fetch_assoc($filterVehiclesRes)) {
-            $output .=
-                "
-                <div class='relative'>
-                    <img src='../Assets/Lamborghini.png' alt='Lamborghini' class='mx-auto mb-3'>
-                    <p class='font-medium text-sm ml-12 md:ml-6'>" . $row['make'] . " . " . $row['model'] . "</p>
-                    <p class='font-light text-sm ml-12 md:ml-6'>From <b class='font-medium'>AED " . $row['per_day_cost'] . '/ day' . "</b></p>
-                    <a class='bg-[#000000] text-white rounded-full text-sm py-1.5 px-4 absolute right-15 md:right-10 bottom-15'
-                        target='_blank'
-                        href='" . 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_details.php?id=' . $row['id'] . "'>
-                        View Detail</a>
-                </div>
-            ";
+            $output .= "
+                        <div class='relative'>
+                            <img src='http://" . $_SERVER['HTTP_HOST'] . "/Assets/uploads/" . $row['thumbnail_image'] . "' alt='Lamborghini' class='object-cover h-72 w-full rounded-md mb-2'>
+                            
+                            <div class='flex flex-row justify-between items-center'>
+                                <div>
+                                    <p class='font-medium text-sm'>" . $row['make'] . " " . $row['model'] . "</p>
+                                    <p class='font-light text-sm'>
+                                        From <b class='font-medium'>AED " . $row['per_day_cost'] . "/ day</b>
+                                    </p>
+                                </div>
+                                
+                                <div>
+                                    <a class='bg-[#7B5D01] hover:bg-[#3b3112] text-white rounded-md text-sm py-2 px-3'
+                                        target='_blank'
+                                        href='http://" . $_SERVER['HTTP_HOST'] . "/Visitor/car_details.php?id=" . $row['id'] . "'>
+                                        <i class='fa-solid fa-circle-info'></i>
+                                        View Detail
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    ";
 
             echo $output;
         }

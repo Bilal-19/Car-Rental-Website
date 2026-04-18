@@ -12,9 +12,9 @@ $featuredCarRes = mysqli_query($isConnect, "SELECT * FROM vehicles LIMIT 3");
 
 <!-- Banner -->
 <div class="w-full h-80 md:h-180 bg-cover flex flex-col justify-center items-center text-white mb-20 md:mb-0"
-    style="background-image:url('../Assets/home_banner.png')">
+    style="background-image:url('<?php echo $path . "/Assets/home_banner.png"; ?>')">
     <div class="md:w-4/5 mx-auto text-center">
-        <h1 class="text-4xl md:text-6xl font-medium mb-2">Drive <span class="text-[#EDC549]">Dubai</span> in <span
+        <h1 class="text-4xl md:text-6xl font-medium mb-2">Drive in <span class="text-[#EDC549]">Dubai</span> with <span
                 class="text-[#EDC549]">Style</span></h1>
         <p class="md:w-4/6 mx-auto text-base md:text-2xl font-medium">Rent luxury, exotic, and sports cars from the #1
             premium car rental service in
@@ -29,25 +29,25 @@ $featuredCarRes = mysqli_query($isConnect, "SELECT * FROM vehicles LIMIT 3");
 
 <div class="w-full flex flex-col md:flex-row justify-around items-center">
     <div class="w-75 md:w-1/6 text-center">
-        <img src="../Assets/premium.png" alt="premium_fleet" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/premium.png'; ?>" alt="premium_fleet" class="mx-auto h-20">
         <h4 class="font-medium text-md">Premium Fleet</h4>
         <p class="font-light text-sm">Choose from Lamborghini, Rolls-Royce, Ferrari, and more.</p>
     </div>
 
     <div class="w-75 md:w-1/6 text-center">
-        <img src="../Assets/pickup_delivery.png" alt="pickup_delivery" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/pickup_delivery.png'; ?>" alt="pickup_delivery" class="mx-auto h-20">
         <h4 class="font-medium text-md">Free Pickup & Delivery</h4>
         <p class="font-light text-sm">Get your car delivered to your hotel, airport, or location.</p>
     </div>
 
     <div class="w-75 md:w-1/6 text-center">
-        <img src="../Assets/support.png" alt="support" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/support.png'; ?>" alt="support" class="mx-auto h-20">
         <h4 class="font-medium text-md">24/7 Support</h4>
         <p class="font-light text-sm">Our concierge service is available around the clock.</p>
     </div>
 
     <div class="w-75 md:w-1/6 text-center">
-        <img src="../Assets/insured.png" alt="insured" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/insured.png'; ?>" alt="insured" class="mx-auto h-20">
         <h4 class="font-medium text-md">Fully Insured</h4>
         <p class="font-light text-sm">Comprehensive coverage for peace of mind.</p>
     </div>
@@ -67,10 +67,16 @@ $featuredCarRes = mysqli_query($isConnect, "SELECT * FROM vehicles LIMIT 3");
             <div class="flex flex-row justify-between items-center">
                 <div>
                     <p class="font-light text-sm"><?php echo $row['make'] . " | " . $row['model']; ?></p>
-                    <p class="font-light text-sm">From <b class="font-medium">AED <?php echo floor($row['per_day_cost']) . ' / day'; ?></b></p>
+                    <p class="font-light text-sm">From <b class="font-medium">AED
+                            <?php echo floor($row['per_day_cost']) . ' / day'; ?></b></p>
                 </div>
                 <div>
-                    <a target="_blank" href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_details.php?id=' . $row['id']; ?>" class="bg-[#7B5D01] hover:bg-[#3b3112] text-white rounded-full text-sm py-1.5 px-4">View Detail</a>
+                    <a target="_blank"
+                        href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_details.php?id=' . $row['id']; ?>"
+                        class="bg-[#7B5D01] hover:bg-[#3b3112] text-white rounded-md text-sm py-2 px-3">
+                        <i class="fa-solid fa-circle-info"></i>
+                        View Detail
+                    </a>
                 </div>
             </div>
         </div>
@@ -83,19 +89,19 @@ $featuredCarRes = mysqli_query($isConnect, "SELECT * FROM vehicles LIMIT 3");
 
 <div class="w-full flex flex-col md:flex-row justify-around items-center space-y-15 md:space-y-0">
     <div class="w-80 md:w-1/4 text-center">
-        <img src="../Assets/step_1.png" alt="step_1" class="mx-auto mb-3">
+        <img src="<?php echo $path . '/Assets/step_1.png' ?>" alt="step_1" class="mx-auto mb-3">
         <h4 class="font-medium text-md">Browse Our Fleet</h4>
         <p class="font-light text-sm">Explore a wide range of luxury cars.</p>
     </div>
 
     <div class="w-80 md:w-1/4 text-center">
-        <img src="../Assets/step_2.png" alt="step_2" class="mx-auto mb-3">
+        <img src="<?php echo $path . '/Assets/step_2.png' ?>" alt="step_2" class="mx-auto mb-3">
         <h4 class="font-medium text-md">Choose & Book</h4>
         <p class="font-light text-sm">Select your car, date, and pickup location</p>
     </div>
 
     <div class="w-80 md:w-1/4 text-center">
-        <img src="../Assets/step_3.png" alt="step_3" class="mx-auto mb-3">
+        <img src="<?php echo $path . '/Assets/step_3.png' ?>" alt="step_3" class="mx-auto mb-3">
         <h4 class="font-medium text-md">Drive & Enjoy</h4>
         <p class="font-light text-sm">We deliver your car to your doorstep</p>
     </div>
@@ -134,9 +140,12 @@ $featuredCarRes = mysqli_query($isConnect, "SELECT * FROM vehicles LIMIT 3");
 </div>
 
 <div class="mt-30 w-full h-52 md:h-100 text-white flex flex-col justify-center text-start p-10 bg-cover"
-    style="background-image:url('../Assets/home_cta.png')">
+    style="background-image:url('<?php echo $path . '/Assets/home_cta.png'; ?>')">
     <h3 class="text-xl md:text-4xl mb-3">Ready to Elevate Your Dubai Experience?</h3>
-    <button class="bg-[#7B5D01] w-fit px-3 py-3 rounded-xl">Book Your Luxury Car Now</button>
+    <a class="bg-[#7B5D01] w-fit px-3 py-2 rounded-md text-sm hover:bg-[#3b3112] cursor-pointer"
+        href="<?php echo $path . '/Visitor/car_listing.php'; ?>">
+        <i class="fa-regular fa-calendar-check"></i> Book Now
+    </a>
 </div>
 <?php
 require_once "VisitorLayout/footer.php";

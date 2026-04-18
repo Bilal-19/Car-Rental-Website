@@ -34,7 +34,7 @@ require_once "../VisitorLayout/header.php";
     </div>
 
     <div class="w-80 md:w-2/5">
-        <img src="../Assets/about.png" alt="car showroom">
+        <img src="<?php echo $path . '/Assets/about.png'; ?>" alt="car showroom">
     </div>
 </div>
 
@@ -46,7 +46,7 @@ require_once "../VisitorLayout/header.php";
 <div
     class="container-fluid w-full flex flex-col-reverse md:flex-row justify-center items-center md:space-x-20 space-y-5 md:space-y-0">
     <div class="w-80 md:w-2/5">
-        <img src="../Assets/mission.png" alt="car showroom">
+        <img src="<?php echo $path . '/Assets/mission.png'; ?>" alt="our mission">
     </div>
     <div class="w-80 md:w-2/5">
         <p class="font-light text-justify text-base md:text-2xl">
@@ -63,37 +63,37 @@ require_once "../VisitorLayout/header.php";
 
 <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-15">
     <div class="text-center w-80 md:w-2/3 mx-auto">
-        <img src="../Assets/premium.png" alt="premium_fleet" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/premium.png'; ?>" alt="premium_fleet" class="mx-auto h-20">
         <h4 class="font-medium text-md">Premium Fleet</h4>
         <p class="font-light text-sm">Lamborghini, Rolls-Royce, Ferrari, Bentley, and more.</p>
     </div>
 
     <div class="text-center w-80 md:w-2/3 mx-auto">
-        <img src="../Assets/pickup_delivery.png" alt="doorstep_delivery" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/pickup_delivery.png'; ?>" alt="doorstep_delivery" class="mx-auto h-20">
         <h4 class="font-medium text-md">Doorstep Delivery</h4>
         <p class="font-light text-sm">We deliver your car anywhere in Dubai – hotel, airport, or home.</p>
     </div>
 
     <div class="text-center w-80 md:w-2/3 mx-auto">
-        <img src="../Assets/support.png" alt="support" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/support.png'; ?>" alt="support" class="mx-auto h-20">
         <h4 class="font-medium text-md">24/7 Support</h4>
         <p class="font-light text-sm">Dedicated team available anytime for your needs.</p>
     </div>
 
     <div class="text-center w-80 md:w-2/3 mx-auto">
-        <img src="../Assets/insured.png" alt="insured" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/insured.png'; ?>" alt="insured" class="mx-auto h-20">
         <h4 class="font-medium text-md">Fully Insured</h4>
         <p class="font-light text-sm">All cars come with comprehensive insurance for your peace of mind.</p>
     </div>
 
     <div class="text-center w-80 md:w-2/3 mx-auto">
-        <img src="../Assets/flexible_rental.png" alt="flexible_rental" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/flexible_rental.png'; ?>" alt="flexible_rental" class="mx-auto h-20">
         <h4 class="font-medium text-md">Flexible Rentals</h4>
         <p class="font-light text-sm">Get your car delivered to your hotel, airport, or location.</p>
     </div>
 
     <div class="text-center w-80 md:w-2/3 mx-auto">
-        <img src="../Assets/driver.png" alt="driver" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/driver.png'; ?>" alt="driver" class="mx-auto h-20">
         <h4 class="font-medium text-md">Hassle-Free Booking</h4>
         <p class="font-light text-sm">Instant confirmation, secure checkout, and transparent pricing.</p>
     </div>
@@ -106,25 +106,25 @@ require_once "../VisitorLayout/header.php";
 
 <div class="w-full flex flex-col md:flex-row justify-around items-center space-y-10 md:space-y-0">
     <div class="w-75 md:w-1/7 text-center">
-        <img src="../Assets/tourists.png" alt="tourists" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/tourists.png'; ?>" alt="tourists" class="mx-auto h-20">
         <h4 class="font-medium text-md">Tourists</h4>
         <p class="font-light text-sm">Explore Dubai like never before.</p>
     </div>
 
     <div class="w-75 md:w-1/7 text-center">
-        <img src="../Assets/corporate_clients.png" alt="corporate_clients" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/corporate_clients.png'; ?>" alt="corporate_clients" class="mx-auto h-20">
         <h4 class="font-medium text-md">Corporate Clients</h4>
         <p class="font-light text-sm">Make an impact on your business trips.</p>
     </div>
 
     <div class="w-75 md:w-1/7 text-center">
-        <img src="../Assets/special_events.png" alt="special_events" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/special_events.png'; ?>" alt="special_events" class="mx-auto h-20">
         <h4 class="font-medium text-md">Special Events</h4>
         <p class="font-light text-sm">Weddings, parties, anniversaries.</p>
     </div>
 
     <div class="w-75 md:w-1/7 text-center">
-        <img src="../Assets/camcorder.png" alt="camcorder" class="mx-auto h-20">
+        <img src="<?php echo $path . '/Assets/camcorder.png'; ?>" alt="camcorder" class="mx-auto h-20">
         <h4 class="font-medium text-md">Photo & Video Shoots</h4>
         <p class="font-light text-sm">Elevate your brand or portfolio.</p>
     </div>
@@ -150,13 +150,16 @@ require_once "../VisitorLayout/header.php";
 </div>
 
 
-<div class="mt-20 md:mt-50 w-full h-52 md:h-132 text-white flex flex-col justify-center text-start p-10 bg-cover"
+<div class="mt-30 w-full h-52 md:h-132 text-white flex flex-col justify-center text-start p-10 bg-cover"
     style="background-image:url('../Assets/car_listing_cta.png')">
-    <h3 class="text-xl md:text-4xl mb-1">Can’t Find What You’re Looking For?</h3>
+    <h3 class="text-xl md:text-4xl mb-1">Can't Find What You're Looking For?</h3>
     <p class="text-base md:text-2xl font-light mb-4">
         Get in touch with our team for exclusive models and custom bookings.
     </p>
-    <button class="bg-[#7B5D01] w-fit px-3 py-3 rounded-xl">Contact Us</button>
+    <a href="<?php echo $path . '/Visitor/contact_us.php'; ?>" class="bg-[#7B5D01] w-fit px-3 py-2 rounded-md text-sm hover:bg-[#3b3112] cursor-pointer">
+        <i class="fa-regular fa-paper-plane"></i>
+        Contact Us
+    </a>
 </div>
 
 <!-- Footer -->

@@ -51,7 +51,9 @@
         class="w-full bg-[#121212] text-white py-2 flex flex-col md:flex-row justify-between md:items-center border-b-2 border-b-[#EDC549]">
         <div class="flex flex-row justify-between items-center">
             <div>
-                <img src="../Assets/logo.png" alt="logo" class="h-12 ml-3">
+                <a href="<?php echo $path; ?>">
+                    <img src="<?php echo $path . '/Assets/logo.png'; ?>" alt="logo" class="h-12 ml-3">
+                </a>
             </div>
             <div>
                 <button

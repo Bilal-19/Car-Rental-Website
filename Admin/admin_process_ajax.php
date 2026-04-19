@@ -7,8 +7,25 @@ $submit_mode = $_REQUEST['submit_mode'];
 
 // session_start();
 
+if ($submit_mode == 'fill_model_by_brand_id') {
 
-if ($submit_mode == "add_vehicle") {
+    $options = "";
+    $vehicle_brand_id = mysqli_escape_string($isConnect, $_GET['rec_id']);
+
+    $fetchCarModelRes = mysqli_query($isConnect, "SELECT id, model_name FROM vehicle_models WHERE brand_id = $vehicle_brand_id");
+    // $fetchCarModelResArr = mysqli_fetch_assoc($fetchCarModelRes);
+
+    if (mysqli_num_rows($fetchCarModelRes) > 0) {
+        while ($row = mysqli_fetch_assoc($fetchCarModelRes)) {
+            $options .= '<option value = "' . $row["id"] . '" >' . $row["model_name"] . '</option>';
+        }
+    } else {
+        $options .= '<option>Select Other Brand</option>';
+    }
+
+    echo $options;
+    // die();
+} elseif ($submit_mode == "add_vehicle") {
     $arr = array();
 
     // Get Values and Implement SQL Injection

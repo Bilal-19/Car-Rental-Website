@@ -10,6 +10,11 @@
 include("../AdminLayout/header.php");
 include("../AdminLayout/sidebar.php");
 
+
+require_once "../DB/db_connection.php";
+
+$vehicleBrandsQry = "SELECT * FROM vehicle_brands LIMIT 10";
+$vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
 ?>
 
 
@@ -25,9 +30,10 @@ include("../AdminLayout/sidebar.php");
                     <select name="car_maker" id="car_maker"
                         class="required p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Maker</option>
-                        <option value="Mercedes-Benz">Mercedes-Benz</option>
-                        <option value="Toyota">Toyota</option>
-                        <option value="BMW">BMW</option>
+                        <?php
+                        while ($row = mysqli_fetch_assoc($vehicleBrandsRes)) { ?>
+                            <option value="<?php echo $row['id']; ?>"><?php echo $row['brand_name']; ?></option>
+                        <?php } ?>
                     </select>
                 </div>
 
@@ -172,7 +178,7 @@ include("../AdminLayout/sidebar.php");
                 </div>
 
                 <div class="flex flex-col col-span-1 md:col-span-4">
-                    <div id="form_msg">Show error message here
+                    <div id="form_msg">
                     </div>
                 </div>
 
@@ -189,21 +195,22 @@ include("../AdminLayout/sidebar.php");
 <script>
     $(document).ready(function () {
         $("#car_maker").on("change", function () {
+
+            // Send AJAX Request
+            // Brand Id and Based on that fill up model options.
+
+
             let carManufacturer = $("#car_maker").val() //first dropdown value
             let carModel = $("#car_model"); //second dropdown
 
-            var toyotaModels = ['Fortuner', 'Yaris', 'Innova', 'Supra', 'Camry', 'Corolla', 'Raize']
-            var mercedesModels = ['G-Class', 'A-Class', 'S-Class', 'E-Class', 'CLA']
-            var bmwModels = ['5-Series', '7-Series', 'M3', '2-Series . 218i', 'CLA']
-
-            carModel.html('<option>Select Model</option>')
-            if (carManufacturer === "Toyota") {
-                toyotaModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-            } else if (carManufacturer === "Mercedes-Benz") {
-                mercedesModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-            } else if (carManufacturer === "BMW") {
-                bmwModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-            }
+            $.ajax({
+                url: 'admin_process_ajax.php',
+                data: { 'rec_id': carManufacturer, 'submit_mode': 'fill_model_by_brand_id' },
+                method: 'GET',
+                success: function(res){
+                    $("#car_model").html(res)
+                }
+            })
         });
 
         // Add vehicle form submission
@@ -227,8 +234,8 @@ include("../AdminLayout/sidebar.php");
 
 
             // Remove the border on typing
-            $(".required").on("input change", function(){
-                if ($(this).val().trim() != ""){
+            $(".required").on("input change", function () {
+                if ($(this).val().trim() != "") {
                     $(this).css({ 'border': '2px solid green' })
                 }
             })

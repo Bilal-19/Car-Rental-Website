@@ -130,90 +130,100 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
     </table>
 </div>
 
-<div class="w-full h-200 md:h-fit bg-cover flex flex-col justify-center items-center text-white mt-30 py-10 bg-no-repeat bg-scroll"
-    style="background-image:url('../Assets/contact_form_bg.png')">
-    <h4 class="text-2xl md:text-[45px] font-semibold mb-2 text-center my-20">Book This Car Now</h4>
-    <div class="w-80 md:w-4/5 mx-auto md:mb-5">
-        <form name="bookVehicle" id="bookVehicle" method="post" class="space-y-5">
-            <input type="hidden" name="vehicle_id" id="vehicle_id" value="<?php echo $vehicleID; ?>">
-            <div>
-                <input type="text" id="pickup_date"
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
-                    name="pickup_date" placeholder="Select Pickup Date" onfocus="(this.type)='date'">
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
-                    <?php if (!empty($error["nameErr"])) {
-                        echo $error["nameErr"];
-                    } ?>
-                </span>
-            </div>
+<!-- Show vehicle booking form only when vehicle is available -->
+<?php
+$isBookRes = mysqli_query($isConnect, "SELECT * FROM vehicle_booking WHERE return_date < NOW() AND vehicle_id = " . $vehicleResArr['id']);
+$isBookResArr = mysqli_fetch_assoc($isBookRes);
+$bookedCount = mysqli_num_rows($isBookRes);
 
-            <div>
-                <input type="text" id="return_date"
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
-                    name="return_date" placeholder="Select Return Date" onfocus="(this.type)='date'">
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
-                    <?php if (!empty($error["emailErr"])) {
-                        echo $error["emailErr"];
-                    } ?>
-                </span>
-            </div>
+if ($bookedCount == 0) { ?>
+    <div class="w-full h-200 md:h-fit bg-cover flex flex-col justify-center items-center text-white mt-30 py-10 bg-no-repeat bg-scroll"
+        style="background-image:url('../Assets/contact_form_bg.png')">
+        <h4 class="text-2xl md:text-[45px] font-semibold mb-2 text-center my-20">Book This Car Now</h4>
+        <div class="w-80 md:w-4/5 mx-auto md:mb-5">
+            <form name="bookVehicle" id="bookVehicle" method="post" class="space-y-5">
+                <input type="hidden" name="vehicle_id" id="vehicle_id" value="<?php echo $vehicleID; ?>">
+                <div>
+                    <input type="text" id="pickup_date"
+                        class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
+                        name="pickup_date" placeholder="Select Pickup Date" onfocus="(this.type)='date'">
+                    <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                        <?php if (!empty($error["nameErr"])) {
+                            echo $error["nameErr"];
+                        } ?>
+                    </span>
+                </div>
 
-            <div>
-                <select
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto appearance-none"
-                    name="pickup_location" id="pickup_location">
-                    <option value="">Select Pickup Location</option>
-                    <?php
-                    foreach ($availableLoc as $val) { ?>
-                        <option value="<?php echo $val; ?>"><?php echo $val; ?></option>
-                    <?php }
-                    ?>
-                </select>
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
-                    <?php if (!empty($error["phoneErr"])) {
-                        echo $error["phoneErr"];
-                    } ?>
-                </span>
-            </div>
+                <div>
+                    <input type="text" id="return_date"
+                        class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
+                        name="return_date" placeholder="Select Return Date" onfocus="(this.type)='date'">
+                    <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                        <?php if (!empty($error["emailErr"])) {
+                            echo $error["emailErr"];
+                        } ?>
+                    </span>
+                </div>
 
-            <div>
-                <select
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto appearance-none"
-                    name="is_driver_needed" id="is_driver_needed">
-                    <option value="">Need a Driver?</option>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
-                    <?php if (!empty($error["phoneErr"])) {
-                        echo $error["phoneErr"];
-                    } ?>
-                </span>
-            </div>
+                <div>
+                    <select
+                        class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto appearance-none"
+                        name="pickup_location" id="pickup_location">
+                        <option value="">Select Pickup Location</option>
+                        <?php
+                        foreach ($availableLoc as $val) { ?>
+                            <option value="<?php echo $val; ?>"><?php echo $val; ?></option>
+                        <?php }
+                        ?>
+                    </select>
+                    <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                        <?php if (!empty($error["phoneErr"])) {
+                            echo $error["phoneErr"];
+                        } ?>
+                    </span>
+                </div>
 
-            <div>
-                <textarea id="additional_notes"
-                    class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
-                    name="additional_notes" rows="5" placeholder="Additional Notes"></textarea>
-                <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
-                    <?php if (!empty($error["msgErr"])) {
-                        echo $error["msgErr"];
-                    } ?>
-                </span>
-            </div>
+                <div>
+                    <select
+                        class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto appearance-none"
+                        name="is_driver_needed" id="is_driver_needed">
+                        <option value="">Need a Driver?</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+                    <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                        <?php if (!empty($error["phoneErr"])) {
+                            echo $error["phoneErr"];
+                        } ?>
+                    </span>
+                </div>
 
-            <div>
-                <button id="confirm_booking"
-                    class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
-                    Confirm Booking
-                </button>
-            </div>
+                <div>
+                    <textarea id="additional_notes"
+                        class="bg-white text-black px-3 md:px-6 py-3 rounded-2xl focus:outline-none block w-80 md:w-4/5 mx-auto"
+                        name="additional_notes" rows="5" placeholder="Additional Notes"></textarea>
+                    <span class="text-sm font-medium w-80 md:w-4/5 mx-auto block">
+                        <?php if (!empty($error["msgErr"])) {
+                            echo $error["msgErr"];
+                        } ?>
+                    </span>
+                </div>
 
-            <div id="set_message">
-            </div>
-        </form>
+                <div>
+                    <button id="confirm_booking"
+                        class="block bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5 hover:cursor-pointer hover:bg-[#7B5D01]">
+                        <i class="fa-solid fa-calendar-check"></i>
+                        Confirm Booking
+                    </button>
+                </div>
+
+                <div id="set_message">
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+<?php } ?>
+
 
 <?php
 require_once "../VisitorLayout/footer.php";

@@ -3,6 +3,8 @@ $titleTag = "Elite Auto Motors | Car Details";
 require_once "../VisitorLayout/header.php";
 require_once "../DB/db_connection.php";
 
+$image_dir = "http://" . $_SERVER['HTTP_HOST'] . "/Assets/uploads/";
+
 $vehicleID = $_GET['id'];
 
 // Find car information
@@ -11,15 +13,40 @@ $vehicleRes = mysqli_query($isConnect, $vehicleQry);
 $vehicleResArr = mysqli_fetch_assoc($vehicleRes);
 // print_r($vehicleResArr);
 
+// Fetch vehicle multiple images
+$vehicleImgsRes = mysqli_query($isConnect, "SELECT * FROM vehicle_images WHERE vehicle_id = " . $vehicleResArr['id']);
+// $vehicleImgsResArr = mysqli_fetch_array($vehicleImgsRes);
+// print_r($vehicleImgsResArr);
+
+
+
 $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
-
-
 
 ?>
 
+<!-- Take image slideshow reference -->
+<!-- https://www.w3schools.com/howto/howto_js_slideshow.asp -->
+
+<?php if (mysqli_num_rows($vehicleImgsRes) > 1) { ?>
+    <div class="w-full relative mx-auto my-10">
+        <?php
+        while ($row = mysqli_fetch_array($vehicleImgsRes)) { ?>
+            <div class="w-4/5 mx-auto flex justify-center items-center relative hidden vehicle-slides">
+                <img src="<?php echo $image_dir . $row['image_path']; ?>" alt="<?php echo $vehicleResArr['make']; ?>"
+                    class="w-4/5 h-140 mx-auto object-cover rounded-md shadow-lg">
+            </div>
+
+        <?php } ?>
+        <a id="prev_slide"
+            class="ml-32 text-[#121212] p-2 rounded cursor-pointer absolute top-[50%] mt-[-22px] hover:bg-white"><i
+                class="fa-solid fa-angle-left"></i></a>
+        <a id="next_slide"
+            class="mr-32 text-[#121212] p-2 rounded cursor-pointer absolute top-[50%] mt-[-22px] right-0 hover:bg-white"><i
+                class="fa-solid fa-angle-right"></i></a>
+    </div>
+<?php } ?>
+
 <div class="w-full my-20">
-    <img src="<?php echo "http://" . $_SERVER['HTTP_HOST'] . "/Assets/Ferrari.png"; ?>" alt="thumbnail"
-        class="md:w-4/5 object-fit mx-auto mt-20">
     <h3 class="md:w-4/5 mx-auto my-5 text-xl md:text-4xl text-[#7B5D01] font-medium">
         <?php echo $vehicleResArr['make'] . " . " . $vehicleResArr['model']; ?>
     </h3>
@@ -237,6 +264,38 @@ require_once "../VisitorLayout/footer.php";
                 })
             }
 
+        })
+
+
+        // Scrolling Vehcile Images
+        var slideIndex = 1;
+        showSlide(slideIndex)
+
+        function plusSlides(num) {
+            showSlide(slideIndex += num)
+        }
+
+        function currentSlide(n) {
+            showSlide(slideIndex = n)
+        }
+
+        function showSlide(num) {
+            let index;
+            let slides = $(".vehicle-slides");
+
+            if (num > slides.length) slideIndex = 1;
+            if (num < 1) slideIndex = slides.length;
+
+            slides.removeClass("visible").addClass("hidden");
+            slides.eq(slideIndex - 1).removeClass("hidden").addClass("visible");
+        }
+
+        $("#prev_slide").on("click", function () {
+            plusSlides(-1);
+        })
+
+        $("#next_slide").on("click", function () {
+            plusSlides(1);
         })
     })
 </script>

@@ -103,7 +103,13 @@ $countRows = mysqli_num_rows($allVehiclesRes);
     id="fetchVehicle">
     <?php
     while ($row = mysqli_fetch_assoc($allVehiclesRes)) { ?>
-        <div class="w-80 mx-auto md:w-full">
+        <!-- Check if vehcile is already booked or not -->
+        <?php
+        $isBookRes = mysqli_query($isConnect, "SELECT COUNT(*) as total FROM vehicle_booking WHERE vehicle_id = " . $row['id']);
+        $isBookResArr = mysqli_fetch_assoc($isBookRes);
+        $bookedCount = $isBookResArr['total'];
+        ?>
+        <div class="w-80 mx-auto md:w-full relative">
             <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $row['thumbnail_image']; ?>"
                 alt="Lamborghini" class="object-cover h-72 w-full rounded-md mb-2">
             <div class="flex flex-row justify-between items-center">
@@ -121,6 +127,15 @@ $countRows = mysqli_num_rows($allVehiclesRes);
                     </a>
                 </div>
             </div>
+            <div>
+                    <?php if ($bookedCount == 0) { ?>
+                        <button class="absolute top-6 right-5 bg-green-600 text-white text-xs px-2 py-1 rounded-sm"><i
+                                class="fa-solid fa-circle-check"></i> Available</button>
+                    <?php } else { ?>
+                        <button class="absolute top-6 right-5 bg-red-600 text-white text-xs px-2 py-1 rounded-sm"><i
+                                class="fa-solid fa-calendar-xmark"></i> Booked</button>
+                    <?php } ?>
+                </div>
         </div>
     <?php } ?>
 </div>
@@ -131,7 +146,8 @@ $countRows = mysqli_num_rows($allVehiclesRes);
     <p class="text-base md:text-2xl font-light mb-4">
         Get in touch with our team for exclusive models and custom bookings.
     </p>
-    <a href="<?php echo $path . '/Visitor/contact_us.php'; ?>" class="bg-[#7B5D01] w-fit px-3 py-2 rounded-md text-sm hover:bg-[#3b3112] cursor-pointer">
+    <a href="<?php echo $path . '/Visitor/contact_us.php'; ?>"
+        class="bg-[#7B5D01] w-fit px-3 py-2 rounded-md text-sm hover:bg-[#3b3112] cursor-pointer">
         <i class="fa-regular fa-paper-plane"></i>
         Contact Us
     </a>

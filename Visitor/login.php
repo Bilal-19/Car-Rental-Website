@@ -36,7 +36,7 @@ require_once "../VisitorLayout/header.php";
             <div>
                 <button id="create_account"
                     class="bg-[#513E04] cursor-pointer text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
-                    Login
+                    <i class="fa fa-sign-in" aria-hidden="true"></i> Login 
                 </button>
             </div>
 

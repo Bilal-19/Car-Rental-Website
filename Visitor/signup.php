@@ -89,7 +89,7 @@ require_once "../DB/db_connection.php";
             <div>
                 <button id="create_account"
                     class="bg-[#513E04] hover:bg-[#3b3112] hover:cursor-pointer text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
-                    Create Account <i class="fa fa-sign-in" aria-hidden="true"></i>
+                    <i class="fa-solid fa-user-plus"></i> Create Account
                 </button>
             </div>
 

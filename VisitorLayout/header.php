@@ -72,7 +72,8 @@
                 Us</a>
             <a href="<?php echo $path . '/Visitor/contact_us.php' ?>"
                 class="hover:text-[#EDC549] block md:inline">Contact Us</a>
-            <a class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block cursor-pointer" id="log-in-out">User
-                Account</a>
+            <a class="bg-[#7B5D01] text-white rounded-3xl px-5 py-1 block cursor-pointer" id="log-in-out">
+            <i class="fa-solid fa-user-gear"></i>    User Account
+            </a>
         </div>
     </div>

@@ -31,64 +31,8 @@ function showNotification($type, $msg)
     }
 }
 
-// 1. Establish DB Connection
 require_once "../DB/db_connection.php";
 
-
-// 2. Get Form Values
-
-/*
-if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_name = $_POST["full_name"];
-    $email_address = $_POST["email_address"];
-    $phone = $_POST["phone"];
-    $password = $_POST["password"];
-
-    // 3. Error Handling
-    // Create an array named 'error' to store all the error message
-    if (empty($user_name)) {
-        $error['nameErr'] = "Please enter your full name";
-    } else {
-        $user_name = validateInput($user_name);
-        // pattern matching
-        $isPatternMatch = preg_match("/^[a-zA-Z-' ]*$/", $user_name);
-        if (!$isPatternMatch) {
-            $error['nameErr'] = "Only letters and whiespace allowed";
-        }
-    }
-
-    if (empty($email_address)) {
-        $error['emailErr'] = "Please enter email address";
-    } else {
-        $email_address = validateInput($email_address);
-    }
-
-    if (empty($phone)) {
-        $error['phoneErr'] = "Please enter contact number";
-    } else {
-        $phone = validateInput($phone);
-    }
-
-    if (empty($password)) {
-        $error['pswdErr'] = "Please set your password";
-    } else {
-        $password = validateInput($password);
-    }
-
-
-    // Start changes from this line
-    if (empty($error)) {
-        // 4. Insert Query
-        $insertQuery = "INSERT INTO general_enquiry(full_name, email_address,phone,message_subject,user_message) VALUES('$user_name', '$email_address', '$phone','$subject','$message')";
-        $result = mysqli_query($isConnect, $insertQuery);
-        if ($result) {
-            $notifyVisitor = showNotification("success", "Enquiry submitted.");
-        }
-    } else {
-        $notifyVisitor = showNotification("error", "Please fill all the requried fields");
-    }
-}
-*/
 ?>
 
 <!-- Contact Form -->
@@ -144,8 +88,8 @@ if ($isConnect && $_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <div>
                 <button id="create_account"
-                    class="bg-[#513E04] text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
-                    Create Account
+                    class="bg-[#513E04] hover:bg-[#3b3112] hover:cursor-pointer text-white rounded-2xl px-3 md:px-6 py-3 w-80 md:w-4/5 mx-auto block my-5">
+                    Create Account <i class="fa fa-sign-in" aria-hidden="true"></i>
                 </button>
             </div>
 

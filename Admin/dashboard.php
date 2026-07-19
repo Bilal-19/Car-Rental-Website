@@ -14,6 +14,16 @@ $noOfBookedVehicleRes = mysqli_query($isConnect, "SELECT count(DISTINCT vehicle_
 $noOfBookedVehicleResCount = mysqli_fetch_assoc($noOfBookedVehicleRes);
 $countBookedVehicles = $noOfBookedVehicleResCount['total'];
 
+
+// Find total registered users
+$totalUserRes = mysqli_query($isConnect, "SELECT count(*) as total FROM users");
+$totalUserResCount = mysqli_fetch_assoc($totalUserRes);
+
+
+// Find total no of enquiries received
+$genEnqRes = mysqli_query($isConnect, "SELECT count(*) as total FROM general_enquiry");
+$genEnqResCount = mysqli_fetch_assoc($genEnqRes);
+
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="w-full mt-5 bg-white rounded p-6">
@@ -44,14 +54,14 @@ $countBookedVehicles = $noOfBookedVehicleResCount['total'];
             <div class="bg-gray-200 rounded-md p-5 text-center border-x-1 border-b-4 border-gray-900">
                 <h3 class="font-medium text-lg">Total Users</h3>
                 <p class="md:text-md">
-                    <i class="fa-solid fa-users text-green-700"></i> 300
+                    <i class="fa-solid fa-users text-green-700"></i> <?php echo $totalUserResCount['total']; ?>
                 </p>
             </div>
 
             <div class="bg-gray-200 rounded-md p-5 text-center border-x-1 border-b-4 border-gray-900">
                 <h3 class="font-medium text-lg">Total Enquiries</h3>
                 <p class="md:text-md">
-                    <i class="fa-solid fa-question text-red-700"></i> 50
+                    <i class="fa-solid fa-question text-red-700"></i> <?php echo $genEnqResCount['total']; ?>
                 </p>
             </div>
         </div>

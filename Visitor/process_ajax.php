@@ -1,6 +1,5 @@
 <?php
-
-
+session_start();
 
 require_once "../DB/db_connection.php";
 
@@ -124,13 +123,23 @@ if ($submit_mode == "create_account") {
 
 
         // Check for email with this user already exist or not
-        $dupEmailQry = "SELECT count(*) as total FROM users WHERE email_address = '{$email_address}'";
+        $dupEmailQry = "SELECT 
+                        count(email_address) as total_email, 
+                        count(phone) as total_phone_no 
+                        FROM users 
+                        WHERE email_address = '{$email_address}' OR phone = '{$phone}'";
         $dupEmailRes = mysqli_query($isConnect, $dupEmailQry);
         $dupEmailResArr = mysqli_fetch_assoc($dupEmailRes);
 
         $createUserQry = "INSERT INTO users (full_name, email_address, phone, user_pswd) VALUES ('$full_name', '$email_address', '$phone', '$password')";
 
-        if ($dupEmailResArr['total'] == 0) {
+        $errorField = "";
+        if ($dupEmailResArr['total_phone_no'] > 0 && $dupEmailResArr['total_email'] > 0) $errorField = "Email Address & Phone Number";
+        if ($dupEmailResArr['total_phone_no'] > 0 && $dupEmailResArr['total_email'] == 0) $errorField = "Phone Number";
+        if ($dupEmailResArr['total_email'] > 0 && $dupEmailResArr['total_phone_no'] == 0) $errorField = "Email Address";
+
+        if ($dupEmailResArr['total_email'] == 0 && $dupEmailResArr['total_phone_no'] == 0) {
+
             // Create user
             $createUserRes = mysqli_query($isConnect, $createUserQry); //Return boolean 1 or 0
 
@@ -141,9 +150,10 @@ if ($submit_mode == "create_account") {
                 $arr['query_result'] = 0;
                 $arr['query_msg'] = 'Something went wrong. Please try again later.';
             }
+
         } else {
             $arr['query_result'] = 0;
-            $arr['query_msg'] = 'User with this Email Already Exist.';
+            $arr['query_msg'] = 'User with this ' . $errorField . ' Already Exist.';
         }
     }
 
@@ -171,7 +181,6 @@ if ($submit_mode == "login") {
     // echo $hashed_pswd . "<br>" . $stored_password; die();
 
     if (password_verify($password, $stored_password)) {
-        session_start();
 
         $_SESSION['username'] = $storePswdResArr['full_name'];
         $_SESSION['useremail'] = $storePswdResArr['email_address'];

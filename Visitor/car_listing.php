@@ -4,8 +4,9 @@ require_once "../VisitorLayout/header.php";
 require_once "../DB/db_connection.php";
 
 // Fetch vehicles listing
-$allVehiclesQry = "SELECT * FROM vehicles";
-
+$allVehiclesFilterQry = "SELECT * FROM vehicles";
+$where = "";
+$order = "";
 
 // Filter form
 $conditionFilters = [];
@@ -26,18 +27,21 @@ if (isset($_GET['isSubmbitted']) && ($_GET['isSubmbitted'] == 'Yes')) {
     }
 
     if (!empty($conditionFilters)) {
-        $allVehiclesQry .= " WHERE " . implode(" OR ", $conditionFilters);
+        $where = " WHERE " . implode(" OR ", $conditionFilters);
     }
     if (!empty($vehicleRent)) {
         if ($vehicleRent == "asc_order") {
-            $allVehiclesQry .= " ORDER BY per_day_cost ASC";
+            $order = " ORDER BY per_day_cost ASC";
         } else {
-            $allVehiclesQry .= " ORDER BY per_day_cost DESC";
+            $order = " ORDER BY per_day_cost DESC";
         }
     }
 }
 
-// echo $allVehiclesQry;
+$allVehiclesQry = $allVehiclesFilterQry . $where . $order;
+
+// Fetch six record on initial page load
+$allVehiclesQry .= " LIMIT 0, 6";
 
 $allVehiclesRes = mysqli_query($isConnect, $allVehiclesQry);
 $countRows = mysqli_num_rows($allVehiclesRes);
@@ -99,7 +103,7 @@ $countRows = mysqli_num_rows($allVehiclesRes);
     <p class="text-md md:text-2xl font-light">Featured Luxury Cars</p>
 </div>
 
-<div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-15 space-y-5 md:space-y-0 mb-20 md:mb-100"
+<div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-15 space-y-5 md:space-y-0 mb-20 md:mb-30"
     id="fetchVehicle">
     <?php
     while ($row = mysqli_fetch_assoc($allVehiclesRes)) { ?>
@@ -128,16 +132,24 @@ $countRows = mysqli_num_rows($allVehiclesRes);
                 </div>
             </div>
             <div>
-                    <?php if ($bookedCount == 0) { ?>
-                        <button class="absolute top-6 right-5 bg-green-600 text-white text-xs px-2 py-1 rounded-sm"><i
-                                class="fa-solid fa-circle-check"></i> Available</button>
-                    <?php } else { ?>
-                        <button class="absolute top-6 right-5 bg-red-600 text-white text-xs px-2 py-1 rounded-sm"><i
-                                class="fa-solid fa-calendar-xmark"></i> Booked</button>
-                    <?php } ?>
-                </div>
+                <?php if ($bookedCount == 0) { ?>
+                    <button class="absolute top-6 right-5 bg-green-600 text-white text-xs px-2 py-1 rounded-sm"><i
+                            class="fa-solid fa-circle-check"></i> Available</button>
+                <?php } else { ?>
+                    <button class="absolute top-6 right-5 bg-red-600 text-white text-xs px-2 py-1 rounded-sm"><i
+                            class="fa-solid fa-calendar-xmark"></i> Booked</button>
+                <?php } ?>
+            </div>
         </div>
     <?php } ?>
+</div>
+
+<div class="w-1/2 mx-auto text-center">
+    <button id="load-more-vehicles" data-page="2"
+        data-active-query="<?php echo htmlspecialchars($allVehiclesFilterQry . $where . $order, ENT_QUOTES, 'UTF-8'); ?>"
+        class="bg-[#7B5D01] hover:bg-[#3b3112] text-white rounded-3xl px-5 py-1 block cursor-pointer mx-auto">
+        <i class="fa-solid fa-spinner"></i> Load More
+    </button>
 </div>
 
 <div class="mt-30 w-full h-52 md:h-132 text-white flex flex-col justify-center text-start p-10 bg-cover"
@@ -174,6 +186,37 @@ require_once "../VisitorLayout/footer.php";
                 },
                 success: function (res) {
                     $("#fetchVehicle").html(res)
+                }
+            })
+        })
+
+        // Load more vehicle functionality
+        $("#load-more-vehicles").on("click", function () {
+            // alert("hello");
+            var btn = $(this); //current selected element
+
+            //Fetch data attribute value
+            var currentPage = parseInt($(this).attr("data-page"));
+            var activeQuery = $(this).attr("data-active-query");
+
+            $.ajax({
+                url: "process_ajax.php",
+                type: "GET",
+                data: {
+                    submit_mode: "load_more_vehicles",
+                    page: currentPage,
+                    active_query: activeQuery
+                },
+                beforeSend: function () {
+                    btn.html('<i class="fa-solid fa-circle-notch fa-spin"></i> Loading...');
+                    btn.prop("disabled", true);
+                },
+                success: function (response) {
+                    $("#fetchVehicle").append(response);
+                    btn.html('<i class="fa-solid fa-spinner"></i> Load More');
+                    btn.prop("disabled", false);
+
+                    btn.attr("data-page", currentPage + 1)
                 }
             })
         })

@@ -214,6 +214,58 @@ if ($submit_mode == "login") {
         }
     }
     echo json_encode($arr); //Convert object / array into JSON format
-}
+} else if ($submit_mode == "load_more_vehicles") {
+    // Get current page & active query
 
-?>
+    $current_page = (int) $_GET['page'];
+    $active_query = $_GET['active_query'];
+
+    // echo "Page: " . $current_page . "<br> Active Query: " . $active_query; die;
+    // Set Limit & Offset
+    $limit = 6;
+    $off_set = ($current_page - 1) * $limit;
+
+    // Construct paginate query
+    $paginate_query = $active_query . " LIMIT $off_set, $limit";
+    //var_dump($current_page);
+
+    // echo $paginate_query . '<br>'; die;
+    $allVehiclesRes = mysqli_query($isConnect, $paginate_query);
+
+    while ($row = mysqli_fetch_assoc($allVehiclesRes)) { ?>
+                <!-- Check if vehcile is already booked or not -->
+            <?php
+            $isBookRes = mysqli_query($isConnect, "SELECT COUNT(*) as total FROM vehicle_booking WHERE vehicle_id = " . $row['id']);
+            $isBookResArr = mysqli_fetch_assoc($isBookRes);
+            $bookedCount = $isBookResArr['total'];
+            ?>
+                <div class="w-80 mx-auto md:w-full relative">
+                    <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $row['thumbnail_image']; ?>"
+                        alt="Lamborghini" class="object-cover h-72 w-full rounded-md mb-2">
+                    <div class="flex flex-row justify-between items-center">
+                        <div>
+                            <p class="font-light text-sm"><?php echo $row['make'] . " | " . $row['model']; ?></p>
+                            <p class="font-light text-sm">From <b class="font-medium">AED
+                            <?php echo floor($row['per_day_cost']) . ' / day'; ?></b></p>
+                        </div>
+                        <div>
+                            <a target="_blank"
+                                href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Visitor/car_details.php?id=' . $row['id']; ?>"
+                                class="bg-[#7B5D01] hover:bg-[#3b3112] text-white rounded-md text-sm py-2 px-3">
+                                <i class="fa-solid fa-circle-info"></i>
+                                View Detail
+                            </a>
+                        </div>
+                    </div>
+                    <div>
+                <?php if ($bookedCount == 0) { ?>
+                            <button class="absolute top-6 right-5 bg-green-600 text-white text-xs px-2 py-1 rounded-sm"><i
+                                    class="fa-solid fa-circle-check"></i> Available</button>
+                <?php } else { ?>
+                            <button class="absolute top-6 right-5 bg-red-600 text-white text-xs px-2 py-1 rounded-sm"><i
+                                    class="fa-solid fa-calendar-xmark"></i> Booked</button>
+                <?php } ?>
+                    </div>
+                </div>
+    <?php } ?>
+<?php } ?>

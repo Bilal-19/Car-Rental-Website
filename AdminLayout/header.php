@@ -33,9 +33,13 @@
         }
     </style>
 
-     <!-- jQuery reference -->
+    <!-- jQuery reference -->
     <script src="https://code.jquery.com/jquery-4.0.0.min.js"
-        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous"></script>
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous">
+        </script>
+
+    <!-- Add Char JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
 </head>
 
 <body class="bg-gray-100 min-h-dvh flex flex-col">
@@ -46,5 +50,3 @@
             <i class="fas fa-bars"></i>
         </button>
     </header>
-
-    

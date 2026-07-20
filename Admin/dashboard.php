@@ -24,6 +24,22 @@ $totalUserResCount = mysqli_fetch_assoc($totalUserRes);
 $genEnqRes = mysqli_query($isConnect, "SELECT count(*) as total FROM general_enquiry");
 $genEnqResCount = mysqli_fetch_assoc($genEnqRes);
 
+// Find monthly booking stats
+$monthlyBookQry = "SELECT
+                   DATE_FORMAT(pickup_date, '%b %Y') AS booking_month_year,
+                   COUNT(*) AS total_booking
+                   FROM vehicle_booking
+                   GROUP BY MONTH(pickup_date), YEAR(pickup_date)";
+$monthBookRes = mysqli_query($isConnect, $monthlyBookQry);
+
+$month_book_x = array();
+$month_book_y = array();
+
+while ($row = mysqli_fetch_assoc($monthBookRes)) {
+    $month_book_x[] = $row['booking_month_year'];
+    $month_book_y[] = $row['total_booking'];
+}
+
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="w-full mt-5 bg-white rounded p-6">
@@ -66,8 +82,36 @@ $genEnqResCount = mysqli_fetch_assoc($genEnqRes);
             </div>
         </div>
 
+        <h2 class="text-xl font-semibold my-10">Monthy Booking Graph</h2>
+
+        <div class="w-full md:w-1/2 border-2 border-gray-100 shadow-md p-5 rounded-md">
+            <canvas id="monthly-booking-chart"></canvas>
+        </div>
     </div>
 </main>
 </div>
 
 <?php include("../AdminLayout/footer.php"); ?>
+
+
+<script>
+    const xVal = <?php echo json_encode($month_book_x); ?>;
+    const yVal = <?php echo json_encode($month_book_y, JSON_NUMERIC_CHECK); ?>
+
+    new Chart("monthly-booking-chart", {
+        type: "bar",
+        data: {
+            labels: xVal,
+            datasets: [{
+                data: yVal,
+                backgroundColor: "lightgrey"
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+</script>

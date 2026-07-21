@@ -152,6 +152,7 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
 
 
                 <div class="flex flex-col md:col-span-4">
+                    <img id="preview_uploaded_img" class="w-full rounded-md border-1">
                     <label for="preview_img">Thumbnail Image:</label>
                     <input type="file" name="preview_img" id="preview_img" class="required p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
                         file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
@@ -269,6 +270,22 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                 })
             }
         })
+    
+    
+        // Show thumbnail image preview when file uploaded
+        $("#preview_img").change(function(){
+            readImageURL(this);
+        })
+
+        function readImageURL(inputFile){
+            if (inputFile.files && inputFile.files[0]){
+                var reader = new FileReader();
+                reader.onload = function(e){
+                    $("#preview_uploaded_img").attr("src", e.target.result).show();
+                }
+                reader.readAsDataURL(inputFile.files[0])
+            }
+        }
     })
 
 </script>

@@ -84,7 +84,7 @@ while ($row = mysqli_fetch_assoc($monthBookRes)) {
 
         <h2 class="text-xl font-semibold my-10">Monthy Booking Graph</h2>
 
-        <div class="w-full md:w-1/2 border-2 border-gray-100 shadow-md p-5 rounded-md">
+        <div class="w-full md:w-1/2 border-2 border-gray-100 shadow-md hover:shadow-xl p-5 rounded-md">
             <canvas id="monthly-booking-chart"></canvas>
         </div>
     </div>
@@ -104,13 +104,23 @@ while ($row = mysqli_fetch_assoc($monthBookRes)) {
             labels: xVal,
             datasets: [{
                 data: yVal,
-                backgroundColor: "lightgrey"
+                backgroundColor: 'rgba(75, 85, 99, 0.15)',
+                borderColor: 'rgba(75, 85, 99, 1)',
+                borderWidth: 1.5,
+
+                borderRadius: 6,
+                borderSkipped: false
             }]
         },
         options: {
             responsive: true,
             scales: {
                 y: { beginAtZero: true }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
             }
         }
     });

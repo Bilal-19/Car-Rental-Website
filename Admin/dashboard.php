@@ -29,7 +29,8 @@ $monthlyBookQry = "SELECT
                    DATE_FORMAT(pickup_date, '%b %Y') AS booking_month_year,
                    COUNT(*) AS total_booking
                    FROM vehicle_booking
-                   GROUP BY MONTH(pickup_date), YEAR(pickup_date)";
+                   GROUP BY MONTH(pickup_date), YEAR(pickup_date)
+                   ORDER BY MONTH(pickup_date), YEAR(pickup_date)";
 $monthBookRes = mysqli_query($isConnect, $monthlyBookQry);
 
 $month_book_x = array();
@@ -38,6 +39,24 @@ $month_book_y = array();
 while ($row = mysqli_fetch_assoc($monthBookRes)) {
     $month_book_x[] = $row['booking_month_year'];
     $month_book_y[] = $row['total_booking'];
+}
+
+$revenueQry = "SELECT
+                DATE_FORMAT(pickup_date, '%b %Y') AS tenure,
+                SUM(DATEDIFF(a.return_date, a.pickup_date)) AS no_of_days,    
+                SUM(b.per_day_cost * DATEDIFF(a.return_date, a.pickup_date)) AS generated_revenue
+                FROM vehicle_booking a
+                INNER JOIN vehicles b ON a.vehicle_id = b.id
+                GROUP BY DATE_FORMAT(pickup_date, '%b %Y'), YEAR(pickup_date), MONTH(pickup_date)
+                ORDER BY YEAR(pickup_date) ASC, MONTH(pickup_date) ASC";
+$revenueRes = mysqli_query($isConnect, $revenueQry);
+
+$month_rev_x = array();
+$month_rev_y = array();
+
+while ($row = mysqli_fetch_assoc($revenueRes)) {
+    $month_rev_x[] = $row['tenure'];
+    $month_rev_y[] = $row['generated_revenue'];
 }
 
 ?>
@@ -82,11 +101,22 @@ while ($row = mysqli_fetch_assoc($monthBookRes)) {
             </div>
         </div>
 
-        <h2 class="text-xl font-semibold my-10">Monthy Booking Graph</h2>
 
-        <div class="w-full md:w-1/2 border-2 border-gray-100 shadow-md hover:shadow-xl p-5 rounded-md">
-            <canvas id="monthly-booking-chart"></canvas>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 my-10">
+            
+            <div class="border-2 border-gray-100 shadow-md hover:shadow-xl p-5 rounded-md">
+                <h2 class="text-xl font-semibold my-10">Monthy Booking Graph</h2>
+                <canvas id="monthly-booking-chart"></canvas>
+            </div>
+        
+        <div class="border-2 border-gray-100 shadow-md hover:shadow-xl p-5 rounded-md">
+                <h2 class="text-xl font-semibold my-10">Revenue Chart</h2>
+            <canvas id="revenue-chart"></canvas>
         </div>
+        </div>
+        
+
+        
     </div>
 </main>
 </div>
@@ -110,6 +140,40 @@ while ($row = mysqli_fetch_assoc($monthBookRes)) {
 
                 borderRadius: 6,
                 borderSkipped: false
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    })
+
+
+    // Revenue Chart
+    const xRevVal = <?php echo json_encode($month_rev_x); ?>;
+    const yRevVal = <?php echo json_encode($month_rev_y, JSON_NUMERIC_CHECK); ?>;
+    new Chart("revenue-chart", {
+        type: "line",
+        data: {
+            labels: xRevVal,
+            datasets: [{
+                data: yRevVal,
+                backgroundColor: 'rgba(75, 85, 99, 0.15)',
+                borderColor: 'rgba(75, 85, 99, 1)',
+                borderWidth: 1.5,
+
+                borderRadius: 6,
+                borderSkipped: false,
+
+                fill: true,
+                tension: 0.3
             }]
         },
         options: {

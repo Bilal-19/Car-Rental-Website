@@ -134,9 +134,12 @@ if ($submit_mode == "create_account") {
         $createUserQry = "INSERT INTO users (full_name, email_address, phone, user_pswd) VALUES ('$full_name', '$email_address', '$phone', '$password')";
 
         $errorField = "";
-        if ($dupEmailResArr['total_phone_no'] > 0 && $dupEmailResArr['total_email'] > 0) $errorField = "Email Address & Phone Number";
-        if ($dupEmailResArr['total_phone_no'] > 0 && $dupEmailResArr['total_email'] == 0) $errorField = "Phone Number";
-        if ($dupEmailResArr['total_email'] > 0 && $dupEmailResArr['total_phone_no'] == 0) $errorField = "Email Address";
+        if ($dupEmailResArr['total_phone_no'] > 0 && $dupEmailResArr['total_email'] > 0)
+            $errorField = "Email Address & Phone Number";
+        if ($dupEmailResArr['total_phone_no'] > 0 && $dupEmailResArr['total_email'] == 0)
+            $errorField = "Phone Number";
+        if ($dupEmailResArr['total_email'] > 0 && $dupEmailResArr['total_phone_no'] == 0)
+            $errorField = "Email Address";
 
         if ($dupEmailResArr['total_email'] == 0 && $dupEmailResArr['total_phone_no'] == 0) {
 

@@ -403,6 +403,39 @@ if ($submit_mode == 'fill_model_by_brand_id') {
         $arr['query_msg'] = 'Something went wrong. Please try again later.';
     }
     echo json_encode($arr);
+} else if ($submit_mode == "live_search") {
+    $search_term = $_GET['search_param'];
+    $res = "";
+
+    $fetchUserQry = "SELECT * FROM users WHERE full_name LIKE '$search_term%' OR email_address LIKE '$search_term%'";
+    // echo $fetchUserQry; die;
+    $allUserRes = mysqli_query($isConnect, $fetchUserQry);
+    if (mysqli_num_rows($allUserRes) > 0) {
+        $i = 1;
+        while ($row = mysqli_fetch_assoc($allUserRes)) {
+            // $acc_status = "";
+            if ($row['is_account_activated'] == 1) {
+                $acc_status = "<i class='fa-solid fa-user-check text-green-500'></i>";
+            } else {
+                $acc_status = "<i class='fa-solid fa-user-xmark text-red-500'></i>";
+            }
+            $res .= "
+                <tr class='border-b border-gray-600 hover:bg-gray-200 ($i % 2 == 0) ? 'bg-gray-100' : '' '>
+                    <td class='p-2 border-x'>" . $i++ . "</td>
+                    <td class='p-2 border-x'>" . $row['full_name'] . "</td>
+                    <td class='p-2 border-x'>" . $row['email_address'] . "</td>
+                    <td class='p-2 border-x'>" . $row['phone'] . "</td>
+                    <td class='p-2 border-x'>" . displayDate($row['created_at']) . "</td>
+                    <td class='p-2 border-x text-center'><button class='active_deactive_account' value=" . $row['id'] . ">" . $acc_status . "</button></td>
+                    <td class='p-2 border-x text-center'><button class='reset_pswd' value='" . $row['id'] . "'><i class='fa-solid fa-key text-blue-500'></i></button></td>
+                </tr>";
+        }
+        echo $res;
+
+    } else {
+        $res = "<tr><td class='text-xs md:text-sm mb-5'>No record found.</td></tr>";
+        echo $res;
+    }
 }
 
 if ($submit_mode == "upload_vehicle_images") {

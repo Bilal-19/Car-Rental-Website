@@ -12,7 +12,14 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="w-full mt-5 bg-white rounded p-6">
         <h2 class="text-xl font-semibold">Registered Users</h2>
-        <p class="text-xs md:text-sm mb-5"><?php echo $allUserRes->num_rows; ?> records found</p>
+        <p class="text-xs md:text-sm mb-5" id="record-stats"><?php echo $allUserRes->num_rows; ?> records found</p>
+
+        <!-- Added search filter here -->
+        <div class="flex space-x-3">
+            <input type="search" id="search_val" class="w-full border text-sm p-2 rounded-md focus:outline-none"
+                placeholder="Search by name or email">
+            <!-- <button id="search_btn" class="border text-sm p-2 rounded-md w-1/5 bg-blue-500 text-white"><i class="fa fa-search"></i> Search</button> -->
+        </div>
 
         <div id="pswd_notification" class="text-sm my-3"></div>
         <!-- Table responsive won't work if you remove 'whitespace-nowrap' class -->
@@ -30,7 +37,7 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
                     </tr>
                 </thead>
 
-                <tbody class="text-xs whitespace-nowrap">
+                <tbody class="text-xs whitespace-nowrap" id="reg_user_data">
                     <?php
                     $i = 1;
                     while ($row = mysqli_fetch_assoc($allUserRes)) {
@@ -103,12 +110,38 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
                     if (data.query_result == 1) {
                         $("#pswd_notification").slideDown('slow')
                         $("#pswd_notification").html(`<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> ` + data.query_msg + '</p>')
-                        $("#pswd_notification").delay(3000).slideUp('slow', function(){
+                        $("#pswd_notification").delay(3000).slideUp('slow', function () {
                             location.reload()
                         });
                     } else {
                         $("#pswd_notification").html(`<p class='w-80 md:w-full mx-auto bg-yellow-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> ` + data.query_msg + '</p>')
                     }
+                }
+            })
+        })
+
+        // Live Search
+        $("#search_val").on("keyup", function () {
+            var search_val = $(this).val();
+            console.log(search_val)
+
+            $.ajax({
+                url: "admin_process_ajax.php",
+                type: "GET",
+                data: {
+                    submit_mode: "live_search",
+                    channel: "admin",
+                    search_param: search_val
+                },
+                success: function (res) {
+                    if (res == "<tr><td class='text-xs md:text-sm mb-5'>No record found.</td></tr>") {
+                        // $("#record-stats").addClass("none");
+                        $("#record-stats").html(res);
+                        $("#reg_user_data").html("");
+                    } else {
+                        $("#reg_user_data").html(res)
+                    }
+                    
                 }
             })
         })

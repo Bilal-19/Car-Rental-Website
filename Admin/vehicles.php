@@ -2,10 +2,20 @@
 include("../AdminLayout/header.php");
 include("../AdminLayout/sidebar.php");
 
+include("../pagination.php");
+
 require_once "../DB/db_connection.php";
 
-$listVehiclesQry = "SELECT * FROM vehicles WHERE enabled = 1 LIMIT 10";
+// Find total count of vehicles
+$vehicleCountRes = mysqli_query($isConnect, "SELECT COUNT(*) as totalVehicles FROM vehicles WHERE enabled = 1");
+$vehicleCountResArr = mysqli_fetch_assoc($vehicleCountRes);
+$totalRecords = $vehicleCountResArr['totalVehicles'];
+
+$listVehiclesQry = "SELECT * FROM vehicles WHERE enabled = 1 LIMIT $perPage OFFSET $offset";
 $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
+
+$totalPages = ceil($totalRecords / $perPage);
+
 
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
@@ -44,7 +54,7 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
 
                 <tbody class="text-xs whitespace-nowrap" id="vehicle_data">
                     <?php
-                    $i = 1;
+                    $i = $offset + 1;
                     while ($row = mysqli_fetch_assoc($listVehiclesRes)) { ?>
                         <!-- echo "<pre>"; -->
                         <!-- print_r($row); -->
@@ -70,6 +80,8 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
                 </tbody>
             </table>
         </div>
+
+        <?php include("../pagination_ui.php"); ?>
 
     </div>
 </main>

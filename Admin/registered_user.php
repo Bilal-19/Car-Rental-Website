@@ -2,35 +2,21 @@
 include("../AdminLayout/header.php");
 include("../AdminLayout/sidebar.php");
 
+include("../pagination.php");
+
 require_once "../DB/db_connection.php";
 require_once "../utilities.php";
 
 // Extract total no of users
-$totalUserRes       = mysqli_query($isConnect, "SELECT COUNT(*) AS totalUsers FROM users");
-$totalUserResArr    = mysqli_fetch_assoc($totalUserRes);
-$totalRecords       = $totalUserResArr['totalUsers'];
-// echo $totalRecords; die;
+$totalUserRes = mysqli_query($isConnect, "SELECT COUNT(*) AS totalUsers FROM users");
+$totalUserResArr = mysqli_fetch_assoc($totalUserRes);
+$totalRecords = $totalUserResArr['totalUsers'];
 
-$perPage = 8; // per page 5 records
-// Check if page number exist in URL
-$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-
-// Prevent negative or zero page value
-if ($page < 1){
-    $page = 1;
-}
-
-// Calculate offset
-$offset = ($page - 1 ) * $perPage;
 
 $fetchUserQry = "SELECT * FROM users LIMIT $perPage OFFSET $offset";
 $allUserRes = mysqli_query($isConnect, $fetchUserQry);
-// Pagination Logic
 
-//$totalRecords = mysqli_num_rows($allUserRes);
 $totalPages = ceil($totalRecords / $perPage);
-
-//$totalPages = 5;
 
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
@@ -91,15 +77,7 @@ $totalPages = ceil($totalRecords / $perPage);
             </table>
         </div>
 
-        <!-- Pagination Links -->
-        <div class="flex flex-row justify-center space-x-3">
-            <?php
-            for ($link = 1; $link <= $totalPages; $link++) { 
-                $activeClass = ($link == $page) ? 'bg-[#7B5D01] text-white': 'bg-[#D1D5DB] text-[#7B5D01]';
-                $source = "?page=" . $link; ?>
-                <a href="<?php echo $source; ?>" class="<?php echo $activeClass; ?> px-5 py-2 rounded-md text-xs"><?php echo $link; ?></a> 
-            <?php } ?>
-        </div>
+        <?php include("../pagination_ui.php"); ?>
     </div>
 </main>
 </div>

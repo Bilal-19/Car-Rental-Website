@@ -76,7 +76,7 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
 <script>
     // Added feature: Reset password, active account, deactivate account.
     $(document).ready(function () {
-        $(".reset_pswd").on("click", function () {
+        $(document).on("click", ".reset_pswd", function () {
             var user_id = $(this).val();
 
             $.ajax({
@@ -97,7 +97,7 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
             })
         })
 
-        $(".active_deactive_account").on("click", function () {
+        $(document).on("click", ".active_deactive_account", function () {
             var account_id = $(this).val();
 
             $.ajax({
@@ -141,7 +141,7 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
                     } else {
                         $("#reg_user_data").html(res)
                     }
-                    
+
                 }
             })
         })

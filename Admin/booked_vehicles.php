@@ -2,8 +2,14 @@
 include("../AdminLayout/header.php");
 include("../AdminLayout/sidebar.php");
 
+include("../pagination.php");
+
 require_once "../DB/db_connection.php";
 require_once "../utilities.php";
+
+$countBookVeh = mysqli_query($isConnect, "SELECT COUNT(*) as totalVehicles FROM vehicle_booking");
+$countBookVehArr = mysqli_fetch_assoc($countBookVeh);
+$totalRecords = $countBookVehArr['totalVehicles'];
 
 $bookVehiclesQry = "SELECT
                     c.full_name,
@@ -18,15 +24,13 @@ $bookVehiclesQry = "SELECT
                     a.need_driver,
                     a.additional_notes,
                     a.created_at as 'booking_datetime'
-                    FROM
-                    vehicle_booking a
-                    INNER JOIN vehicles b ON
-                    a.vehicle_id = b.id
-                    INNER JOIN users c ON
-                    a.user_id = c.id
-                    LIMIT 10
-                    ";
+                    FROM vehicle_booking a 
+                    INNER JOIN vehicles b ON a.vehicle_id = b.id
+                    INNER JOIN users c ON a.user_id = c.id
+                    LIMIT $perPage OFFSET $offset";
 $bookVehiclesRes = mysqli_query($isConnect, $bookVehiclesQry);
+
+$totalPages = ceil($totalRecords / $perPage);
 
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
@@ -62,7 +66,7 @@ $bookVehiclesRes = mysqli_query($isConnect, $bookVehiclesQry);
 
                 <tbody class="text-xs whitespace-nowrap">
                     <?php
-                    $i = 1;
+                    $i = $offset + 1;
                     while ($row = mysqli_fetch_assoc($bookVehiclesRes)) {
                         // echo "<pre>";
                         // print_r($row);
@@ -78,14 +82,14 @@ $bookVehiclesRes = mysqli_query($isConnect, $bookVehiclesQry);
                             <td class="p-2 border-x"><?php echo displayDate($row['return_date']); ?></td>
                             <td class="p-2 border-x"><?php echo displayDate($row['booking_datetime']); ?></td>
                             <td class="p-2 border-x"><?php echo $row['need_driver']; ?></td>
-                            <td class="p-2 border-x"><?php echo $row['additional_notes']; ?></td>
+                            <td class="p-2 border-x"><?php echo wordwrap($row['additional_notes'], 15, '<br>'); ?></td>
                             <td class="p-2 border-x"><?php echo $row['no_of_days']; ?></td>
                         </tr>
                     <?php } ?>
                 </tbody>
             </table>
         </div>
-
+        <?php include("../pagination_ui.php"); ?>
     </div>
 </main>
 </div>

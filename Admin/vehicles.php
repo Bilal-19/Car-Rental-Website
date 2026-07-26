@@ -10,13 +10,19 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="w-full mt-5 bg-white rounded p-6">
-        <h2 class="text-xl font-semibold mb-5">All Vehicles</h2>
 
         <div class="flex flex-row justify-between items-center">
-            <p class="text-xs md:text-sm"><?php echo $listVehiclesRes->num_rows; ?> records found</p>
+            <h2 class="text-xl font-semibold">All Vehicles</h2>
             <button class="bg-blue-500 text-white text-xs md:text-sm px-3 py-1 rounded-md md:inline-block">
                 <a href="./add_vehicle.php">Add Vehicle</a>
             </button>
+        </div>
+
+        <p class="text-xs md:text-sm mb-5"><?php echo $listVehiclesRes->num_rows; ?> records found</p>
+
+        <div class="flex space-x-3">
+            <input type="search" id="search_val" class="w-full border text-sm p-2 rounded-md focus:outline-none"
+                placeholder="Search by make or model">
         </div>
 
         <div id="notification" class="text-sm my-3"></div>
@@ -36,7 +42,7 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
                     </tr>
                 </thead>
 
-                <tbody class="text-xs whitespace-nowrap">
+                <tbody class="text-xs whitespace-nowrap" id="vehicle_data">
                     <?php
                     $i = 1;
                     while ($row = mysqli_fetch_assoc($listVehiclesRes)) { ?>
@@ -49,7 +55,7 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
                             <td class="p-2 border-x"><?php echo $row['category']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['transmission']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['engine_capacity'] . " CC"; ?></td>
-                            <td class="p-2 border-x"><?php echo floor($row['per_day_cost']) . " AED / day"; ?></td>
+                            <td class="p-2 border-x"><?php echo floor($row['per_day_cost']) . " AED"; ?></td>
                             <td class="p-2 border-x text-center">
                                 <a target="_blank"
                                     href="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Admin/edit_vehicles.php?id=' . $row['id']; ?>"><i
@@ -73,7 +79,7 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
 
 <script>
     $(document).ready(function () {
-        $('.del_vehicle').on('click', function () {
+        $(document).on("click", ".del_vehicle", function () {
             var id = $(this).val();
             // alert(id);
 
@@ -92,6 +98,22 @@ $listVehiclesRes = mysqli_query($isConnect, $listVehiclesQry);
                     } else {
                         $("#notification").html(`<p class='w-80 md:w-full mx-auto bg-yellow-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> ` + data.query_msg + '</p>')
                     }
+                }
+            })
+        })
+
+        // Live search vehicle functionality
+        $("#search_val").on("keyup", function () {
+            var search_val = $(this).val();
+
+            $.ajax({
+                url: "admin_process_ajax.php",
+                data: {
+                    submit_mode: "live_search_vehicles",
+                    search_val: search_val
+                },
+                success: function (res) {
+                    $("#vehicle_data").html(res);
                 }
             })
         })

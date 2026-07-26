@@ -436,7 +436,38 @@ if ($submit_mode == 'fill_model_by_brand_id') {
         $res = "<tr><td class='text-xs md:text-sm mb-5'>No record found.</td></tr>";
         echo $res;
     }
-}
+} else if ($submit_mode == "live_search_vehicles") {
+    $search_term = $_GET['search_val'];
+    $res = "";
+
+    $fetchVehicleQry = "SELECT * FROM vehicles WHERE make LIKE '$search_term%' OR model LIKE '$search_term%'";
+    $allVehiclesRes = mysqli_query($isConnect, $fetchVehicleQry);
+    if (mysqli_num_rows($allVehiclesRes) > 0) {
+        $i = 1;
+        while ($row = mysqli_fetch_assoc($allVehiclesRes)) {
+            $editVehiclePath = "http://" . $_SERVER['HTTP_HOST'] . "/Admin/edit_vehicles.php?id=" . $row['id'];
+            $res .= "
+                <tr class='border-b border-gray-600 hover:bg-gray-300'>
+                    <td class='p-2 border-x'>" .  $i++ . "</td>
+                    <td class='p-2 border-x'>" . $row['make'] . "</td>
+                    <td class='p-2 border-x'>" . $row['model'] . "</td>
+                    <td class='p-2 border-x'>" . $row['category'] . "</td>
+                    <td class='p-2 border-x'>" . $row['transmission'] . "</td>
+                    <td class='p-2 border-x'>" . $row['engine_capacity'] . ' CC' . "</td>
+                    <td class='p-2 border-x'>" . floor($row['per_day_cost']) . ' AED' . "</td>
+                    <td class='p-2 border-x text-center'><a target='_blank' href='" . $editVehiclePath . "'><i class='fa-regular fa-pen-to-square text-blue-600'></i></a>
+                        &nbsp;&nbsp; <button class='del_vehicle' value=" . $row['id'] . "'><i class='fa-solid fa-trash-arrow-up text-red-600'></i></buton>
+                    </td>
+                </tr>
+                ";
+        }
+        echo $res; die;
+
+    } else {
+        $res = "<tr><td class='text-xs md:text-sm mb-5'>No record found.</td></tr>";
+        echo $res;
+    }
+} 
 
 if ($submit_mode == "upload_vehicle_images") {
     // Code this part later for uploading multiple images of vehicle

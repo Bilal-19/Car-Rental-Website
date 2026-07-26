@@ -5,7 +5,7 @@ include("../AdminLayout/sidebar.php");
 require_once "../DB/db_connection.php";
 
 // Find count of no of vehicles
-$noOfVehicleRes = mysqli_query($isConnect, "SELECT count(*) as total FROM vehicles");
+$noOfVehicleRes = mysqli_query($isConnect, "SELECT count(*) as total FROM vehicles WhERE enabled = 1");
 $noOfVehicleCount = mysqli_fetch_assoc($noOfVehicleRes);
 $countVehicles = $noOfVehicleCount['total'];
 

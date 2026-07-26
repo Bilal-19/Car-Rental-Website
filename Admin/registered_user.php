@@ -5,14 +5,38 @@ include("../AdminLayout/sidebar.php");
 require_once "../DB/db_connection.php";
 require_once "../utilities.php";
 
-$fetchUserQry = "SELECT * FROM users LIMIT 10";
+// Extract total no of users
+$totalUserRes       = mysqli_query($isConnect, "SELECT COUNT(*) AS totalUsers FROM users");
+$totalUserResArr    = mysqli_fetch_assoc($totalUserRes);
+$totalRecords       = $totalUserResArr['totalUsers'];
+// echo $totalRecords; die;
+
+$perPage = 8; // per page 5 records
+// Check if page number exist in URL
+$page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+
+// Prevent negative or zero page value
+if ($page < 1){
+    $page = 1;
+}
+
+// Calculate offset
+$offset = ($page - 1 ) * $perPage;
+
+$fetchUserQry = "SELECT * FROM users LIMIT $perPage OFFSET $offset";
 $allUserRes = mysqli_query($isConnect, $fetchUserQry);
+// Pagination Logic
+
+//$totalRecords = mysqli_num_rows($allUserRes);
+$totalPages = ceil($totalRecords / $perPage);
+
+//$totalPages = 5;
 
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="w-full mt-5 bg-white rounded p-6">
         <h2 class="text-xl font-semibold">Registered Users</h2>
-        <p class="text-xs md:text-sm mb-5" id="record-stats"><?php echo $allUserRes->num_rows; ?> records found</p>
+        <p class="text-xs md:text-sm mb-5" id="record-stats"><?php echo $totalRecords; ?> records found</p>
 
         <!-- Added search filter here -->
         <div class="flex space-x-3">
@@ -31,7 +55,7 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
                         <th class="p-3">Full Name</th>
                         <th class="p-3">Email</th>
                         <th class="p-3">Phone</th>
-                        <th class="p-3">Account Creation Datetime</th>
+                        <th class="p-3">Created At</th>
                         <th class="p-3">Account Activated</th>
                         <th class="p-3">Reset Password</th>
                     </tr>
@@ -39,7 +63,7 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
 
                 <tbody class="text-xs whitespace-nowrap" id="reg_user_data">
                     <?php
-                    $i = 1;
+                    $i = $offset + 1;
                     while ($row = mysqli_fetch_assoc($allUserRes)) {
                         // echo "<pre>";
                         // print_r($row);
@@ -67,6 +91,15 @@ $allUserRes = mysqli_query($isConnect, $fetchUserQry);
             </table>
         </div>
 
+        <!-- Pagination Links -->
+        <div class="flex flex-row justify-center space-x-3">
+            <?php
+            for ($link = 1; $link <= $totalPages; $link++) { 
+                $activeClass = ($link == $page) ? 'bg-[#7B5D01] text-white': 'bg-[#D1D5DB] text-[#7B5D01]';
+                $source = "?page=" . $link; ?>
+                <a href="<?php echo $source; ?>" class="<?php echo $activeClass; ?> px-5 py-2 rounded-md text-xs"><?php echo $link; ?></a> 
+            <?php } ?>
+        </div>
     </div>
 </main>
 </div>

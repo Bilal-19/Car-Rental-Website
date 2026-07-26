@@ -1,18 +1,25 @@
 <?php
 include("../AdminLayout/header.php");
 include("../AdminLayout/sidebar.php");
-
+include("../pagination.php");
 require_once "../DB/db_connection.php";
 require_once "../utilities.php";
 
-$userEnquiryQry = "SELECT * FROM general_enquiry LIMIT 10";
+$userEnquiryQry = "SELECT * FROM general_enquiry LIMIT $perPage OFFSET $offset";
 $userEnquiryRes = mysqli_query($isConnect, $userEnquiryQry);
+
+
+$countEnq = mysqli_query($isConnect, "SELECT COUNT(*) as totalEnquiries FROM general_enquiry");
+$countEnqArr = mysqli_fetch_assoc($countEnq);
+$totalRecords = $countEnqArr['totalEnquiries'];
+
+$totalPages = ceil($totalRecords / $perPage);
 
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="w-full mt-5 bg-white rounded p-6">
         <h2 class="text-xl font-semibold">Customer Enquiries</h2>
-        <p class="text-xs md:text-sm mb-5"><?php echo $userEnquiryRes->num_rows; ?> records found</p>
+        <p class="text-xs md:text-sm mb-5"><?php echo $totalRecords; ?> records found</p>
 
         <div id="notification" class="text-sm my-3"></div>
         <!-- Table responsive won't work if you remove 'whitespace-nowrap' class -->
@@ -32,7 +39,7 @@ $userEnquiryRes = mysqli_query($isConnect, $userEnquiryQry);
 
                 <tbody class="text-xs whitespace-nowrap">
                     <?php
-                    $i = 1;
+                    $i = $offset + 1;
                     while ($row = mysqli_fetch_assoc($userEnquiryRes)) {
                         // echo "<pre>";
                         // print_r($row);
@@ -50,7 +57,7 @@ $userEnquiryRes = mysqli_query($isConnect, $userEnquiryQry);
                 </tbody>
             </table>
         </div>
-
+        <?php include("../pagination_ui.php"); ?>
     </div>
 </main>
 </div>

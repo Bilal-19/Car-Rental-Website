@@ -2,6 +2,7 @@
 $titleTag = "Elite Auto Motors | Car Listing";
 require_once "../VisitorLayout/header.php";
 require_once "../DB/db_connection.php";
+require_once "../utilities.php";
 
 // Fetch vehicles listing
 $allVehiclesFilterQry = "SELECT * FROM vehicles";
@@ -112,13 +113,25 @@ $countRows = mysqli_num_rows($allVehiclesRes);
         $isBookRes = mysqli_query($isConnect, "SELECT COUNT(*) as total FROM vehicle_booking WHERE vehicle_id = " . $row['id']);
         $isBookResArr = mysqli_fetch_assoc($isBookRes);
         $bookedCount = $isBookResArr['total'];
+
+        if (gettype($row['make']) == "int"){
+            $make = getVehicleMaker($row['make'], $isConnect);
+        } else {
+            $make = $row['make'];
+        }
+
+        if (gettype($row['model']) == "int"){
+            $model = getVehicleModel($row['model'], $isConnect);
+        } else {
+            $model = $row['make'];
+        }
         ?>
         <div class="w-80 mx-auto md:w-full relative">
             <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $row['thumbnail_image']; ?>"
                 alt="Lamborghini" class="object-cover h-72 w-full rounded-md mb-2">
             <div class="flex flex-row justify-between items-center">
                 <div>
-                    <p class="font-light text-sm"><?php echo $row['make'] . " | " . $row['model']; ?></p>
+                    <p class="font-light text-sm"><?php echo $make . " | " . $model; ?></p>
                     <p class="font-light text-sm">From <b class="font-medium">AED
                             <?php echo floor($row['per_day_cost']) . ' / day'; ?></b></p>
                 </div>

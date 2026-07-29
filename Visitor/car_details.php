@@ -2,6 +2,7 @@
 $titleTag = "Elite Auto Motors | Car Details";
 require_once "../VisitorLayout/header.php";
 require_once "../DB/db_connection.php";
+require_once "../utilities.php";
 
 $image_dir = "http://" . $_SERVER['HTTP_HOST'] . "/Assets/uploads/";
 
@@ -54,14 +55,14 @@ $availableLoc = array('Business Bay', 'Sheikh Zayed Road');
 if (mysqli_num_rows($vehicleRes) > 0) { ?>
     <div class="w-full my-20">
         <h3 class="md:w-4/5 mx-auto my-5 text-xl md:text-4xl text-[#7B5D01] font-medium">
-            <?php echo $vehicleResArr['make'] . " . " . $vehicleResArr['model']; ?>
+            <?php echo getVehicleMaker($vehicleResArr['make'], $isConnect) . " . " . getVehicleModel($vehicleResArr['model'], $isConnect); ?>
         </h3>
         <h5 class="md:w-4/5 mx-auto my-5 text-md md:text-2xl">Vehicle <span
                 class="text-[#7B5D01] font-medium">Overview</span></h5>
         <table class="md:w-4/5 text-left mx-auto">
             <tr class="border-b">
                 <th class="py-2 font-medium">Make & Model</th>
-                <td class="font-light"><?php echo $vehicleResArr['make'] . " . " . $vehicleResArr['model']; ?></td>
+                <td class="font-light"><?php echo getVehicleMaker($vehicleResArr['make'], $isConnect) . " . " . getVehicleModel($vehicleResArr['model'], $isConnect); ?></td>
             </tr>
 
             <tr class="border-b">

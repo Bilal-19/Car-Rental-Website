@@ -1,4 +1,5 @@
 <?php
+// require_once "./DB/db_connection.php";
 function uploadImage($file_input)
 {
 
@@ -69,5 +70,17 @@ function uploadImage($file_input)
 
 function displayDate($rec_date){
     return date("d-m-Y", strtotime($rec_date));
+}
+
+function getVehicleMaker($id, $isConnect){
+    $queryRes = mysqli_query($isConnect, "SELECT brand_name FROM vehicle_brands WHERE id = $id");
+    $resArr   = mysqli_fetch_assoc($queryRes);
+    return $resArr['brand_name'];
+}
+
+function getVehicleModel($id, $isConnect){
+    $queryRes = mysqli_query($isConnect, "SELECT model_name FROM vehicle_models WHERE id = $id");
+    $resArr   = mysqli_fetch_assoc($queryRes);
+    return $resArr['model_name'];
 }
 ?>

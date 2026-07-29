@@ -28,6 +28,8 @@ if ($submit_mode == 'fill_model_by_brand_id') {
 } elseif ($submit_mode == "add_vehicle") {
     $arr = array();
 
+    $isMultiFileUploaded = 0;
+
     // Get Values and Implement SQL Injection
 
     $car_maker = mysqli_real_escape_string($isConnect, $_POST['car_maker']);
@@ -77,10 +79,43 @@ if ($submit_mode == 'fill_model_by_brand_id') {
                 $arr['query_result'] = 0;
                 $arr['query_msg'] = 'Vehicle with this Registration Number Already Exist.';
             } else {
+                // After adding new vehicle, add
                 if (mysqli_query($isConnect, $instVehicleQry)) {
+                    $vehicle_foreign_key = mysqli_insert_id($isConnect);
+
+                    foreach ($_FILES['vehicle_imgs']['name'] as $key => $val) {
+                        // Key: Index(0,1)
+                        // Value: cnic_back.jpg
+
+                        $file = [
+                            'name' => $_FILES['vehicle_imgs']['name'][$key],
+                            'type' => $_FILES['vehicle_imgs']['type'][$key],
+                            'tmp_name' => $_FILES['vehicle_imgs']['tmp_name'][$key],
+                            'error' => $_FILES['vehicle_imgs']['error'][$key],
+                            'size' => $_FILES['vehicle_imgs']['size'][$key]
+                        ];
+
+                        if ($file['size'] > 0) {
+                            $filename       = uploadImage($file);
+                            $multiImageFile = $filename['new_filename'];
+                            if (mysqli_query($isConnect, "INSERT INTO vehicle_images (image_path, vehicle_id) VALUES ('$multiImageFile', '$vehicle_foreign_key')")) {
+                                $isMultiFileUploaded = 1;
+                            } else {
+                            }
+                        } else {
+                            $isMultiFileUploaded = 0;
+                        }
+                    }
+
+                    if ($isFileUploaded == 1 && $isMultiFileUploaded == 1) {
+                        $arr['query_result'] = 1;
+                        $arr['query_msg'] = 'New Vehicle Added Successfully.';
+                    } else {
+                        $arr['query_result'] = 0;
+                        $arr['query_msg'] = 'Failed to Add New Vehicle.';
+                    }
                     $arr['query_result'] = 1;
                     $arr['query_msg'] = 'New Vehicle Added Successfully.';
-
                 } else {
                     $arr['query_result'] = 0;
                     $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
@@ -448,7 +483,7 @@ if ($submit_mode == 'fill_model_by_brand_id') {
             $editVehiclePath = "http://" . $_SERVER['HTTP_HOST'] . "/Admin/edit_vehicles.php?id=" . $row['id'];
             $res .= "
                 <tr class='border-b border-gray-600 hover:bg-gray-300'>
-                    <td class='p-2 border-x'>" .  $i++ . "</td>
+                    <td class='p-2 border-x'>" . $i++ . "</td>
                     <td class='p-2 border-x'>" . $row['make'] . "</td>
                     <td class='p-2 border-x'>" . $row['model'] . "</td>
                     <td class='p-2 border-x'>" . $row['category'] . "</td>
@@ -461,13 +496,14 @@ if ($submit_mode == 'fill_model_by_brand_id') {
                 </tr>
                 ";
         }
-        echo $res; die;
+        echo $res;
+        die;
 
     } else {
         $res = "<tr><td class='text-xs md:text-sm mb-5'>No record found.</td></tr>";
         echo $res;
     }
-} 
+}
 
 if ($submit_mode == "upload_vehicle_images") {
     // Code this part later for uploading multiple images of vehicle

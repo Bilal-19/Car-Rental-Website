@@ -151,7 +151,7 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                 </div>
 
 
-                <div class="flex flex-col md:col-span-4">
+                <div class="flex flex-col md:col-span-2">
                     <img id="preview_uploaded_img" class="w-full rounded-md border-1">
                     <label for="preview_img">Thumbnail Image:</label>
                     <input type="file" name="preview_img" id="preview_img" class="required p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
@@ -160,17 +160,16 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                         hover:file:text-blue-700">
                 </div>
 
-                <!--
+                
                 <div class="flex flex-col md:col-span-2">
-                    <label for="multiple_files">Upload multiple
-                        files</label>
+                    <label for="vehicle_imgs">Upload Multiple Images: </label>
                     <input class="required p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
                         file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
                         hover:file:cursor-pointer hover:file:bg-blue-50
-                        hover:file:text-blue-700" name="vehicle_imgs[]" id="vehicle_imgs" id="multiple_files"
+                        hover:file:text-blue-700" name="vehicle_imgs[]" id="vehicle_imgs"
                         type="file" multiple>
                 </div>
-                -->
+                
 
                 <div class="flex flex-col col-span-1 md:col-span-4">
                     <button type="submit" name="submit" id="submit"

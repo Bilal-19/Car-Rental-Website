@@ -5,9 +5,44 @@ require_once "../utilities.php";
 
 $submit_mode = $_REQUEST['submit_mode'];
 
-// session_start();
+session_start();
 
-if ($submit_mode == 'fill_model_by_brand_id') {
+if ($submit_mode == "login") {
+    $arr = array();
+
+    // To prevent sql injection, use mysqli_real_escape_string
+    $email_address = mysqli_real_escape_string($isConnect, $_POST['email_address']);
+    $password = mysqli_real_escape_string($isConnect, $_POST['password']);
+
+    // hashed_password
+    // hashed_pswd = password_hash($password, PASSWORD_DEFAULT);
+
+    // Find stored password from DB
+    $storePswdQry = "SELECT * FROM users WHERE email_address = '{$email_address}'";
+    $storePswdRes = mysqli_query($isConnect, $storePswdQry);
+    $storePswdResArr = mysqli_fetch_assoc($storePswdRes);
+
+    $stored_password = $storePswdResArr['user_pswd'];
+
+    // echo $hashed_pswd . "<br>" . $stored_password; die();
+
+    if (password_verify($password, $stored_password)) {
+
+        $_SESSION['username']   = $storePswdResArr['full_name'];
+        $_SESSION['useremail']  = $storePswdResArr['email_address'];
+        $_SESSION['role']       = 'admin';
+
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'Logged In Successfully';
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Incorrect Email or Password';
+    }
+
+    echo json_encode($arr);
+
+
+} else if ($submit_mode == 'fill_model_by_brand_id') {
 
     $options = "";
     $vehicle_brand_id = mysqli_escape_string($isConnect, $_GET['rec_id']);
@@ -96,7 +131,7 @@ if ($submit_mode == 'fill_model_by_brand_id') {
                         ];
 
                         if ($file['size'] > 0) {
-                            $filename       = uploadImage($file);
+                            $filename = uploadImage($file);
                             $multiImageFile = $filename['new_filename'];
                             if (mysqli_query($isConnect, "INSERT INTO vehicle_images (image_path, vehicle_id) VALUES ('$multiImageFile', '$vehicle_foreign_key')")) {
                                 $isMultiFileUploaded = 1;

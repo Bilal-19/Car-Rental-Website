@@ -1,6 +1,9 @@
 <?php
+
 include("../AdminLayout/header.php");
 include("../AdminLayout/sidebar.php");
+
+
 
 require_once "../DB/db_connection.php";
 
@@ -103,20 +106,20 @@ while ($row = mysqli_fetch_assoc($revenueRes)) {
 
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 my-10">
-            
+
             <div class="border-2 border-gray-100 shadow-md hover:shadow-xl p-5 rounded-md">
                 <h2 class="text-xl font-semibold my-10">Monthy Booking Graph</h2>
                 <canvas id="monthly-booking-chart"></canvas>
             </div>
-        
-        <div class="border-2 border-gray-100 shadow-md hover:shadow-xl p-5 rounded-md">
-                <h2 class="text-xl font-semibold my-10">Revenue Chart</h2>
-            <canvas id="revenue-chart"></canvas>
-        </div>
-        </div>
-        
 
-        
+            <div class="border-2 border-gray-100 shadow-md hover:shadow-xl p-5 rounded-md">
+                <h2 class="text-xl font-semibold my-10">Revenue Chart</h2>
+                <canvas id="revenue-chart"></canvas>
+            </div>
+        </div>
+
+
+
     </div>
 </main>
 </div>

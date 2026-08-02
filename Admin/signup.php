@@ -1,45 +1,53 @@
-<?php
-$titleTag = "Elite Auto Motors | Login";
-require_once "../VisitorLayout/header.php";
-?>
+<!DOCTYPE html>
+<html lang="en">
 
-<?php
-// Store users data on backend
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elite Auto Motors</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-function validateInput($value)
-{
-    // Remove whitespace
-    $trimVal = trim($value);
-    // Remove oblique character
-    $removeSlash = stripslashes($trimVal);
-    // Remove tag
-    $removeMarkup = htmlspecialchars($removeSlash);
-    $result = $removeMarkup;
-    return $result;
-}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+        rel="stylesheet">
 
-function showNotification($type, $msg)
-{
-    if ($type == "success") {
-        return "<p class='text-green-500 bg-white px-3 py-5 rounded-md text-md w-80 md:w-4/5 mx-auto block'>
-        <i class='fa-solid fa-circle-check'></i>
-        $msg</p>";
-    } else {
-        return "<p class='text-red-500 bg-white px-3 py-5 rounded-md text-md w-80 md:w-4/5 mx-auto block'>
-        <i class='fa-solid fa-circle-exclamation'></i>
-        $msg</p>";
-    }
-}
 
-require_once "../DB/db_connection.php";
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-?>
+    <style>
+        body {
+            font-family: "Open Sans", sans-serif;
+        }
 
-<!-- Signup Form -->
-<div class="w-full h-200 md:h-152 bg-cover flex flex-col justify-center items-center text-white py-100 bg-no-repeat bg-scroll"
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: "Montserrat", sans-serif;
+        }
+    </style>
+
+    <!-- jQuery reference -->
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"
+        integrity="sha256-OaVG6prZf4v69dPg6PhVattBXkcOWQB62pdZ3ORyrao=" crossorigin="anonymous">
+        </script>
+
+    <!-- Add Char JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0"></script>
+</head>
+
+<body class="bg-gray-100 min-h-dvh h-full flex flex-col">
+
+    <!-- Login Form -->
+  <div class="w-full h-200 md:h-screen bg-cover flex flex-col justify-center items-center text-white py-100 bg-no-repeat bg-scroll"
     style="background-image:url('../Assets/auth_bg.png')">
-    <h4 class="text-2xl md:text-[40px] mb-2 text-center font-light">Create Your Luxury Drive Account With <span
-            class="font-semibold">Us</span></h4>
+    <h4 class="text-2xl md:text-[40px] mb-5 text-center font-light">Create <span class="font-bold">Administrator</span> Account</h4>
     <div class="w-80 md:w-4/5 mx-auto md:mb-5">
         <form class="space-y-5" id="signup_form">
             <div>
@@ -99,46 +107,12 @@ require_once "../DB/db_connection.php";
 
             <div>
                 <p class="py-3 w-80 md:w-4/5 mx-auto block my-5">
-                    Have an account? <a href="<?php echo "http://" . $_SERVER['HTTP_HOST'] . '/Visitor/login.php'; ?>" class="text-[#EDC549] underline">Sign In</a>
+                    Have an account? <a href="<?php echo "http://" . $_SERVER['HTTP_HOST'] . '/Admin/login.php'; ?>" class="text-[#EDC549] underline">Sign In</a>
                 </p>
             </div>
         </form>
     </div>
 </div>
-
-
-<div class="my-30 w-full flex flex-col md:flex-row justify-around items-start space-y-10 md:space-y-0">
-    <div class="w-75 md:w-1/5 text-center mx-auto">
-        <img src="<?php echo $path . '/Assets/location.png' ?>" alt="location" class="mx-auto h-15">
-        <h4 class="font-medium text-md">Showroom Address</h4>
-        <p class="font-light text-sm">Luxury Drive Rentals, Shop 4, Marina Walk, Dubai Marina, Dubai, UAE</p>
-    </div>
-
-    <div class="w-75 md:w-1/5 text-center mx-auto">
-        <img src="<?php echo $path . '/Assets/Phone.png' ?>" alt="Phone" class="mx-auto h-15">
-        <h4 class="font-medium text-md">Phone Number</h4>
-        <p class="font-light text-sm">+971-50-1234567</p>
-    </div>
-
-    <div class="w-75 md:w-1/5 text-center mx-auto">
-        <img src="<?php echo $path . '/Assets/online_support.png' ?>" alt="online_support" class="mx-auto h-15">
-        <h4 class="font-medium text-md">Email Address</h4>
-        <p class="font-light text-sm">support@eliteautomotors.com</p>
-    </div>
-
-    <div class="w-75 md:w-1/5 text-center mx-auto">
-        <img src="<?php echo $path . '/Assets/work_hours.png' ?>" alt="insured" class="mx-auto h-15">
-        <h4 class="font-medium text-md">Working Hours</h4>
-        <p class="font-light text-sm">Monday - Sunday | 24/7</p>
-    </div>
-</div>
-
-
-
-<!-- Footer -->
-<?php
-require_once "../VisitorLayout/footer.php";
-?>
 
 <script>
     $(document).ready(function () {
@@ -149,7 +123,7 @@ require_once "../VisitorLayout/footer.php";
             var formData = $("#signup_form").serialize() + "&submit_mode=create_account"; //passing all the data at once
 
             $.ajax({
-                url: "process_ajax.php",
+                url: "admin_process_ajax.php",
                 type: "POST",
                 dataType: "json", //response type
                 data: formData,
@@ -170,3 +144,15 @@ require_once "../VisitorLayout/footer.php";
     })
 
 </script>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const menuBtn = document.getElementById('menu-btn');
+
+    menuBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+    });
+</script>
+</body>
+
+</html>

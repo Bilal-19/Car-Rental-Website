@@ -28,9 +28,9 @@ if ($submit_mode == "login") {
 
     if (password_verify($password, $stored_password)) {
 
-        $_SESSION['username']   = $storePswdResArr['full_name'];
-        $_SESSION['useremail']  = $storePswdResArr['email_address'];
-        $_SESSION['role']       = 'admin';
+        $_SESSION['username'] = $storePswdResArr['full_name'];
+        $_SESSION['useremail'] = $storePswdResArr['email_address'];
+        $_SESSION['role'] = 'admin';
 
         $arr['query_result'] = 1;
         $arr['query_msg'] = 'Logged In Successfully';
@@ -42,6 +42,69 @@ if ($submit_mode == "login") {
     echo json_encode($arr);
 
 
+} else if ($submit_mode == "create_account") {
+    $arr = array();
+
+    // Form Method: POST, then extract the value using $_POST
+
+    // Create user account here
+
+    // To prevent sql injection, use mysqli_real_escape_string
+    $full_name      = mysqli_real_escape_string($isConnect, $_POST['full_name']);
+    $email_address  = mysqli_real_escape_string($isConnect, $_POST['email_address']);
+    $phone          = mysqli_real_escape_string($isConnect, $_POST['phone']);
+    $password       = mysqli_real_escape_string($isConnect, $_POST['password']);
+
+    if (empty($full_name) || empty($email_address) || empty($phone) || empty($password)) {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Please fill all the required fields.';
+    } else {
+
+        // To store password in hash/encrypted format, use password_hash, not md5 (not secure anymore).
+
+        // PASSWORD_DEFAULT: Use the strongest recommended password hashing algorithm available in the current PHP version.
+        $password = password_hash($password, PASSWORD_DEFAULT);
+
+
+        // Check for email with this user already exist or not
+        $dupEmailQry = "SELECT 
+                        count(email_address) as total_email, 
+                        count(phone) as total_phone_no 
+                        FROM users 
+                        WHERE email_address = '{$email_address}' OR phone = '{$phone}'";
+        $dupEmailRes = mysqli_query($isConnect, $dupEmailQry);
+        $dupEmailResArr = mysqli_fetch_assoc($dupEmailRes);
+
+        $createUserQry = "INSERT INTO users (full_name, email_address, phone, user_pswd) VALUES ('$full_name', '$email_address', '$phone', '$password')";
+
+        $errorField = "";
+        if ($dupEmailResArr['total_phone_no'] > 0 && $dupEmailResArr['total_email'] > 0)
+            $errorField = "Email Address & Phone Number";
+        if ($dupEmailResArr['total_phone_no'] > 0 && $dupEmailResArr['total_email'] == 0)
+            $errorField = "Phone Number";
+        if ($dupEmailResArr['total_email'] > 0 && $dupEmailResArr['total_phone_no'] == 0)
+            $errorField = "Email Address";
+
+        if ($dupEmailResArr['total_email'] == 0 && $dupEmailResArr['total_phone_no'] == 0) {
+
+            // Create user
+            $createUserRes = mysqli_query($isConnect, $createUserQry); //Return boolean 1 or 0
+
+            if ($createUserRes) {
+                $arr['query_result'] = 1;
+                $arr['query_msg'] = 'Account Created Successfully';
+            } else {
+                $arr['query_result'] = 0;
+                $arr['query_msg'] = 'Something went wrong. Please try again later.';
+            }
+
+        } else {
+            $arr['query_result'] = 0;
+            $arr['query_msg'] = 'User with this ' . $errorField . ' Already Exist.';
+        }
+    }
+
+    echo json_encode($arr);
 } else if ($submit_mode == 'fill_model_by_brand_id') {
 
     $options = "";

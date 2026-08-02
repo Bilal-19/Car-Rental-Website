@@ -88,7 +88,7 @@
                 <div>
                     <p class="w-80 md:w-4/5 mx-auto block my-5">
                         Don't have an account? <a
-                            href="<?php echo "http://" . $_SERVER['HTTP_HOST'] . '/Visitor/signup.php'; ?>"
+                            href="<?php echo "http://" . $_SERVER['HTTP_HOST'] . '/Admin/signup.php'; ?>"
                             class="text-[#EDC549] underline">Sign Up</a>
                     </p>
                 </div>

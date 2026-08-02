@@ -145,7 +145,7 @@ require_once "../VisitorLayout/footer.php";
 
                     if (res.query_result == 1) {
                         $("#enquiry_msg").html("<p class='w-80 md:w-4/5 mx-auto bg-green-500 p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> " + res.query_msg + "</p>").slideDown()
-                        $("#enquiry_msg").trigger("reset") // reset form fields
+                        $("#enquiry_form").trigger("reset") // reset form fields
                     } else {
                         $("#enquiry_msg").html("<p class='w-80 md:w-4/5 mx-auto bg-red-500 p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> " + res.query_msg + "</p>").slideDown()
                     }

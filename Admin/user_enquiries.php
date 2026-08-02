@@ -50,7 +50,7 @@ $totalPages = ceil($totalRecords / $perPage);
                             <td class="p-2 border-x"><?php echo $row['email_address']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['phone']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['message_subject']; ?></td>
-                            <td class="p-2 border-x"><?php echo $row['user_message']; ?></td>
+                            <td class="p-2 border-x"><?php echo wordwrap($row['user_message'], 60 , "<br>"); ?></td>
                             <td class="p-2 border-x"><?php echo displayDate($row['created_at']); ?></td>
                         </tr>
                     <?php } ?>

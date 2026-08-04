@@ -83,4 +83,14 @@ function getVehicleModel($id, $isConnect){
     $resArr   = mysqli_fetch_assoc($queryRes);
     return $resArr['model_name'];
 }
+
+function fetchVehicleMakers($isConnect){
+    $queryRes = mysqli_query($isConnect, "SELECT * FROM vehicle_brands");
+    return $queryRes;
+}
+
+function fetchVehicleModels($isConnect){
+    $queryRes = mysqli_query($isConnect, "SELECT * FROM vehicle_models");
+    return $queryRes;
+}
 ?>

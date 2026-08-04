@@ -60,8 +60,8 @@ $totalPages = ceil($totalRecords / $perPage);
                         <!-- print_r($row); -->
                         <tr class="border-b border-gray-600 hover:bg-gray-300">
                             <td class="p-2 border-x"><?php echo $i++; ?></td>
-                            <td class="p-2 border-x"><?php echo $row['make']; ?></td>
-                            <td class="p-2 border-x"><?php echo $row['model']; ?></td>
+                            <td class="p-2 border-x"><?php echo getVehicleMaker($row['make'], $isConnect); ?></td>
+                            <td class="p-2 border-x"><?php echo getVehicleModel($row['model'], $isConnect); ?></td>
                             <td class="p-2 border-x"><?php echo $row['category']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['transmission']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['engine_capacity'] . " CC"; ?></td>

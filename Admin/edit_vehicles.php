@@ -21,6 +21,13 @@ if (isset($vehicle_id)) {
     // die();
 }
 
+
+$vehicleMakers = fetchVehicleMakers($isConnect);
+$vehicleModels = fetchVehicleModels($isConnect);
+// while ($row = mysqli_fetch_assoc($vehicleMakers)){
+//     echo '<pre>'; print_r($row);
+// }
+
 ?>
 
 
@@ -45,12 +52,14 @@ if (isset($vehicle_id)) {
                     <select name="car_maker" id="car_maker"
                         class="required p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Maker</option>
-                        <option <?php echo ($fetchVehicleArr['make'] == 'Mercedes-Benz' ? 'selected' : '') ?>
-                            value="Mercedes-Benz">Mercedes-Benz</option>
-                        <option <?php echo ($fetchVehicleArr['make'] == 'Toyota' ? 'selected' : '') ?> value="Toyota">
-                            Toyota</option>
-                        <option <?php echo ($fetchVehicleArr['make'] == 'BMW' ? 'selected' : '') ?> value="BMW">BMW
-                        </option>
+                        <?php
+                        while ($row = mysqli_fetch_assoc($vehicleMakers)) {
+                            $x = getVehicleMaker($fetchVehicleArr['make'], $isConnect);
+                            ?>
+                            <option value="<?php echo $row['id']; ?>" <?php echo ($x == $row['brand_name']) ? 'selected' : '' ?>>
+                                <?php echo $row['brand_name']; ?>
+                            </option>
+                        <?php } ?>
                     </select>
                 </div>
 
@@ -59,9 +68,13 @@ if (isset($vehicle_id)) {
                     <select name="car_model" id="car_model"
                         class="required p-2.5 text-sm text-gray-600 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 appearance-none">
                         <option value="">Select Model</option>
-                        <option value="<?php echo ($fetchVehicleArr['model']) ?>" selected>
-                            <?php echo ($fetchVehicleArr['model']) ?>
-                        </option>
+                        <?php
+                        while ($row = mysqli_fetch_assoc($vehicleModels)) {
+                            $y = getVehicleModel($fetchVehicleArr['model'], $isConnect); ?>
+                            <option value="<?php echo $row['id']; ?>" <?php echo ($y == $row['model_name']) ? 'selected' : '' ?>>
+                                <?php echo $row['model_name']; ?>
+                            </option>
+                        <?php } ?>
                     </select>
                 </div>
 
@@ -179,8 +192,9 @@ if (isset($vehicle_id)) {
 
                 <div class="flex flex-col">
                     <label for="per_day_cost">Per Day Cost:</label>
-                    <input type="text" name="per_day_cost" value="<?php echo floor($fetchVehicleArr['per_day_cost']); ?>"
-                        id="per_day_cost" placeholder="250 AED"
+                    <input type="text" name="per_day_cost"
+                        value="<?php echo floor($fetchVehicleArr['per_day_cost']); ?>" id="per_day_cost"
+                        placeholder="250 AED"
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 

@@ -5,7 +5,7 @@ include("../pagination.php");
 require_once "../DB/db_connection.php";
 require_once "../utilities.php";
 
-$userEnquiryQry = "SELECT * FROM general_enquiry LIMIT $perPage OFFSET $offset";
+$userEnquiryQry = "SELECT * FROM general_enquiry ORDER BY id DESC LIMIT $perPage OFFSET $offset";
 $userEnquiryRes = mysqli_query($isConnect, $userEnquiryQry);
 
 
@@ -28,8 +28,7 @@ $totalPages = ceil($totalRecords / $perPage);
                 <thead class="text-xs md:text-sm text-left whitespace-nowrap bg-gray-300">
                     <tr class="border-b-2 border-gray-900 text-center">
                         <th class="p-3">#</th>
-                        <th class="p-3">Full Name</th>
-                        <th class="p-3">Email</th>
+                        <th class="p-3">Full Name / Email</th>
                         <th class="p-3">Phone</th>
                         <th class="p-3">Subject</th>
                         <th class="p-3">Message</th>
@@ -46,8 +45,7 @@ $totalPages = ceil($totalRecords / $perPage);
                         ?>
                         <tr class="border-b border-gray-600 hover:bg-gray-200">
                             <td class="p-2 border-x"><?php echo $i++; ?></td>
-                            <td class="p-2 border-x"><?php echo $row['full_name']; ?></td>
-                            <td class="p-2 border-x"><?php echo $row['email_address']; ?></td>
+                            <td class="p-2 border-x"><?php echo $row['full_name'] . '<br>' . $row['email_address']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['phone']; ?></td>
                             <td class="p-2 border-x"><?php echo $row['message_subject']; ?></td>
                             <td class="p-2 border-x"><?php echo wordwrap($row['user_message'], 60 , "<br>"); ?></td>

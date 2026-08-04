@@ -50,10 +50,10 @@ if ($submit_mode == "login") {
     // Create user account here
 
     // To prevent sql injection, use mysqli_real_escape_string
-    $full_name      = mysqli_real_escape_string($isConnect, $_POST['full_name']);
-    $email_address  = mysqli_real_escape_string($isConnect, $_POST['email_address']);
-    $phone          = mysqli_real_escape_string($isConnect, $_POST['phone']);
-    $password       = mysqli_real_escape_string($isConnect, $_POST['password']);
+    $full_name = mysqli_real_escape_string($isConnect, $_POST['full_name']);
+    $email_address = mysqli_real_escape_string($isConnect, $_POST['email_address']);
+    $phone = mysqli_real_escape_string($isConnect, $_POST['phone']);
+    $password = mysqli_real_escape_string($isConnect, $_POST['password']);
 
     if (empty($full_name) || empty($email_address) || empty($phone) || empty($password)) {
         $arr['query_result'] = 0;
@@ -247,6 +247,44 @@ if ($submit_mode == "login") {
     $per_day_cost = mysqli_real_escape_string($isConnect, $_POST['per_day_cost']);
     $registration_number = mysqli_real_escape_string($isConnect, $_POST['registration_number']);
 
+
+
+    // Prepare update query
+
+    $updVehicleQry = "UPDATE vehicles
+            SET
+            make                = '$maker', 
+            model               = '$model', 
+            engine_capacity     = '$engine', 
+            category            = '$category', 
+            transmission        = '$transmission', 
+            TRIM                = '$trim', 
+            horsepower          = '$hp', 
+            doors               = '$doors',
+            fuel_type           = '$fuel_type', 
+            no_of_cylinders     = '$cylinders',
+            interior_color      = '$interior_color', 
+            exterior_color      = '$exterior_color',
+            per_day_cost        = '$per_day_cost', 
+            drive_type          = '$drive_type', 
+            seating_capacity    = '$seating_capacity', 
+            registration_number = '$registration_number'
+    WHERE id = $id";
+
+    if (mysqli_query($isConnect, $updVehicleQry)) {
+        $arr['query_result'] = 1;
+        $arr['query_msg'] = 'Vehicle Information Updated Successfully.';
+
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
+    }
+    echo json_encode($arr);
+
+} else if ($submit_mode == "update_thumbnail_img") {
+    $arr = array();
+    $id = mysqli_real_escape_string($isConnect, $_POST['vehicle_id']);
+
     // Check if user uploads the image
     if ($_FILES['preview_img']['size'] > 0) {
         // echo 'Yes uploaded';
@@ -264,36 +302,17 @@ if ($submit_mode == "login") {
         $thumbnail_timestamp = $imgRes['thumbnail_image'];
     }
 
-    // Prepare update query
+    if (!(empty($thumbnail_timestamp))) {
+        $updVehicleQry = "UPDATE vehicles SET thumbnail_image = '$thumbnail_timestamp' WHERE id = $id";
 
-    $updVehicleQry = "UPDATE vehicles
-            SET
-            make                = '$maker', 
-            model               = '$model', 
-            engine_capacity     = '$engine', 
-            category            = '$category', 
-            transmission        = '$transmission', 
-            TRIM                = '$trim', 
-            horsepower          = '$trim', 
-            doors               = '$doors',
-            fuel_type           = '$fuel_type', 
-            no_of_cylinders     = '$cylinders',
-            interior_color      = '$interior_color', 
-            exterior_color      = '$exterior_color',
-            per_day_cost        = '$per_day_cost', 
-            drive_type          = '$drive_type', 
-            seating_capacity    = '$seating_capacity', 
-            registration_number = '$registration_number',
-            thumbnail_image     = '$thumbnail_timestamp'
-    WHERE id = $id";
+        if (mysqli_query($isConnect, $updVehicleQry)) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'Vehicle Thumbnail Image Updated Successfully.';
 
-    if (mysqli_query($isConnect, $updVehicleQry)) {
-        $arr['query_result'] = 1;
-        $arr['query_msg'] = 'Vehicle Information Updated Successfully.';
-
+        }
     } else {
         $arr['query_result'] = 0;
-        $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
+        $arr['query_msg'] = 'Failed to update thumbnail image. Please try again later.';
     }
     echo json_encode($arr);
 

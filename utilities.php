@@ -44,7 +44,7 @@ function uploadImage($file_input)
 
     // Allow certain file format
     if ($thumbnail_file_ext != "jpg" && $thumbnail_file_ext != "jpeg" && $thumbnail_file_ext != "png") {
-        echo "Invalid file format";
+        //echo "Invalid file format";
         $isUploaded = 0;
     } else {
         $isUploaded = 1;

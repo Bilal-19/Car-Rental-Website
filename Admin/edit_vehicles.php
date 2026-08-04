@@ -34,19 +34,11 @@ $vehicleModels = fetchVehicleModels($isConnect);
 <main class="flex-1 p-6 overflow-x-auto">
     <div class="w-full mt-5 bg-white rounded p-6">
         <h2 class="text-xl font-semibold mb-5">Edit Vehicle Information</h2>
-
+        <h2 class="text-md font-semibold mb-5">Vehicle Details:</h2>
         <form class="text-gray-600" id="update_vehicle" name="update_vehicle" enctype="multipart/form-data">
             <!-- <input type="hidden" name="add_new_vehicle" value="Yes"> -->
             <input type="hidden" name="vehicle_id" value="<?php echo $fetchVehicleArr['id']; ?>">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-
-                <div class="flex flex-col">
-                    <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $fetchVehicleArr['thumbnail_image'] ?>"
-                        alt="img" class="rounded-md h-52 object-cover">
-                    <label for="preview_img">Thumbnail Image Preview</label>
-                </div>
-
-                <div class="flex flex-col md:col-span-3"></div>
                 <div class="flex flex-col">
                     <label for="car_maker" class="font-medium">Make:</label>
                     <select name="car_maker" id="car_maker"
@@ -206,14 +198,6 @@ $vehicleModels = fetchVehicleModels($isConnect);
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
-                <div class="flex flex-col md:col-span-4">
-                    <label for="preview_img">Thumbnail Image (optional):</label>
-                    <input type="file" name="preview_img" id="preview_img" class="p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
-                        file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
-                        hover:file:cursor-pointer hover:file:bg-blue-50
-                        hover:file:text-blue-700">
-                </div>
-
                 <!--
                 <div class="flex flex-col md:col-span-2">
                     <label for="multiple_files">Upload multiple
@@ -229,7 +213,7 @@ $vehicleModels = fetchVehicleModels($isConnect);
                 <div class="flex flex-col col-span-1 md:col-span-4">
                     <button type="submit" name="submit" id="submit"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-[#7b5d01] text-white"><i
-                            class="fa fa-paper-plane"> </i> Update</button>
+                            class="fa fa-paper-plane"> </i> Save Details</button>
                 </div>
 
                 <div class="flex flex-col col-span-1 md:col-span-4">
@@ -242,6 +226,38 @@ $vehicleModels = fetchVehicleModels($isConnect);
         </form>
 
     </div>
+
+
+    <div class="w-full mt-5 bg-white rounded p-6">
+        <form class="text-gray-600" id="update_thumbnail_img" name="update_thumbnail_img" enctype="multipart/form-data">
+            <input type="hidden" name="vehicle_id" value="<?php echo $fetchVehicleArr['id']; ?>">
+            <h2 class="text-md font-semibold mb-5">Thumbnail:</h2>
+            <div class="w-full flex flex-row items-center space-x-5 mb-5">
+                <div class="w-1/2">
+                    <label for="preview_img" class="mb-2">Current Thumbnail: </label>
+                    <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $fetchVehicleArr['thumbnail_image'] ?>"
+                        alt="img" class="rounded-md h-full w-full object-cover shadow-md">
+                </div>
+
+
+                <div class="w-1/2 space-y-4">
+                    <label for="preview_img">Select New Thumbnail:</label>
+                    <input type="file" name="preview_img" id="preview_img" class="block p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px] file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
+                    hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700">
+                    <span class="text-xs">Accepted: JPG, JPEG, PNG | Maximum size: 2 MB</span>
+                </div>
+            </div>
+
+            <button type="submit" name="submit" id="submit"
+                class="w-full p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-[#7b5d01] text-white"><i
+                    class="fa fa-replace"> </i> Replace Thumbnail</button>
+
+            <div class="flex flex-col col-span-1 md:col-span-4 mt-5">
+                <div id="form_msg_thumbnail">
+                </div>
+            </div>
+        </form>
+    </div>
 </main>
 </div>
 
@@ -251,23 +267,23 @@ $vehicleModels = fetchVehicleModels($isConnect);
 
 <script>
     $(document).ready(function () {
-        $("#car_maker").on("change", function () {
-            let carManufacturer = $("#car_maker").val() //first dropdown value
-            let carModel = $("#car_model"); //second dropdown
+        // $("#car_maker").on("change", function () {
+        //     let carManufacturer = $("#car_maker").val() //first dropdown value
+        //     let carModel = $("#car_model"); //second dropdown
 
-            var toyotaModels = ['Fortuner', 'Yaris', 'Innova', 'Supra', 'Camry', 'Corolla', 'Raize']
-            var mercedesModels = ['G-Class', 'A-Class', 'S-Class', 'E-Class', 'CLA']
-            var bmwModels = ['5-Series', '7-Series', 'M3', '2-Series . 218i', 'CLA']
+        //     var toyotaModels = ['Fortuner', 'Yaris', 'Innova', 'Supra', 'Camry', 'Corolla', 'Raize']
+        //     var mercedesModels = ['G-Class', 'A-Class', 'S-Class', 'E-Class', 'CLA']
+        //     var bmwModels = ['5-Series', '7-Series', 'M3', '2-Series . 218i', 'CLA']
 
-            carModel.html('<option>Select Model</option>')
-            if (carManufacturer === "Toyota") {
-                toyotaModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-            } else if (carManufacturer === "Mercedes-Benz") {
-                mercedesModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-            } else if (carManufacturer === "BMW") {
-                bmwModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-            }
-        });
+        //     carModel.html('<option>Select Model</option>')
+        //     if (carManufacturer === "Toyota") {
+        //         toyotaModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
+        //     } else if (carManufacturer === "Mercedes-Benz") {
+        //         mercedesModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
+        //     } else if (carManufacturer === "BMW") {
+        //         bmwModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
+        //     }
+        // });
 
         // Add vehicle form submission
         // serialize() does not include file inputs
@@ -326,6 +342,38 @@ $vehicleModels = fetchVehicleModels($isConnect);
                     }
                 })
             }
+        })
+
+        // Update thumbnail image
+        $("#update_thumbnail_img").submit(function (e) {
+            e.preventDefault()
+
+            var form_data = new FormData(document.getElementById("update_thumbnail_img"))
+            form_data.append("submit_mode", "update_thumbnail_img")
+
+            $.ajax({
+                url: "admin_process_ajax.php",
+                data: form_data,
+                type: "POST",
+                dataType: "json",
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    console.log("AJAX Response : ", res.query_result);
+                    if (res.query_result == 1) {
+                        $("#form_msg_thumbnail").html("<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> " + res.query_msg + "</p>").slideDown()
+                        setTimeout(function () {
+                            location.reload()
+                        }, 2000)
+                    } else if (res.query_result == 0) {
+                        $("#form_msg_thumbnail").html("<p class='w-80 md:w-full mx-auto bg-red-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> " + res.query_msg + "</p>").slideDown()
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.log("Error: ", xhr.responseText)
+                }
+            })
+
         })
     })
 

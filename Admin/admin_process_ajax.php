@@ -316,6 +316,26 @@ if ($submit_mode == "login") {
     }
     echo json_encode($arr);
 
+} else if ($submit_mode == 'del_vehicle_img') {
+    $arr = array();
+
+    // Fetch Values
+    $id = mysqli_real_escape_string($isConnect, $_POST['vehicle_id']);
+    $vehicle_image_id = mysqli_real_escape_string($isConnect, $_POST['vehicle_image_id']);
+
+    // echo "Vehicle ID: " . $id . "<br> Image ID: " . $vehicle_image_id;
+
+    if (!empty($id)) {
+        if (mysqli_query($isConnect, "UPDATE vehicle_images SET enabled = 0 WHERE vehicle_id = $id AND id = $vehicle_image_id")) {
+            $arr['query_result'] = 1;
+            $arr['query_msg'] = 'Selected Vehicle Image Deleted Successfully.';
+        }
+    } else {
+        $arr['query_result'] = 0;
+        $arr['query_msg'] = 'Something Went Wrong. Please Try Again Later.';
+    }
+    echo json_encode($arr);
+
 } else if ($submit_mode == "delete_vehicle") {
     $arr = array();
 

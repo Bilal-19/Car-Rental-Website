@@ -18,16 +18,17 @@ if (isset($vehicle_id)) {
     $fetchVehicleRes = mysqli_query($isConnect, $fetchVehicleQry);
     $fetchVehicleArr = mysqli_fetch_assoc($fetchVehicleRes);
 
+    // Fetch Vehicle Images
+    $fetchVehImgs = mysqli_query($isConnect, "SELECT * FROM vehicle_images WHERE enabled = 1 AND vehicle_id = $vehicle_id");
+    //$fetchVehImgsRes    = mysqli_fetch_assoc($fetchVehImgs);
     // die();
 }
 
 
 $vehicleMakers = fetchVehicleMakers($isConnect);
 $vehicleModels = fetchVehicleModels($isConnect);
-// while ($row = mysqli_fetch_assoc($vehicleMakers)){
-//     echo '<pre>'; print_r($row);
-// }
 
+// print_r($fetchVehImgsRes); die;
 ?>
 
 
@@ -232,16 +233,16 @@ $vehicleModels = fetchVehicleModels($isConnect);
         <form class="text-gray-600" id="update_thumbnail_img" name="update_thumbnail_img" enctype="multipart/form-data">
             <input type="hidden" name="vehicle_id" value="<?php echo $fetchVehicleArr['id']; ?>">
             <h2 class="text-md font-semibold mb-5">Thumbnail:</h2>
-            <div class="w-full flex flex-row items-center space-x-5 mb-5">
-                <div class="w-1/2">
+            <div class="w-full flex flex-col md:flex-row md:items-center space-y-5 md:space-y-0 md:space-x-5 mb-5">
+                <div class="w-3/4 md:w-1/2">
                     <label for="preview_img" class="mb-2">Current Thumbnail: </label>
                     <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $fetchVehicleArr['thumbnail_image'] ?>"
-                        alt="img" class="rounded-md h-full w-full object-cover shadow-md">
+                        alt="img" class="rounded-md w-full h-64 object-cover shadow-md">
                 </div>
 
 
-                <div class="w-1/2 space-y-4">
-                    <label for="preview_img">Select New Thumbnail:</label>
+                <div class="w-3/4 md:w-1/2 md:space-y-4">
+                    <label for="preview_img" class="font-bold">Select New Thumbnail:</label>
                     <input type="file" name="preview_img" id="preview_img" class="block p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px] file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
                     hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700">
                     <span class="text-xs">Accepted: JPG, JPEG, PNG | Maximum size: 2 MB</span>
@@ -258,33 +259,56 @@ $vehicleModels = fetchVehicleModels($isConnect);
             </div>
         </form>
     </div>
+
+
+    <!-- Vehicle Multiple Images -->
+    <div class="w-full mt-5 bg-white rounded p-6">
+        <form class="text-gray-600" id="update_thumbnail_img" name="update_thumbnail_img" enctype="multipart/form-data">
+            <input type="hidden" name="vehicle_id" id="vehicle_id" value="<?php echo $fetchVehicleArr['id']; ?>">
+            <h2 class="text-md font-semibold mb-5">Gallery Images:</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <!-- Loop through the vehcile images -->
+                <?php
+                while ($row = mysqli_fetch_assoc($fetchVehImgs)) { ?>
+                    <div>
+                        <div class="relative">
+                            <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $row['image_path']; ?>"
+                                alt="img" class="rounded-md w-full h-64 object-cover shadow-md">
+                            <button data-vehicle-img-id="<?php echo $row['id']; ?>"
+                                class="del_veh_img absolute top-3 right-2 text-white bg-red-500 px-2 py-1 text-xs rounded-sm"><i
+                                    class="fa-solid fa-trash"></i> Delete</button>
+                        </div>
+                    </div>
+                <?php }
+                ?>
+            </div>
+
+
+
+            <div class="w-full my-4">
+                <label for="preview_img" class="font-bold">Add New Images:</label>
+                <input type="file" name="preview_img" id="preview_img" class="w-80 block p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px] file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
+                    hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700">
+                <span class="text-xs">Accepted: JPG, JPEG, PNG | Maximum size: 2 MB</span>
+            </div>
+
+            <button type="submit" name="submit" id="submit"
+                class="w-full p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-[#7b5d01] text-white"><i
+                    class="fa fa-save"> </i> Upload Images</button>
+
+            <div class="flex flex-col col-span-1 md:col-span-4 mt-5">
+                <div id="form_msg_del_img">
+                </div>
+            </div>
+        </form>
+    </div>
 </main>
 </div>
 
-<?php include("../AdminLayout/footer.php");
-// print_r($fetchVehicleArr); 
-?>
+<?php include("../AdminLayout/footer.php"); ?>
 
 <script>
     $(document).ready(function () {
-        // $("#car_maker").on("change", function () {
-        //     let carManufacturer = $("#car_maker").val() //first dropdown value
-        //     let carModel = $("#car_model"); //second dropdown
-
-        //     var toyotaModels = ['Fortuner', 'Yaris', 'Innova', 'Supra', 'Camry', 'Corolla', 'Raize']
-        //     var mercedesModels = ['G-Class', 'A-Class', 'S-Class', 'E-Class', 'CLA']
-        //     var bmwModels = ['5-Series', '7-Series', 'M3', '2-Series . 218i', 'CLA']
-
-        //     carModel.html('<option>Select Model</option>')
-        //     if (carManufacturer === "Toyota") {
-        //         toyotaModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-        //     } else if (carManufacturer === "Mercedes-Benz") {
-        //         mercedesModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-        //     } else if (carManufacturer === "BMW") {
-        //         bmwModels.forEach((val, index) => { carModel.append(`<option value=${val}>${val}</option>`); })
-        //     }
-        // });
-
         // Add vehicle form submission
         // serialize() does not include file inputs
         // processData: false (send data as it is, do not convert it into query string)
@@ -373,7 +397,38 @@ $vehicleModels = fetchVehicleModels($isConnect);
                     console.log("Error: ", xhr.responseText)
                 }
             })
+        })
 
+        //Delete vehicle image
+        $(document).on("click", ".del_veh_img", function (e) {
+            e.preventDefault();
+
+            var vehicle_image_id = $(this).data("vehicle-img-id");
+            var vehicle_id = $("#vehicle_id").val();
+
+            $.ajax({
+                url: 'admin_process_ajax.php',
+                type: 'POST',
+                dataType: "json",
+                // contentType: false,
+                // processData: false,
+                data: {
+                    vehicle_id: vehicle_id,
+                    vehicle_image_id: vehicle_image_id,
+                    submit_mode: 'del_vehicle_img'
+                }, 
+                success: function (res) {
+                    console.log("AJAX Response : ", res.query_result);
+                    if (res.query_result == 1) {
+                        $("#form_msg_del_img").html("<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> " + res.query_msg + "</p>").slideDown()
+                        setTimeout(function () {
+                            location.reload()
+                        }, 2000)
+                    } else if (res.query_result == 0) {
+                        $("#form_msg_del_img").html("<p class='w-80 md:w-full mx-auto bg-red-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> " + res.query_msg + "</p>").slideDown()
+                    }
+                },
+            })
         })
     })
 

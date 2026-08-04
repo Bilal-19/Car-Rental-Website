@@ -2,6 +2,7 @@
 session_start();
 
 require_once "../DB/db_connection.php";
+require_once "../utilities.php";
 
 $submit_mode = $_REQUEST['submit_mode'];
 
@@ -55,7 +56,11 @@ if ($submit_mode == "live_search") {
     // Fetch data based on search term
     $search = $_REQUEST['search_term'];
 
-    $filterVehicles = "SELECT * FROM vehicles WHERE (make LIKE '%{$search}%' OR model LIKE '%{$search}%')";
+    $filterVehicles = "SELECT * FROM vehicles a 
+                        INNER JOIN vehicle_brands b ON a.make = b.id 
+                        INNER JOIN vehicle_models c ON a.model = c.id 
+                        WHERE (b.brand_name LIKE '%{$search}%' OR c.model_name LIKE '%{$search}%')";
+    // echo $filterVehicles;
     $filterVehiclesRes = mysqli_query($isConnect, $filterVehicles);
     $countRows = mysqli_num_rows($filterVehiclesRes);
     $output = "";
@@ -68,7 +73,7 @@ if ($submit_mode == "live_search") {
                             
                             <div class='flex flex-row justify-between items-center'>
                                 <div>
-                                    <p class='font-medium text-sm'>" . $row['make'] . " " . $row['model'] . "</p>
+                                    <p class='font-medium text-sm'>" . getVehicleMaker($row['make'], $isConnect) . " " . getVehicleModel($row['model'], $isConnect) . "</p>
                                     <p class='font-light text-sm'>
                                         From <b class='font-medium'>AED " . $row['per_day_cost'] . "/ day</b>
                                     </p>

@@ -160,31 +160,28 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                         hover:file:text-blue-700">
                 </div>
 
-                
+
                 <div class="flex flex-col md:col-span-2">
                     <label for="vehicle_imgs">Upload Multiple Images: </label>
                     <input class="required p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
                         file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
                         hover:file:cursor-pointer hover:file:bg-blue-50
-                        hover:file:text-blue-700" name="vehicle_imgs[]" id="vehicle_imgs"
-                        type="file" multiple>
+                        hover:file:text-blue-700" name="vehicle_imgs[]" id="vehicle_imgs" type="file" multiple>
                 </div>
-                
+
 
                 <div class="flex flex-col col-span-1 md:col-span-4">
                     <button type="submit" name="submit" id="submit"
                         class="p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-[#7b5d01] text-white"><i
                             class="fa fa-paper-plane"> </i> Submit</button>
                 </div>
-
-                <div class="flex flex-col col-span-1 md:col-span-4">
-                    <div id="form_msg">
-                    </div>
-                </div>
-
-
             </div>
         </form>
+
+        <div class="flex flex-col col-span-1 md:col-span-4">
+            <div id="form_msg">
+            </div>
+        </div>
 
     </div>
 </main>
@@ -207,7 +204,7 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                 url: 'admin_process_ajax.php',
                 data: { 'rec_id': carManufacturer, 'submit_mode': 'fill_model_by_brand_id' },
                 method: 'GET',
-                success: function(res){
+                success: function (res) {
                     $("#car_model").html(res)
                 }
             })
@@ -269,17 +266,17 @@ $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
                 })
             }
         })
-    
-    
+
+
         // Show thumbnail image preview when file uploaded
-        $("#preview_img").change(function(){
+        $("#preview_img").change(function () {
             readImageURL(this);
         })
 
-        function readImageURL(inputFile){
-            if (inputFile.files && inputFile.files[0]){
+        function readImageURL(inputFile) {
+            if (inputFile.files && inputFile.files[0]) {
                 var reader = new FileReader();
-                reader.onload = function(e){
+                reader.onload = function (e) {
                     $("#preview_uploaded_img").attr("src", e.target.result).show();
                 }
                 reader.readAsDataURL(inputFile.files[0])

@@ -199,17 +199,9 @@ $vehicleModels = fetchVehicleModels($isConnect);
                         class="required p-2 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200">
                 </div>
 
-                <!--
-                <div class="flex flex-col md:col-span-2">
-                    <label for="multiple_files">Upload multiple
-                        files</label>
-                    <input class="required p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
-                        file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
-                        hover:file:cursor-pointer hover:file:bg-blue-50
-                        hover:file:text-blue-700" name="vehicle_imgs[]" id="vehicle_imgs" id="multiple_files"
-                        type="file" multiple>
-                </div>
-                -->
+
+
+
 
                 <div class="flex flex-col col-span-1 md:col-span-4">
                     <button type="submit" name="submit" id="submit"
@@ -263,7 +255,7 @@ $vehicleModels = fetchVehicleModels($isConnect);
 
     <!-- Vehicle Multiple Images -->
     <div class="w-full mt-5 bg-white rounded p-6">
-        <form class="text-gray-600" id="update_thumbnail_img" name="update_thumbnail_img" enctype="multipart/form-data">
+        <form class="text-gray-600" id="soft_del_img" name="soft_del_img" enctype="multipart/form-data">
             <input type="hidden" name="vehicle_id" id="vehicle_id" value="<?php echo $fetchVehicleArr['id']; ?>">
             <h2 class="text-md font-semibold mb-5">Gallery Images:</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -282,13 +274,18 @@ $vehicleModels = fetchVehicleModels($isConnect);
                 <?php }
                 ?>
             </div>
+        </form>
 
+        <form class="text-gray-600" id="upload_images" name="upload_images" enctype="multipart/form-data">
+            <input type="hidden" name="vehicle_id" id="vehicle_id" value="<?php echo $fetchVehicleArr['id']; ?>">
 
-
-            <div class="w-full my-4">
-                <label for="preview_img" class="font-bold">Add New Images:</label>
-                <input type="file" name="preview_img" id="preview_img" class="w-80 block p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px] file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
-                    hover:file:cursor-pointer hover:file:bg-blue-50 hover:file:text-blue-700">
+            <div class="w-full my-4 flex flex-col">
+                <label for="vehicle_imgs" class="font-bold">Upload Multiple Images:</label>
+                <input class="required p-1.5 rounded-md focus:outline-none border-1 border-gray-900 bg-gray-200 file:mr-5 file:py-1 file:px-3 file:border-[1px]
+                        file:text-xs file:font-medium file:bg-stone-50 file:text-stone-700
+                        hover:file:cursor-pointer hover:file:bg-blue-50
+                        hover:file:text-blue-700" name="vehicle_imgs[]" id="vehicle_imgs"
+                    type="file" multiple>
                 <span class="text-xs">Accepted: JPG, JPEG, PNG | Maximum size: 2 MB</span>
             </div>
 
@@ -416,7 +413,36 @@ $vehicleModels = fetchVehicleModels($isConnect);
                     vehicle_id: vehicle_id,
                     vehicle_image_id: vehicle_image_id,
                     submit_mode: 'del_vehicle_img'
-                }, 
+                },
+                success: function (res) {
+                    console.log("AJAX Response : ", res.query_result);
+                    if (res.query_result == 1) {
+                        $("#form_msg_del_img").html("<p class='w-80 md:w-full mx-auto bg-green-500 text-white p-2 rounded-md'><i class='fa-solid fa-circle-check'></i> " + res.query_msg + "</p>").slideDown()
+                        setTimeout(function () {
+                            location.reload()
+                        }, 2000)
+                    } else if (res.query_result == 0) {
+                        $("#form_msg_del_img").html("<p class='w-80 md:w-full mx-auto bg-red-500 text-white p-2 rounded-md'><i class='fa-solid fa-triangle-exclamation'></i> " + res.query_msg + "</p>").slideDown()
+                    }
+                },
+            })
+        })
+
+        // Upload Multiple Vehicle Images
+        $("#upload_images").submit(function (e) {
+            e.preventDefault();
+
+            var vehicle_id = $("#vehicle_id").val();
+            let formData = new FormData(this);
+            formData.append("submit_mode", "upload_vehicle_images")
+    
+            $.ajax({
+                url: 'admin_process_ajax.php',
+                type: 'POST',
+                dataType: "json",
+                contentType: false,
+                processData: false,
+                data: formData,
                 success: function (res) {
                     console.log("AJAX Response : ", res.query_result);
                     if (res.query_result == 1) {

@@ -82,7 +82,7 @@ $totalPages = ceil($totalRecords / $perPage);
                             <td class="p-2 border-x"><?php echo displayDate($row['return_date']); ?></td>
                             <td class="p-2 border-x"><?php echo displayDate($row['booking_datetime']); ?></td>
                             <td class="p-2 border-x"><?php echo $row['need_driver']; ?></td>
-                            <td class="p-2 border-x"><?php echo wordwrap($row['additional_notes'], 15, '<br>'); ?></td>
+                            <td class="p-2 border-x"><?php echo wordwrap($row['additional_notes'], 42, '<br>'); ?></td>
                             <td class="p-2 border-x"><?php echo $row['no_of_days']; ?></td>
                         </tr>
                     <?php } ?>

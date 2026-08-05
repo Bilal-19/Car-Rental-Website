@@ -265,7 +265,7 @@ $vehicleModels = fetchVehicleModels($isConnect);
                     <div>
                         <div class="relative">
                             <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $row['image_path']; ?>"
-                                alt="img" class="rounded-md w-full h-64 object-cover shadow-md">
+                                loading="lazy" alt="img" class="rounded-md w-full h-64 object-cover shadow-md">
                             <button data-vehicle-img-id="<?php echo $row['id']; ?>"
                                 class="del_veh_img absolute top-3 right-2 text-white bg-red-500 px-2 py-1 text-xs rounded-sm"><i
                                     class="fa-solid fa-trash"></i> Delete</button>

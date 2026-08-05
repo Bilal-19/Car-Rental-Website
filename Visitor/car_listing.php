@@ -123,12 +123,12 @@ $countRows = mysqli_num_rows($allVehiclesRes);
         if (gettype($row['model']) == "int"){
             $model = getVehicleModel($row['model'], $isConnect);
         } else {
-            $model = $row['make'];
+            $model = $row['model'];
         }
         ?>
         <div class="w-80 mx-auto md:w-full relative">
             <img src="<?php echo 'http://' . $_SERVER['HTTP_HOST'] . '/Assets/uploads/' . $row['thumbnail_image']; ?>"
-                alt="Lamborghini" class="object-cover h-72 w-full rounded-md mb-2">
+                alt="Lamborghini" class="object-cover h-72 w-full rounded-md mb-2" loading="lazy">
             <div class="flex flex-row justify-between items-center">
                 <div>
                     <p class="font-light text-sm"><?php echo getVehicleMaker($make, $isConnect) . " " . getVehicleModel($model, $isConnect); ?></p>

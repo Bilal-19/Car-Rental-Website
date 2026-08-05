@@ -6,7 +6,15 @@ require_once "../DB/db_connection.php";
 require_once "../utilities.php";
 
 
-$vehicleBrandsQry = "SELECT * FROM vehicle_brands LIMIT 10";
+$vehicleBrandsQry = "SELECT
+                    a.brand_name,
+                    COUNT(b.id) AS total_associated_models
+                    FROM
+                        vehicle_brands a
+                    INNER JOIN vehicle_models b ON
+                        a.id = b.brand_id
+                    GROUP BY
+                        brand_name";
 $vehicleBrandsRes = mysqli_query($isConnect, $vehicleBrandsQry);
 
 
@@ -18,6 +26,15 @@ $vehicleModelQry = "SELECT
                         vehicle_models a
                     INNER JOIN vehicle_brands b ON
                         a.brand_id = b.id";
+// $vehicleModelQry = "SELECT
+//                     a.brand_name,
+//                     COUNT(b.id) AS total_associated_models
+//                     FROM
+//                         vehicle_brands a
+//                     INNER JOIN vehicle_models b ON
+//                         a.id = b.brand_id
+//                     GROUP BY
+//                         brand_name";
 $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
 ?>
 <main class="flex-1 p-6 overflow-x-auto">
@@ -46,8 +63,8 @@ $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
                             <th class="p-2">#</th>
                             <th class="p-2" align="left">Brand Name</th>
                             <th class="p-2">No of Associated Models</th>
-                            <th class="p-2">Edit</th>
-                            <th class="p-2">Delete</th>
+                            <!-- <th class="p-2">Edit</th>
+                            <th class="p-2">Delete</th> -->
                         </tr>
                     </thead>
 
@@ -60,14 +77,14 @@ $vehicleModelRes = mysqli_query($isConnect, $vehicleModelQry);
                                     class="border-b border-gray-600 hover:bg-gray-200 <?php echo ($i % 2 == 0) ? 'bg-gray-100' : '' ?>">
                                     <td class="p-2"><?php echo $i; ?></td>
                                     <td class="p-2" align="left"><?php echo $row['brand_name']; ?></td>
-                                    <td class="p-2"><?php echo 5; ?></td>
-                                    <td class="p-2">
+                                    <td class="p-2"><?php echo $row['total_associated_models']; ?></td>
+                                    <!-- <td class="p-2">
                                         <button class="edit_brand" value="<?php echo $row['id']; ?>"><i
                                                 class="fa-regular fa-pen-to-square text-blue-700"></i></button </td>
                                     <td class="p-2">
                                         <button class="del_brand" value="<?php echo $row['id']; ?>"><i
                                                 class="fa-solid fa-trash-arrow-up text-red-700"></i></button>
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 <?php
                                 $i++;

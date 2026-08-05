@@ -261,7 +261,7 @@ if ($submit_mode == "login") {
                         alt="Lamborghini" class="object-cover h-72 w-full rounded-md mb-2">
                     <div class="flex flex-row justify-between items-center">
                         <div>
-                            <p class="font-light text-sm"><?php echo $row['make'] . " | " . $row['model']; ?></p>
+                            <p class="font-light text-sm"><?php echo getVehicleMaker($row['make'], $isConnect) . " " . getVehicleModel($row['model'], $isConnect); ?></p>
                             <p class="font-light text-sm">From <b class="font-medium">AED
                             <?php echo floor($row['per_day_cost']) . ' / day'; ?></b></p>
                         </div>
